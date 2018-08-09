@@ -11,6 +11,9 @@
 |
 */
 
-Route::get('/', 'PostController@index')->name('home');
+// Route::get('/posts', 'PostController@index');
 
-Route::get('sign', 'PostController@create')->name('sign');
+Route::get('/', 'HomeController@index');
+
+Route::get('/posts', 'HomeController@posts');
+Auth::routes();

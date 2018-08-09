@@ -22,4 +22,9 @@ class PostResource extends Resource
             'date' => $this->created_at->diffForHumans()
         ];
     }
+    public function with($request) {
+        return [
+            'version' => '1.0.0'
+        ];
+    }
 }

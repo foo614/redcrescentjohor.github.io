@@ -43374,30 +43374,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             posts: [],
+            post: {
+                id: '',
+                name: '',
+                body: ''
+            },
+            edit: false,
             pageCount: 1,
             endpoint: 'api/posts?page='
         };
     },
     created: function created() {
-        this.fetch();
+        // this.fetch();
+        this.fetchPosts();
     },
 
     methods: {
-        fetch: function fetch() {
+        // fetch(page = 1) {
+        //     axios.get(this.endpoint + page)
+        //         .then(({data}) => {
+        //             this.posts = data.data;
+        //             this.pageCount = data.meta.last_page;
+        //         });
+        // },
+        fetchPosts: function fetchPosts() {
             var _this = this;
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
-            axios.get(this.endpoint + page).then(function (_ref) {
-                var data = _ref.data;
-
-                _this.posts = data.data;
-                _this.pageCount = data.meta.last_page;
+            fetch(this.endpoint + page).then(function (res) {
+                return res.json();
+            }).then(function (res) {
+                _this.posts = res.data;
+                _this.pageCount = res.meta.last_page;
             });
         },
 
@@ -43405,8 +43431,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this2 = this;
 
             if (confirm('Are you sure you want to report this signature?')) {
-                axios.put('api/posts/' + id + '/report').then(function (_ref2) {
-                    var response = _ref2.response;
+                axios.put('api/posts/' + id + '/report').then(function (_ref) {
+                    var response = _ref.response;
                     return _this2.removeSignature(id);
                 });
             }
@@ -43415,6 +43441,70 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.signatures = _.remove(this.signatures, function (signature) {
                 return signature.id !== id;
             });
+        },
+        deletePost: function deletePost(id) {
+            var _this3 = this;
+
+            if (confirm('Are you want to delete the post?')) {
+                fetch('api/post/' + id, {
+                    method: 'delete'
+                }).then(function (res) {
+                    return res.json();
+                }).then(function (data) {
+                    alert('Post removed');
+                    _this3.fetchPosts();
+                }).catch(function (err) {
+                    return console.log(err);
+                });
+            }
+        },
+        addPost: function addPost() {
+            var _this4 = this;
+
+            if (this.edit === false) {
+                //add
+                fetch('api/post', {
+                    method: 'post',
+                    body: JSON.stringify(this.post),
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }).then(function (res) {
+                    return res.json();
+                }).then(function (data) {
+                    _this4.post.name = '';
+                    _this4.post.body = '';
+                    alert("Post Added");
+                    _this4.fetchPosts();
+                }).catch(function (err) {
+                    return console.log(err);
+                });
+            } else {
+                // Update
+                fetch('api/post', {
+                    method: 'put',
+                    body: JSON.stringify(this.post),
+                    headers: {
+                        'content-type': 'application/json'
+                    }
+                }).then(function (res) {
+                    return res.json();
+                }).then(function (data) {
+                    _this4.post.name = '';
+                    _this4.post.body = '';
+                    alert('Post Updated');
+                    _this4.fetchPosts();
+                }).catch(function (err) {
+                    return console.log(err);
+                });
+            }
+        },
+        editPost: function editPost(post) {
+            this.edit = true;
+            this.post.id = post.id;
+            this.post.post_id = post.id;
+            this.post.name = post.name;
+            this.post.body = post.body;
         }
     }
 });
@@ -43430,6 +43520,77 @@ var render = function() {
   return _c(
     "div",
     [
+      _c(
+        "form",
+        {
+          staticClass: "mb-3",
+          on: {
+            submit: function($event) {
+              $event.preventDefault()
+              return _vm.addPost($event)
+            }
+          }
+        },
+        [
+          _c("div", { staticClass: "form-group" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.post.name,
+                  expression: "post.name"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "name" },
+              domProps: { value: _vm.post.name },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.post, "name", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "form-group" }, [
+            _c("textarea", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.post.body,
+                  expression: "post.body"
+                }
+              ],
+              staticClass: "form-control",
+              attrs: { type: "text", placeholder: "body" },
+              domProps: { value: _vm.post.body },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.post, "body", $event.target.value)
+                }
+              }
+            })
+          ]),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-lgight btn-block",
+              attrs: { type: "submit" }
+            },
+            [_vm._v("Save")]
+          )
+        ]
+      ),
+      _vm._v(" "),
       _vm._l(_vm.posts, function(post) {
         return _c("div", { key: post.id, staticClass: "panel panel-default" }, [
           _c("div", { staticClass: "panel-heading" }, [
@@ -43450,14 +43611,42 @@ var render = function() {
             ]),
             _vm._v(" "),
             _c("p", [_vm._v(_vm._s(post.body))])
-          ])
+          ]),
+          _vm._v(" "),
+          _c("hr"),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-warning mb-2",
+              on: {
+                click: function($event) {
+                  _vm.editPost(post)
+                }
+              }
+            },
+            [_vm._v("Delete")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              staticClass: "btn btn-danger",
+              on: {
+                click: function($event) {
+                  _vm.deletePost(post.id)
+                }
+              }
+            },
+            [_vm._v("Delete")]
+          )
         ])
       }),
       _vm._v(" "),
       _c("paginate", {
         attrs: {
           "page-count": _vm.pageCount,
-          "click-handler": _vm.fetch,
+          "click-handler": _vm.fetchPosts,
           "prev-text": "Prev",
           "next-text": "Next",
           "container-class": "pagination"
