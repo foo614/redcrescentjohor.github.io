@@ -13,6 +13,6 @@ class Post extends Model
      */
     public function getAvatarAttribute()
     {
-        return sprintf('https://www.gravatar.com/avatar/%s?s=100', md5($this->email));
+        return sprintf('https://picsum.photos/320/180/?random');
     }
 }

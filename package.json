@@ -13,13 +13,16 @@
         "axios": "^0.17",
         "bootstrap-sass": "^3.3.7",
         "cross-env": "^5.1",
-        "jquery": "^3.2",
         "laravel-mix": "^1.0",
+        "jquery": "^3.2",
         "lodash": "^4.17.4",
         "sw-precache-webpack-plugin": "^0.11.5",
-        "vue": "^2.5.7"
+        "vue": "^2.5.17"
     },
     "dependencies": {
-        "vuejs-paginate": "^1.9.5"
+        "vue-content-placeholders": "^0.2.1",
+        "vue-data-loading": "^0.2.4",
+        "vue-infinite-loading": "^2.3.2",
+        "vue-material": "^1.0.0-beta-10.2"
     }
 }
