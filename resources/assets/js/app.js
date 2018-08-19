@@ -7,23 +7,26 @@
 
 // require('./bootstrap');
 import Vue from 'vue'
-import {MdSnackbar, MdField, MdProgress, MdLayout, MdCard, MdDatepicker, MdButton, MdContent, MdTabs, MdList, MdIcon} from 'vue-material/dist/components'
-import 'vue-material/dist/vue-material.css'
-import 'vue-material/dist/theme/default.css' 
+// import VueMaterial  from 'vue-material/dist/components'
+import VueMaterial from 'vue-material'
+import 'vue-material/dist/vue-material.min.css'
 import VueContentPlaceholders from 'vue-content-placeholders'
-
-Vue.use(MdButton)
-Vue.use(MdContent)
-Vue.use(MdTabs)
-Vue.use(MdList)
-Vue.use(MdIcon)
-Vue.use(MdDatepicker)
-Vue.use(MdCard)
-Vue.use(MdLayout)
-Vue.use(MdProgress)
+import VueTable from './components/enso/vuedatatable/VueTable.vue'
+Vue.use(VueMaterial)
+// Vue.use(MdMenu)
+// Vue.use(MdAvatar)
+// Vue.use(MdButton)
+// Vue.use(MdContent)
+// Vue.use(MdTabs)
+// Vue.use(MdList)
+// Vue.use(MdIcon)
+// Vue.use(MdDatepicker)
+// Vue.use(MdCard)
+// Vue.use(MdLayout)
+// Vue.use(MdProgress)
 Vue.use(VueContentPlaceholders)
-Vue.use(MdField)
-Vue.use(MdSnackbar)
+// Vue.use(MdField)
+// Vue.use(MdSnackbar)
 
 window.Vue = require('vue');
 
@@ -34,7 +37,7 @@ window.Vue = require('vue');
  */
 
 Vue.component('posts', require('./components/Posts.vue'));
-Vue.component('webcam', require('./components/Webcam.vue'));
+Vue.component('post-list', require('./components/PostList.vue'));
 
 const app = new Vue({
     el: '#app',

@@ -1,28 +1,46 @@
 {
-    "private": true,
-    "scripts": {
-        "dev": "npm run development",
-        "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "watch-poll": "npm run watch -- --watch-poll",
-        "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
-        "prod": "npm run production",
-        "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
-    },
-    "devDependencies": {
-        "axios": "^0.17",
-        "bootstrap-sass": "^3.3.7",
-        "cross-env": "^5.1",
-        "laravel-mix": "^1.0",
-        "jquery": "^3.2",
-        "lodash": "^4.17.4",
-        "sw-precache-webpack-plugin": "^0.11.5",
-        "vue": "^2.5.17"
-    },
-    "dependencies": {
-        "vue-content-placeholders": "^0.2.1",
-        "vue-data-loading": "^0.2.4",
-        "vue-infinite-loading": "^2.3.2",
-        "vue-material": "^1.0.0-beta-10.2"
-    }
+  "name": "rcj",
+  "version": "1.0.0",
+  "description": "<p align=\"center\"><img src=\"https://laravel.com/assets/img/components/logo-laravel.svg\"></p>",
+  "main": "webpack.mix.js",
+  "directories": {
+    "test": "tests"
+  },
+  "private": true,
+  "scripts": {
+    "dev": "npm run development",
+    "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "watch-poll": "npm run watch -- --watch-poll",
+    "hot": "cross-env NODE_ENV=development node_modules/webpack-dev-server/bin/webpack-dev-server.js --inline --hot --config=node_modules/laravel-mix/setup/webpack.config.js",
+    "prod": "npm run production",
+    "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js"
+  },
+  "devDependencies": {
+    "axios": "^0.17",
+    "bootstrap-sass": "^3.3.7",
+    "cross-env": "^5.1",
+    "laravel-mix": "^1.0",
+    "jquery": "^3.2",
+    "lodash": "^4.17.4",
+    "sw-precache-webpack-plugin": "^0.11.5",
+    "vue": "^2.5.17"
+  },
+  "dependencies": {
+    "material-design-lite": "^1.3.0",
+    "vue-content-placeholders": "^0.2.1",
+    "vue-data-loading": "^0.2.4",
+    "vue-infinite-loading": "^2.3.2",
+    "vue-material": "^1.0.0-beta-10.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/foo614/redcrescentjohor.github.io.git"
+  },
+  "author": "FLD",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/foo614/redcrescentjohor.github.io/issues"
+  },
+  "homepage": "https://github.com/foo614/redcrescentjohor.github.io#readme"
 }

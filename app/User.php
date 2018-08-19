@@ -64,4 +64,17 @@ class User extends Authenticatable
     {
         return null !== $this->roles()->where('name', $role)->first();
     }
+
+    /**
+     * State relation
+     */
+    public function posts(){
+        return $this->hasMany('App\Post');
+    }
+    public function branch(){
+        return $this->belongsTo('App\Branch');
+    }
+    public function donor(){
+        return $this->hasOne('App\Donor');
+    }
 }

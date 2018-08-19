@@ -30,68 +30,30 @@
     <link rel="apple-touch-icon" sizes="167x167" href="/icons/apple-167.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-180.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
+
+    <!-- Styles -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
+    <link rel="stylesheet" href="{{asset('css/app.css')}}">
+    <link rel="stylesheet" href="{{asset('css/material.red-teal.min.css')}}">
+    <link rel="stylesheet" href="{{asset('css/metis-menu.css')}}">
+    <link rel="stylesheet" href="{{asset('css/custom.css')}}">
 </head>
-<body>
-    <div id="app">
-        <nav class="navbar navbar-default navbar-static-top">
-            <div class="container">
-                <div class="navbar-header">
-
-                    <!-- Collapsed Hamburger -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse" aria-expanded="false">
-                        <span class="sr-only">Toggle Navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-
-                    <!-- Branding Image -->
-                    <a class="navbar-brand" href="{{ url('/') }}">
-                        {{ config('app.name', 'Laravel') }}
-                    </a>
-                </div>
-                <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="nav navbar-nav">
-                        &nbsp;
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="nav navbar-nav navbar-right">
-                        <!-- Authentication Links -->
-                        @guest
-                            <li><a href="{{ route('login') }}">Login</a></li>
-                            <li><a href="{{ route('register') }}">Register</a></li>
-                        @else
-                            <li class="dropdown">
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" v-pre>
-                                    {{ Auth::user()->name }} <span class="caret"></span>
-                                </a>
-
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="{{ route('logout') }}"
-                                            onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                            Logout
-                                        </a>
-
-                                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                                            {{ csrf_field() }}
-                                        </form>
-                                    </li>
-                                </ul>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
-            </div>
-        </nav>
-        @yield('content')
+<body class="mdl-color--grey-100">
+    <div id="app"  class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header  {{ (Request::path() == 'search' && Auth::check()) ? '' : Auth::check() ? 'mdl-layout--fixed-drawer'  : '' }}">
+        @include('inc.navbar')
+        <main class="mdl-layout__content {{ Request::path() ==  'login' ? 'margin-form-login' : ''  }}">
+            @yield('content')
+        </main>
     </div>
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <script src="{{asset('js/material.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+    <script src="{{asset('js/metis-menu.js')}}"></script>
+    <script src="{{asset('js/mdl_component.js')}}"></script>
+    <script>
+        $("#menu1").metisMenu();
+    </script>
 </body>
 </html>
 {{-- <script>

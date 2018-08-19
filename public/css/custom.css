@@ -1,0 +1,201 @@
+.md-list-item-content>.md-icon:last-child {
+    margin-left: 0 !important;
+}
+
+.md-list-item-content>.md-icon:first-child {
+    margin-right: 35px !important;
+}
+.md-list-item-content{
+    justify-content: unset !important;
+}
+.md-list{
+    padding: 0 0 8px 0 !important;
+}
+
+/* navbar */
+.moon-material-icon{
+  user-select: none;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  justify-content: center;
+  vertical-align: middle;
+  transform: rotate(180deg); 
+  color:#ca0000;                 
+  width: 48px;
+  min-width: 48px;
+  height: 48px;
+  font-size: 48px!important;
+}
+/* Login page */
+.mdl-button .mdl-spinner {
+    top: 5px;
+    left: 45%;
+    position: absolute;
+}
+
+.mdl-spinner--single-color.mdl-color-white .mdl-spinner__layer-1,
+.mdl-spinner--single-color.mdl-color-white .mdl-spinner__layer-2,
+.mdl-spinner--single-color.mdl-color-white .mdl-spinner__layer-2,
+.mdl-spinner--single-color.mdl-color-white .mdl-spinner__layer-4 {
+border-color: #FFFFFF;
+}
+.margin-bottom-1 {
+    margin-bottom: 1em;
+  }
+  
+  .margin-top-2 {
+    margin-top: 2em;
+  }
+  
+  .full-span {
+    width: 100%;
+  }
+  
+  .center {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+  }
+  
+  .mdl-card__actions .mdl-button {
+    min-width: auto;
+  }
+@media (min-width: 480px){
+    .margin-form-login {
+        margin: 2em auto;
+    }
+  }
+  @media (min-width: 767px){
+    .margin-form-login {
+        margin: 4em auto 2em;
+    }
+  }
+  .mdl-card__supporting-text {
+    width: auto;
+  }
+  /* demo layout */
+  .demo-layout .demo-header .mdl-textfield {
+  padding: 0px;
+  margin-top: 41px;
+}
+
+.demo-layout .demo-header .mdl-textfield .mdl-textfield__expandable-holder {
+  bottom: 19px;
+}
+
+.demo-layout .mdl-layout__header .mdl-layout__drawer-button {
+  color: rgba(0, 0, 0, 0.54);
+}
+
+.mdl-layout__drawer .avatar {
+  margin-bottom: 16px;
+}
+
+.demo-drawer {
+  border: none;
+}
+
+/* iOS Safari specific workaround */
+
+.demo-drawer .mdl-menu__container {
+  z-index: -1;
+}
+
+.demo-drawer .demo-navigation {
+  z-index: -2;
+}
+
+/* END iOS Safari specific workaround */
+
+.demo-drawer .mdl-menu .mdl-menu__item {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.demo-drawer-header {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  padding: 16px;
+}
+
+.demo-avatar-dropdown {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+}
+
+.demo-navigation {
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+}
+
+.demo-layout .demo-navigation .mdl-navigation__link {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: rgba(255, 255, 255, 0.56);
+  font-weight: 500;
+}
+
+.demo-layout .demo-navigation .mdl-navigation__link:hover {
+  background-color: #00BCD4;
+  color: #37474F;
+}
+
+.demo-navigation .mdl-navigation__link .material-icons {
+  font-size: 24px;
+  color: rgba(255, 255, 255, 0.56);
+  margin-right: 32px;
+}
+
+.demo-content {
+  max-width: 1080px;
+}
+
+/* sidebar */
+.sidebar-header{
+  height: 64px;
+  line-height: 5rem;
+  text-decoration: none !important;
+}
+@media screen and (max-width: 1024px){
+  .sidebar-header {
+      height: 56px;
+      line-height: 4rem;
+  }
+}
+.m-r--24{
+  margin-right: 24px;
+}
