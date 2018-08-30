@@ -366,7 +366,7 @@ import axios from 'axios';
   .pagination>.active>span,
   .pagination>.active>span:focus,
   .pagination>.active>span:hover {
-    webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+    -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
     -webkit-transition: all 0.2s linear;
     -o-transition: all 0.2s linear;

@@ -9,6 +9,6 @@ class BloodType extends Model
     protected $fillable = ['name'];
 
     public function donor(){
-        return $this->hasOne('App\Donor');
+        return $this->hasOne('App\User');
     }
 }

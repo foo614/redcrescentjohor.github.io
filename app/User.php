@@ -35,6 +35,24 @@ class User extends Authenticatable
         return $this->belongsToMany(Role::class);
     }
 
+    public function membership_type()
+    {
+        return $this->belongsTo(MembershipType::class);
+    }
+
+    public function blood_type()
+    {
+        return $this->belongsTo(BloodType::class);
+    }
+
+    public function posts(){
+        return $this->hasMany('App\Post');
+    }
+
+    public function branch(){
+        return $this->belongsTo('App\Branch');
+    }
+
     /**
      * @param string|array $roles
      */
@@ -63,18 +81,5 @@ class User extends Authenticatable
     public function hasRole($role)
     {
         return null !== $this->roles()->where('name', $role)->first();
-    }
-
-    /**
-     * State relation
-     */
-    public function posts(){
-        return $this->hasMany('App\Post');
-    }
-    public function branch(){
-        return $this->belongsTo('App\Branch');
-    }
-    public function donor(){
-        return $this->hasOne('App\Donor');
     }
 }

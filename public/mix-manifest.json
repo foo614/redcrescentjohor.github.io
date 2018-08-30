@@ -1,7 +1,9 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/css/material.red-teal.min.css": "/css/material.red-teal.min.css",
+    "/css/material.red-blue.min.css": "/css/material.red-blue.min.css",
     "/js/material.min.js": "/js/material.min.js",
-    "/js/jquery.min.js": "/js/jquery.min.js"
+    "/js/jquery.min.js": "/js/jquery.min.js",
+    "/css/getmdl-select.min.css": "/css/getmdl-select.min.css",
+    "/js/getmdl-select.min.js": "/js/getmdl-select.min.js"
 }

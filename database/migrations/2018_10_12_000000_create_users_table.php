@@ -24,6 +24,9 @@ class CreateUsersTable extends Migration
             $table->string('contact')->nullable();
             $table->string('ic')->nullable();
             $table->string('detachment')->nullable();
+            $table->string('map_lat')->nullable();
+            $table->string('map_lng')->nullable();
+            $table->string('health_issues')->nullable();
             $table->rememberToken();
             $table->timestamps();
 

@@ -33,27 +33,38 @@
 
     <!-- Styles -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
-    <link rel="stylesheet" href="{{asset('css/app.css')}}">
-    <link rel="stylesheet" href="{{asset('css/material.red-teal.min.css')}}">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/material.red-blue.min.css')}}">
+    <link rel="stylesheet" href="{{ asset('css/getmdl-select.min.css') }}">
     <link rel="stylesheet" href="{{asset('css/metis-menu.css')}}">
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+
+    <!-- Scripts -->
+    <script src="{{asset('js/material.min.js')}}"></script>
+    <script src="{{asset('js/getmdl-select.min.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
+    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
+    <script src="{{asset('js/metis-menu.js')}}"></script>
+    <script src="{{asset('js/mdl_component.js')}}"></script>
+    <script src="{{asset('js/google-map.js') }}"></script>
 </head>
 <body class="mdl-color--grey-100">
-    <div id="app"  class="demo-layout mdl-layout mdl-js-layout mdl-layout--fixed-header  {{ (Request::path() == 'search' && Auth::check()) ? '' : Auth::check() ? 'mdl-layout--fixed-drawer'  : '' }}">
+    <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header  {{ (Request::path() == 'search' && Auth::check()) ? '' : Auth::check() ? 'mdl-layout--fixed-drawer'  : '' }}">
         @include('inc.navbar')
         <main class="mdl-layout__content {{ Request::path() ==  'login' ? 'margin-form-login' : ''  }}">
+                <nav aria-label="breadcumb" style="{{ Request::path() ==  'search' || Request::path() == 'login' || Request::path() == 'register' ? 'display:none' : ''  }}">
+                    <ol class="breadcrumb">
+                        @yield('breadcrumbs')
+                    </ol>
+                </nav>
             @yield('content')
         </main>
     </div>
-    <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{asset('js/material.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
-    <script src="{{asset('js/metis-menu.js')}}"></script>
-    <script src="{{asset('js/mdl_component.js')}}"></script>
     <script>
         $("#menu1").metisMenu();
     </script>
+    @yield('footer-scripts')
 </body>
 </html>
 {{-- <script>

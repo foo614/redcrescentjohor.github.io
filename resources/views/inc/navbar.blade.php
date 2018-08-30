@@ -8,7 +8,7 @@
                 <label class="mdl-color-text--black" style="font-weight: 500; font-size: 16px;">Red Crescent Johor</label>
             </div>
         @else 
-            @yield('title')
+            <label class="mdl-color-text--black">@yield('title')</label>
         @endif
         </span>
         <!-- Add spacer, to align navigation to the right -->
@@ -58,10 +58,10 @@
                 <a class="has-arrow" href="#" aria-expanded="false"><i class="material-icons m-r--24">supervisor_account</i>Member</a>
                 <ul aria-expanded="false" class="collapse">
                     <li>
-                        <a href="#">Add member</a>
+                        <a href="{{route('users.create')}}">Add member</a>
                     </li>
                     <li>
-                        <a href="#">Manage member</a>
+                        <a href="{{route('users.index')}}">Manage member</a>
                     </li>
                 </ul>
             </li>

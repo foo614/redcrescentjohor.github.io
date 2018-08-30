@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
 use App\MembershipType;
@@ -10,15 +11,14 @@ use App\Branch;
 use App\BloodType;
 use App\Donor;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Resources\UserResource;
+
 class UserController extends Controller
 {
-    public function __construct(){
-        $this->middleware(['auth']);
-    }
     /**
-     * Display a listing of the resource.
+     * Return a paginated list of posts.
      *
-     * @return \Illuminate\Http\Response
+     * @return UserResource
      */
     public function index()
     {
@@ -28,30 +28,29 @@ class UserController extends Controller
                 $q->where('roles.id', '!=', 1);
             }
         )->get();
-        return view('user.index')->with('users', $users);
+        return UserResource::collection($users);
+        // return view('user.index')->with('users', $users);
         // return response()->json($users);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Fetch and return the User.
      *
-     * @return \Illuminate\Http\Response
+     * @param User $User
+     * @return UserResource
      */
-    public function create()
+    public function show($id)
     {
-        $roles = Role::pluck('name','id')->all();
-        $membership_types = MembershipType::pluck('name','id')->all();
-        $branches = Branch::pluck('name', 'id')->all();
-        $blood_types = BloodType::pluck('name', 'id')->all();
-        return view('user.create', ['roles'=>$roles, 'membership_types'=>$membership_types, 'branches'=>$branches, 'blood_types'=>$blood_types]);
-        // dd($roles);
+        // return new PostResource($post);
+        $user = User::findOrFail($id);
+        return new UserResource($user);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Validate and save a new signature to the database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return UserResource
      */
     public function store(Request $request)
     {
@@ -95,47 +94,6 @@ class UserController extends Controller
                 }
             }
         }
-        return redirect()->route('users.index');
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $user = User::findOrFail($id);
-        $roles = Role::pluck('name','id')->all();
-        $membership_types = MembershipType::pluck('name','id')->all();
-        $branches = Branch::pluck('name', 'id')->all();
-        $blood_types = BloodType::pluck('name', 'id')->all();
-        // return response()->json($user);
-        return view('user.edit', compact('user', 'roles', 'membership_types', 'branches', 'blood_types'));
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
     }
 
     /**
@@ -146,6 +104,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Get article
+        $user = User::findOrFail($id);
+        if($user->delete()) {
+            return new UserResource($user);
+        }    
     }
 }

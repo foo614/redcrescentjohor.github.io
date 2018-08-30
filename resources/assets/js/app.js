@@ -11,7 +11,6 @@ import Vue from 'vue'
 import VueMaterial from 'vue-material'
 import 'vue-material/dist/vue-material.min.css'
 import VueContentPlaceholders from 'vue-content-placeholders'
-import VueTable from './components/enso/vuedatatable/VueTable.vue'
 Vue.use(VueMaterial)
 // Vue.use(MdMenu)
 // Vue.use(MdAvatar)
@@ -38,6 +37,9 @@ window.Vue = require('vue');
 
 Vue.component('posts', require('./components/Posts.vue'));
 Vue.component('post-list', require('./components/PostList.vue'));
+Vue.component('upload-files', require('./components/UploadFiles.vue'));
+Vue.component('upload-file', require('./components/UploadFile.vue'));
+Vue.component('fld-table', require('./components/UsersTable.vue'));
 
 const app = new Vue({
     el: '#app',
