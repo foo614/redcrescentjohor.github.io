@@ -9,10 +9,10 @@ use App\BloodType;
 
 class BloodTypeController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * Return a paginated list of blood types.
      *
-     * @return \Illuminate\Http\Response
+     * @return BloodResource
      */
     public function index()
     {
@@ -22,10 +22,10 @@ class BloodTypeController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * Validate and save a new signature to the database.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @return BloodResource
      */
     public function store(Request $request)
     {
@@ -38,10 +38,10 @@ class BloodTypeController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Fetch and return the Post.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param BloodType $blood_type
+     * @return BloodResource
      */
     public function show($id)
     {

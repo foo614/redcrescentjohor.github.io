@@ -38,6 +38,7 @@
     <link rel="stylesheet" href="{{ asset('css/getmdl-select.min.css') }}">
     <link rel="stylesheet" href="{{asset('css/metis-menu.css')}}">
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
+    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script src="{{asset('js/material.min.js')}}"></script>
@@ -48,17 +49,49 @@
     <script src="{{asset('js/mdl_component.js')}}"></script>
     <script src="{{asset('js/google-map.js') }}"></script>
 </head>
-<body class="mdl-color--grey-100">
-    <div id="app" class="mdl-layout mdl-js-layout mdl-layout--fixed-header  {{ (Request::path() == 'search' && Auth::check()) ? '' : Auth::check() ? 'mdl-layout--fixed-drawer'  : '' }}">
-        @include('inc.navbar')
-        <main class="mdl-layout__content {{ Request::path() ==  'login' ? 'margin-form-login' : ''  }}">
-                <nav aria-label="breadcumb" style="{{ Request::path() ==  'search' || Request::path() == 'login' || Request::path() == 'register' ? 'display:none' : ''  }}">
-                    <ol class="breadcrumb">
-                        @yield('breadcrumbs')
-                    </ol>
-                </nav>
+<body>
+    <div id="app">
+    @include('inc.navbar')
+        <v-content>
+                @auth
+    <!-- Right aligned menu below button -->
+    <button id="drop-item" class="theme--dark" style="float:right">
+        @if (Auth::user()->avatar != null)
+            <v-avatar size="36">
+                <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="userAvatar">
+            </v-avatar>
+        @else
+            <v-avatar color="teal lighten-2">
+            <span class="white--text headline">{{substr(Auth::user()->name, 0, 1)}}</span>                
+            </v-avatar>
+        @endif
+    </button>
+    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right demo-list-icon mdl-list" style="padding-top:0;" for="drop-item">
+        <li class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;">
+            <span class="mdl-list__item-primary-content">
+            <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar"><img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="Avatar"></v-avatar>
+            <span>{{Auth::user()->name}}</span>
+            <span class="mdl-list__item-sub-title">{{Auth::user()->email}}</span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">account_box</i>Profile
+            </span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item">
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="logout" style="text-decoration: none; color: rgba(0,0,0,.87);">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">save_alt</i>Sign out
+                </span>
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+            </form>
+        </li>
+    </ul>
+    @endauth
             @yield('content')
-        </main>
+        </v-content>
     </div>
     <script src="{{ asset('js/app.js') }}"></script>
     <script>

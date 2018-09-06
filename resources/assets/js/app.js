@@ -7,40 +7,33 @@
 
 // require('./bootstrap');
 import Vue from 'vue'
-// import VueMaterial  from 'vue-material/dist/components'
-import VueMaterial from 'vue-material'
-import 'vue-material/dist/vue-material.min.css'
 import VueContentPlaceholders from 'vue-content-placeholders'
-Vue.use(VueMaterial)
-// Vue.use(MdMenu)
-// Vue.use(MdAvatar)
-// Vue.use(MdButton)
-// Vue.use(MdContent)
-// Vue.use(MdTabs)
-// Vue.use(MdList)
-// Vue.use(MdIcon)
-// Vue.use(MdDatepicker)
-// Vue.use(MdCard)
-// Vue.use(MdLayout)
-// Vue.use(MdProgress)
-Vue.use(VueContentPlaceholders)
-// Vue.use(MdField)
-// Vue.use(MdSnackbar)
+import Vuetify from 'vuetify'
+import VueRouter from 'vue-router'
+import routes from './routes';
 
-window.Vue = require('vue');
+Vue.use(VueRouter)
+Vue.use(Vuetify)
+Vue.use(VueContentPlaceholders)
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-
+const router = new VueRouter({
+    mode: 'history',
+    routes
+});
 Vue.component('posts', require('./components/Posts.vue'));
 Vue.component('post-list', require('./components/PostList.vue'));
 Vue.component('upload-files', require('./components/UploadFiles.vue'));
 Vue.component('upload-file', require('./components/UploadFile.vue'));
-Vue.component('fld-table', require('./components/UsersTable.vue'));
+Vue.component('users-table', require('./components/UsersTable.vue'));
+Vue.component('blood-type', require('./components/BloodType.vue'));
+Vue.component('navbar', require('./components/Navbar.vue'));
 
 const app = new Vue({
     el: '#app',
+    router,
 });

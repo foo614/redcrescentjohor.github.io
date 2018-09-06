@@ -13,10 +13,14 @@
 
 // Route::get('/posts', 'PostController@index');
 
+Route::get('/logout', 'Auth\LoginController@logout');
+
 Route::get('/', 'HomeController@index');
 
 Route::get('/posts', 'HomeController@posts');
 
 Route::resource('/users', 'UserController');
+
+Route::resource('blood_types', 'BloodTypeController');
 
 Auth::routes();

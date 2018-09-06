@@ -1,6 +1,6 @@
 @extends('layouts.app') 
 @section('content')
-<div class="mdl-card mdl-shadow--2dp">
+<div class="mdl-card mdl-shadow--2dp" style="margin:0 auto; margin-top:30px;">
     <div class="mdl-card__title mdl-card--expand">
         <h2 class="mdl-card__title-text">Login</h2>
     </div>

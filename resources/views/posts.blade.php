@@ -1,4 +1,4 @@
 @extends('layouts.app')
 @section('content')
-    <post-list></post-list>
+    <posts></posts>
 @endsection

@@ -1,4 +1,4 @@
-<header class="mdl-layout__header mdl-color--grey-100">
+{{-- <header class="mdl-layout__header mdl-color--grey-100">
     <div class="mdl-layout__header-row">
         <!-- Title -->
         <span class="mdl-layout-title">
@@ -16,29 +16,32 @@
         @if (Auth::check())
         <!-- Navigation -->
         <!-- Right aligned menu below button -->
-        <md-menu md-size="medium" md-align-trigger>
-            <md-avatar md-menu-trigger class="md-avatar-icon md-primary" id="menu-lower-right">
-                <md-icon>people</md-icon>
-            </md-avatar>
-            <md-menu-content>
-                <md-menu-item style="width: 280px;height: 72px; background-color:#eeeeee;">
-                    <div style="display:flex;">
-                        <md-avatar md-menu-trigger class="md-avatar-icon md-primary" id="menu-lower-right" style="margin-right: 16px;">
-                            <md-icon>people</md-icon>
-                        </md-avatar>
-                        <div >
-                            <label for="" style="display:block">{{Auth::user()->name}}</label>
-                            <label for="">{{Auth::user()->email}}</label>
-                        </div>
-                    </div>
-                </md-menu-item>
-                <md-menu-item><md-icon>menu</md-icon>Menu</md-menu-item>
-                <md-menu-item href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                    <md-icon>settings</md-icon>Sign out
-                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">{{ csrf_field() }}</form>
-                </md-menu-item>
-            </md-menu-content>
-        </md-menu>
+        <button id="demo-menu-lower-right" class="mdl-button mdl-js-button mdl-button--icon" style="color:#000">
+            <i class="material-icons">more_vert</i>
+        </button>
+        <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right demo-list-icon mdl-list" style="padding-top:0;" for="demo-menu-lower-right">
+            <li class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;">
+                <span class="mdl-list__item-primary-content">
+                <v-avatar color="grey lighten-4" style="margin-right: 16px;" class="material-icons mdl-list__item-avatar"><img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="Avatar"></v-avatar>
+                <span>{{Auth::user()->name}}</span>
+                <span class="mdl-list__item-sub-title">{{Auth::user()->email}}</span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">account_box</i>Profile
+                </span>
+            </li>
+            <li class="mdl-menu__item mdl-list__item">
+                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="logout" style="text-decoration: none; color: rgba(0,0,0,.87);">
+                    <span class="mdl-list__item-primary-content">
+                        <i class="material-icons mdl-list__item-icon">save_alt</i>Sign out
+                    </span>
+                </a>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                    {{ csrf_field() }}
+                </form>
+            </li>
+        </ul>
         @endif
     </div>
 </header>
@@ -102,16 +105,13 @@
                 <a class="has-arrow" href="#" aria-expanded="false"><i class="material-icons m-r--24">settings</i>Setting</a>
                 <ul aria-expanded="false" class="collapse">
                     <li>
-                        <a href="#">Manage Permissions</a>
-                    </li>
-                    <li>
                         <a href="#">Manage Roles</a>
                     </li>
                     <li>
                         <a href="#">Manage Membership Type</a>
                     </li>
                     <li>
-                        <a href="#">Manage Blood Type</a>
+                        <a href="/blood_types">Manage Blood Type</a>
                     </li>
                     <li>
                         <a href="#">Manage Category Type</a>
@@ -121,4 +121,55 @@
         </ul>
     </nav>
 </div>
-@endif
+@endif --}}
+
+@auth
+<navbar auth-name="{{ Auth::user()->name }}" auth-email="{{ Auth::user()->email }}" auth-avatar="/img/{{ Auth::user()->avatar }}"></navbar>
+@endauth
+{{-- <v-toolbar
+color="transparent"
+:clipped-left="$vuetify.breakpoint.mdAndUp"
+app
+>
+<v-toolbar-title class="ml-0 pl-3">
+<span>Red Crescent Johor</span>
+</v-toolbar-title>
+<v-spacer></v-spacer>
+    @auth
+    <!-- Right aligned menu below button -->
+    <button id="drop-item" class="theme--dark">
+        @if (Auth::user()->avatar != null)
+            <v-avatar size="36">
+                <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="userAvatar">
+            </v-avatar>
+        @else
+            <v-avatar color="teal lighten-2">
+            <span class="white--text headline">{{substr(Auth::user()->name, 0, 1)}}</span>                
+            </v-avatar>
+        @endif
+    </button>
+    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right demo-list-icon mdl-list" style="padding-top:0;" for="drop-item">
+        <li class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;">
+            <span class="mdl-list__item-primary-content">
+            <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar"><img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="Avatar"></v-avatar>
+            <span>{{Auth::user()->name}}</span>
+            <span class="mdl-list__item-sub-title">{{Auth::user()->email}}</span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item">
+            <span class="mdl-list__item-primary-content">
+                <i class="material-icons mdl-list__item-icon">account_box</i>Profile
+            </span>
+        </li>
+        <li class="mdl-menu__item mdl-list__item">
+            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="logout" style="text-decoration: none; color: rgba(0,0,0,.87);">
+                <span class="mdl-list__item-primary-content">
+                    <i class="material-icons mdl-list__item-icon">save_alt</i>Sign out
+                </span>
+            </a>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                {{ csrf_field() }}
+            </form>
+        </li>
+    </ul>
+    @endauth
+</v-toolbar> --}}

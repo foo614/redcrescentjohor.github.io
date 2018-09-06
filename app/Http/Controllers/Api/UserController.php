@@ -106,8 +106,8 @@ class UserController extends Controller
     {
         // Get article
         $user = User::findOrFail($id);
-        if($user->delete()) {
-            return new UserResource($user);
-        }    
+        // if($user->delete()) {
+        //     return new UserResource($user);
+        // }    
     }
 }

@@ -25,13 +25,11 @@
     "vue": "^2.5.17"
   },
   "dependencies": {
-    "getmdl-select": "^2.0.1",
     "material-design-lite": "^1.3.0",
     "vue-content-placeholders": "^0.2.1",
-    "vue-data-loading": "^0.2.4",
     "vue-infinite-loading": "^2.3.2",
-    "vue-material": "^1.0.0-beta-10.2",
-    "vuetify": "^1.2.0"
+    "vue-router": "^3.0.1",
+    "vuetify": "^1.2.2"
   },
   "repository": {
     "type": "git",

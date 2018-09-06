@@ -8,7 +8,7 @@
 <div class="mdl-grid">
     <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--12-col-tablet mdl-cell--12-col-desktop">
         <div class="mdl-card__supporting-text mdl-color-text--grey-600" style="padding:0;">
-        <users-table></users-table>
+        <blood-type></blood-type>
         </div>
     </div>
 </div>

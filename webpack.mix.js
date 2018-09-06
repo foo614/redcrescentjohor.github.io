@@ -16,9 +16,9 @@ mix.js('resources/assets/js/app.js', 'public/js')
    
 mix.copy('node_modules/material-design-lite/dist/material.red-blue.min.css', 'public/css');
 mix.copy('node_modules/material-design-lite/material.min.js', 'public/js');
-mix.copy('node_modules/jquery/dist/jquery.min.js', 'public/js');
-mix.copy('node_modules/getmdl-select/getmdl-select.min.css', 'public/css');
-mix.copy('node_modules/getmdl-select/getmdl-select.min.js', 'public/js');
+// mix.copy('node_modules/jquery/dist/jquery.min.js', 'public/js');
+// mix.copy('node_modules/getmdl-select/getmdl-select.min.css', 'public/css');
+// mix.copy('node_modules/getmdl-select/getmdl-select.min.js', 'public/js');
 
 
 var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
