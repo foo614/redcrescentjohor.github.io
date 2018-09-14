@@ -11,12 +11,11 @@ class MembershipTypeController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $membership_types = MembershipType::all();
+        $membership_types = MembershipType::latest('created_at')->get();
         return new MembershipTypeResource($membership_types);
     }
 
@@ -28,7 +27,7 @@ class MembershipTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $membership_type = $request->isMethod('put') ? MembershipType::findOrFail($request->membership_type_id) : new MembershipType;
+        $membership_type = $request->isMethod('put') ? MembershipType::findOrFail($request->membershipType_id) : new MembershipType;
         $membership_type->name = $request->name;
         if($membership_type->save()){
             return new MembershipTypeResource($membership_type);

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
+use I8luminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
@@ -56,29 +56,32 @@ class UserController extends Controller
     {
         $user = $request->isMethod('put') ? User::findOrFail($request->user_id) : new User;
         //File Upload
-        if($request->hasFile('avatar')){
-            //get filename with extension
-            $imgExt = $request->file('avatar')->getClientOriginalName();
-            //get filename  
-            $imgName = pathinfo($imgExt, PATHINFO_FILENAME);
-            // just get ext
-            $extension = $request->file('avatar')->getClientOriginalExtension();
-            //img to store
-            $imgToStore = $imgName.'_'.time().'.'.$extension;
-            //upload
-            $path = $request->file('avatar')->storeAs('public/img',$imgToStore);
-        }else{
-            $imgToStore='generic.png';
+        if($request->isMethod('post')){
+            if($request->hasFile('avatar')){
+                //get filename with extension
+                $imgExt = $request->file('avatar')->getClientOriginalName();
+                //get filename  
+                $imgName = pathinfo($imgExt, PATHINFO_FILENAME);
+                // just get ext
+                $extension = $request->file('avatar')->getClientOriginalExtension();
+                //img to store
+                $imgToStore = $imgName.'_'.time().'.'.$extension;
+                //upload
+                $path = $request->file('avatar')->storeAs('public/img',$imgToStore);
+            }else{
+                $imgToStore='generic.png';
+            }
         }
         if($user){
             $user->name = $request->input('name');
             $user->email = $request->input('email');
-            $user->password = bcrypt($request['password']);
+            if($request->isMethod('post'))
+                $user->password = bcrypt($request['password']);
             $user->contact = $request->contact;
             $user->ic = $request->ic;
             $user->address = $request->address;
             $user->detachment = $request->detachment;
-            $user->avatar = $imgToStore;
+            $user->avatar = $imgToStore ? $imgToStore : $request->avatar;
             $user->map_lat = $request->map_lat;
             $user->map_lng = $request->map_lng;
             // $user->health_issues = $request->health_issues;
@@ -90,6 +93,7 @@ class UserController extends Controller
             $roles = $request['roles'];
             if(isset($roles)){
                 foreach($roles as $role){
+                    if($user->roles()->syncWithoutDetaching([$role.id]))
                     $user->roles()->attach(Role::where('id', $role)->firstOrFail());
                 }
             }
@@ -106,8 +110,8 @@ class UserController extends Controller
     {
         // Get article
         $user = User::findOrFail($id);
-        // if($user->delete()) {
-        //     return new UserResource($user);
-        // }    
+        if($user->delete()) {
+            return new UserResource($user);
+        }    
     }
 }

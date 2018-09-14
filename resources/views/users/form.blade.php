@@ -113,15 +113,15 @@
                 <span class="mdl-selectfield__error">{{$errors->first('branch')}}</span>
             </div>  
             <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
-                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label getmdl-select getmdl-select__fix-height" id="myselect">
                     <i class="mdl-textfield__icon material-icons">opacity</i>
-                    <input type="text" value="" class="mdl-textfield__input" id="blood_type" readonly>
+                    <input type="text" class="mdl-textfield__input" id="blood_type" readonly>
                     <input type="hidden" value="" name="blood_type">
                     <i class="mdl-icon-toggle__label material-icons">keyboard_arrow_down</i>
                     <label for="blood_type" class="mdl-textfield__label">Blood Type</label>
                     <ul for="blood_type" class="mdl-menu mdl-menu--bottom-left mdl-js-menu">
                         @foreach ($blood_types as $key => $value)
-                        <li class="mdl-menu__item" data-val="{{$key}}" data-selected="{{Request::route()->getName() ==  'users.edit' ?  ($user->blood_type_id === $key ? true : false) : '' }}">{{$value}}</li>
+                        <li class="mdl-menu__item" data-val="{{$key}}" data-selected="{{Request::route()->getName() ==  'users.edit' ? ($user->branch_id === $key ? true : false) : '' }}">{{$value}}</li>
                         @endforeach
                     </ul>
                 </div>
@@ -129,7 +129,7 @@
         </div>
         <div class="mdl-grid">
             <upload-file img-path="{{Request::route()->getName() == 'users.edit' ? '/storage/img/'.$user->avatar : ''}}"></upload-file>
-            <div class="mdl-tooltip mdl-tooltip--right mdl-tooltip--large" data-mdl-for="tootip-upload-image">Upload Profile Image</div>
+            <div class="mdl-tooltip mdl-tooltip--right" data-mdl-for="tootip-upload-image">Upload Profile Image</div>
         </div>
         <div class="mdl-grid">
             <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--12-col-desktop">

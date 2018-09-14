@@ -73,8 +73,8 @@ function initAutocomplete () {
         let hospital_contact = document.getElementById('contact');
         let hospital_email = document.getElementById('email');
 
-        if(prefPlace){
-            if(window.$.ajaxSettings.url == "http://127.0.0.1:8000/hospitals/create" || window.$.ajaxSettings.url == "http://127.0.0.1:8000/hospitals/edit"){    
+        if(prefPlace && (window.$.ajaxSettings.url == "http://127.0.0.1:8000/branches/create" || window.$.ajaxSettings.url == "http://127.0.0.1:8000/hospitals/create" || window.$.ajaxSettings.url == "http://127.0.0.1:8000/donors/create" || window.$.ajaxSettings.url == "http://127.0.0.1:8000/users/create")){
+            if(window.$.ajaxSettings.url == "http://127.0.0.1:8000/hospitals/create" || window.$.ajaxSettings.url == "http://127.0.0.1:8000/branches/create"){    
                 hospital_name.value = prefPlace.name ? prefPlace.name : '-';
                 document.getElementById('name-is-found').classList.add('is-dirty');
                 hospital_contact.value = prefPlace.formatted_phone_number ? prefPlace.formatted_phone_number : '-';
@@ -82,8 +82,7 @@ function initAutocomplete () {
                 hospital_email.value = '-';
                 document.getElementById('email-is-not-found').classList.add('is-dirty');
             }
-            if(window.$.ajaxSettings.url == "http://127.0.0.1:8000/users/create" || window.$.ajaxSettings.url == "http://127.0.0.1:8000/users/edit")
-                document.getElementById('address-is-found').classList.add('is-dirty');
+            document.getElementById('address-is-found').classList.add('is-dirty');
         }
         if (!prefPlace.geometry) {
             console.log('Returned place contains no geometry');

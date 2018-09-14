@@ -98,12 +98,7 @@ class HospitalController extends Controller
         $hospital->map_lat = $request->input('map_lat');
         $hospital->map_lng = $request->input('map_lng');
         $hospital->save();
-        $notification = array(
-            'message' => $hospital->name.' is updated',
-            'title' => 'Edit hospital',
-            'alert-type' => 'success'
-        );
-        return redirect()->route('hospitals.index')->with($notification);
+        return redirect()->route('hospitals.index');
     }
 
     /**

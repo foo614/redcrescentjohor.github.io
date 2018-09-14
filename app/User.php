@@ -15,7 +15,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password', 'role'
     ];
 
     /**
@@ -32,7 +32,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class)->withTimestamps();;
     }
 
     public function membership_type()
@@ -60,9 +60,9 @@ class User extends Authenticatable
     {
         if(is_array($roles))
         {
-            return $this->hasAnyRole($roles) || abort(401, 'Unauthorized access.');
+            return $this->hasAnyRole($roles) || abort(401, 'This action is Unauthorized access.');
         }
-        return $this->hasRole($roles) || abort(401, 'Unauthorized access.');
+        return $this->hasRole($roles) || abort(401, 'This action is Unauthorized access.');
     }
 
     /**

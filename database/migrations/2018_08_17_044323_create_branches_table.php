@@ -19,7 +19,7 @@ class CreateBranchesTable extends Migration
             $table->string('address');
             $table->string('contact');
             $table->string('email');
-            $table->string('fax');
+            $table->string('fax')->nullable();
             $table->string('map_lat');
             $table->string('map_lng');
             $table->timestamps();

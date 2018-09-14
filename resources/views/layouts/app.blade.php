@@ -32,71 +32,42 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <!-- Styles -->
+    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
-    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/material.red-blue.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/getmdl-select.min.css') }}">
-    <link rel="stylesheet" href="{{asset('css/metis-menu.css')}}">
     <link rel="stylesheet" href="{{asset('css/custom.css')}}">
-    <link href="https://unpkg.com/vuetify/dist/vuetify.min.css" rel="stylesheet">
+    <link href="{{asset('css/vuetify.min.css')}}" rel="stylesheet">
 
     <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
+    <script src="{{asset('js/toastr.min.js')}}"></script>
     <script src="{{asset('js/material.min.js')}}"></script>
     <script src="{{asset('js/getmdl-select.min.js')}}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery"></script>
     <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
-    <script src="{{asset('js/metis-menu.js')}}"></script>
-    <script src="{{asset('js/mdl_component.js')}}"></script>
-    <script src="{{asset('js/google-map.js') }}"></script>
+    <script type="text/javascript">
+        window.csrf_token = "{{ csrf_token() }}"
+    </script>
 </head>
 <body>
     <div id="app">
-    @include('inc.navbar')
-        <v-content>
-                @auth
-    <!-- Right aligned menu below button -->
-    <button id="drop-item" class="theme--dark" style="float:right">
-        @if (Auth::user()->avatar != null)
-            <v-avatar size="36">
-                <img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="userAvatar">
-            </v-avatar>
-        @else
-            <v-avatar color="teal lighten-2">
-            <span class="white--text headline">{{substr(Auth::user()->name, 0, 1)}}</span>                
-            </v-avatar>
-        @endif
-    </button>
-    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right demo-list-icon mdl-list" style="padding-top:0;" for="drop-item">
-        <li class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;">
-            <span class="mdl-list__item-primary-content">
-            <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar"><img src="https://avatars0.githubusercontent.com/u/9064066?v=4&s=460" alt="Avatar"></v-avatar>
-            <span>{{Auth::user()->name}}</span>
-            <span class="mdl-list__item-sub-title">{{Auth::user()->email}}</span>
-        </li>
-        <li class="mdl-menu__item mdl-list__item">
-            <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon">account_box</i>Profile
-            </span>
-        </li>
-        <li class="mdl-menu__item mdl-list__item">
-            <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();" title="logout" style="text-decoration: none; color: rgba(0,0,0,.87);">
-                <span class="mdl-list__item-primary-content">
-                    <i class="material-icons mdl-list__item-icon">save_alt</i>Sign out
-                </span>
-            </a>
-            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                {{ csrf_field() }}
-            </form>
-        </li>
-    </ul>
-    @endauth
-            @yield('content')
-        </v-content>
+        <v-app id="inspire" >
+            <navbar 
+                auth="{{ Auth::user() ? Auth::user()->toJson() : '' }}"
+                auth-check="{{Auth::check()}}">
+            </navbar>
+            <v-content>
+                <v-container>
+                    @yield('content')
+                    <router-view></router-view>
+                </v-container>
+            </v-content>
+        </v-app>
     </div>
+    @include('scripts.toastr')
     <script src="{{ asset('js/app.js') }}"></script>
-    <script>
-        $("#menu1").metisMenu();
-    </script>
+    <script src="{{asset('js/google-map.js') }}"></script>
     @yield('footer-scripts')
 </body>
 </html>

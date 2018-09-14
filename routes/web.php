@@ -11,16 +11,38 @@
 |
 */
 
-// Route::get('/posts', 'PostController@index');
-
-Route::get('/logout', 'Auth\LoginController@logout');
-
 Route::get('/', 'HomeController@index');
+// Route::get('posts', 'HomeController@posts');
+Route::resource('donors', 'DonorController');
 
-Route::get('/posts', 'HomeController@posts');
+Route::group(['middleware' => ['auth']], function () {
+    Route::resource('bloodTypes', 'BloodTypeController');
+    Route::resource('postCategories', 'PostCategoryController');
+    Route::resource('roles', 'RoleController');
+    Route::resource('membershipTypes', 'MembershipTypeController');
+    //post route
+    Route::resource('posts', 'PostController')->except('show');
 
-Route::resource('/users', 'UserController');
+    //user
+    Route::resource('users', 'UserController');
 
-Route::resource('blood_types', 'BloodTypeController');
+    //donor 
+    Route::get('user', 'DonorController@user');
+    Route::get('search', [
+        'as' => 'donors.search',
+        'uses' => 'DonorController@search'
+    ]);
+    Route::get('donor', [
+        'uses' => 'DonorController@donor'
+    ]);
 
+    // send mail
+    Route::get('mail/send', 'BloodDonationInvitationController@send');
+    Route::get('mail/register', 'DonorController@mail');
+    Route::get('mail/sendAll', 'BloodDonationInvitationController@sendAll');
+    //hospital route
+    Route::resource('hospitals', 'HospitalController');
+    //branches route
+    Route::resource('branches', 'BranchController');
+});
 Auth::routes();

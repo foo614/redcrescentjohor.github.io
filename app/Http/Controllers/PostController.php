@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -13,7 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        return view('posts');
+        return view('posts.index');
     }
 
     /**
@@ -21,9 +25,22 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-       //
+    //    if($request->user()->authorizeRoles(['member']))
+    //    return view('posts.create');
+     // Logic that determines where to send the user
+        $notification = array(
+            'message' => 'Access denied',
+            'alert-type' => 'warning'
+        );
+        if($request->user()->hasRole('member')){
+            return redirect('posts/create');
+        }
+        else
+        {
+            return redirect('posts')->with($notification);
+        }
     }
 
     /**
@@ -56,7 +73,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        //
+        return view('posts.create');
     }
 
     /**

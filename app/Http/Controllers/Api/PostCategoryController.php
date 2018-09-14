@@ -16,7 +16,7 @@ class PostCategoryController extends Controller
      */
     public function index()
     {
-        $post_categories = PostCategory::all();
+        $post_categories = PostCategory::latest('created_at')->get();
         return new PostCategoryResource($post_categories);
     }
 
@@ -28,7 +28,7 @@ class PostCategoryController extends Controller
      */
     public function store(Request $request)
     {
-        $post_category = $request->isMethod('put') ? PostCategory::findOrFail($request->post_category_id) : new PostCategory;
+        $post_category = $request->isMethod('put') ? PostCategory::findOrFail($request->postCategory_id) : new PostCategory;
         $post_category->name = $request->name;
         if($post_category->save()){
             return new PostCategoryResource($post_category);

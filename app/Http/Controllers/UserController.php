@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Input;
 use App\User;
 use App\Role;
 use App\MembershipType;
@@ -10,6 +12,7 @@ use App\Branch;
 use App\BloodType;
 use App\Donor;
 use Illuminate\Support\Facades\Storage;
+
 class UserController extends Controller
 {
     public function __construct(){
@@ -28,7 +31,7 @@ class UserController extends Controller
                 $q->where('roles.id', '!=', 1);
             }
         )->get();
-        return view('user.index')->with('users', $users);
+        return view('users.index')->with('users', $users);
         // return response()->json($users);
     }
 
@@ -43,7 +46,7 @@ class UserController extends Controller
         $membership_types = MembershipType::pluck('name','id')->all();
         $branches = Branch::pluck('name', 'id')->all();
         $blood_types = BloodType::pluck('name', 'id')->all();
-        return view('user.create', ['roles'=>$roles, 'membership_types'=>$membership_types, 'branches'=>$branches, 'blood_types'=>$blood_types]);
+        return view('users.create', ['roles'=>$roles, 'membership_types'=>$membership_types, 'branches'=>$branches, 'blood_types'=>$blood_types]);
         // dd($roles);
     }
 
@@ -55,7 +58,12 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        $user = $request->isMethod('put') ? User::findOrFail($request->user_id) : new User;
+        $this->validate($request, [
+            'name'=>'required|max:120',
+            'email'=>'required|email|unique:users',
+            'password'=>'required|min:6|confirmed',
+            'avatar'=>'image|nullable|max:8000'
+        ]);
         //File Upload
         if($request->hasFile('avatar')){
             //get filename with extension
@@ -106,7 +114,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        //
+        return view('profile.index');
     }
 
     /**
@@ -123,7 +131,7 @@ class UserController extends Controller
         $branches = Branch::pluck('name', 'id')->all();
         $blood_types = BloodType::pluck('name', 'id')->all();
         // return response()->json($user);
-        return view('user.edit', compact('user', 'roles', 'membership_types', 'branches', 'blood_types'));
+        return view('users.edit', compact('user', 'roles', 'membership_types', 'branches', 'blood_types'));
     }
 
     /**
@@ -135,7 +143,48 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'name'=>'required|max:120',
+            'email'=>'required|email|unique:users,email,'.$id,
+        ]);
+
+        //File Upload
+        if($request->hasFile('avatar')){
+        //get filename with extension
+        $imgExt = $request->file('avatar')->getClientOriginalName();
+        //get filename  
+        $imgName = pathinfo($imgExt, PATHINFO_FILENAME);
+        // just get ext
+        $extension = $request->file('avatar')->getClientOriginalExtension();
+        //img to store
+        $imgToStore = $imgName.'_'.time().'.'.$extension;
+        //upload
+        $path = $request->file('avatar')->storeAs('public/img',$imgToStore);
+        }else{
+            $imgToStore='noPic.png';
+        }
+
+        // $request['password'] = bcrypt($request['password']);
+        // $input = $request->only(['name', 'email']); 
+        $user = User::find($id);
+        $user->name = $request->input('name');
+        $user->email = $request->input('email');
+        $user->contact = $request->contact;
+        $user->ic = $request->ic;
+        $user->address = $request->address;
+        $user->detachment = $request->detachment;
+        $user->membership_type_id = $request->membership_type;
+        $user->branch_id = $request->branch;
+        $user->avatar = $imgToStore;
+        $user->save();
+        $roles = $request['roles'];
+        if (isset($roles)) {        
+            $user->roles()->sync($roles);  // sync the new role
+        } else {
+            $user->roles()->detach(); // detach the role related
+        }
+
+        return redirect()->route('users.index');
     }
 
     /**

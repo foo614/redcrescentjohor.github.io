@@ -124,7 +124,7 @@
 @endif --}}
 
 @auth
-<navbar auth-name="{{ Auth::user()->name }}" auth-email="{{ Auth::user()->email }}" auth-avatar="/img/{{ Auth::user()->avatar }}"></navbar>
+<navbar auth-name="{{ Auth::user()->name }}" auth-email="{{ Auth::user()->email }}" auth-avatar="{{ Auth::user()->avatar }}" data-login-status ="{{ Auth::check() }}"></navbar>
 @endauth
 {{-- <v-toolbar
 color="transparent"

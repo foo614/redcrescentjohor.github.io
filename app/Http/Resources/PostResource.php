@@ -19,12 +19,16 @@ class PostResource extends Resource
             'name' => $this->name,
             'avatar' => $this->avatar,
             'body' => $this->body,
-            'date' => $this->created_at->diffForHumans()
+            'status' => $this->status,
+            'post_type_id' => $this->post_type_id,
+            'created_at' => $this->created_at->format('F d, Y h:ia')
         ];
     }
-    public function with($request) {
-        return [
-            'version' => '1.0.0'
-        ];
-    }
+    // public function with($request) {
+    //     return [
+    //         'links' => [
+    //             'self' => '../posts'
+    //         ]
+    //     ];
+    // }
 }

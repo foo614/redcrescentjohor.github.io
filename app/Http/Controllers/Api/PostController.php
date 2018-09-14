@@ -16,9 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest('id')
-            ->paginate(6);
-
+        $posts = Post::latest('id')->get();
         return PostResource::collection($posts);
     }
 
@@ -46,6 +44,8 @@ class PostController extends Controller
         $post = $request->isMethod('put') ? Post::findOrFail($request->post_id) : new Post;
         $post->name = $request->name;
         $post->body = $request->body;
+        $post->post_type_id = $request->post_type_id;
+        $post->status = $request->status;
 
         // $post = Post::create($post);
         if($post->save()) {
@@ -65,6 +65,6 @@ class PostController extends Controller
         $post = Post::findOrFail($id);
         if($post->delete()) {
             return new PostResource($post);
-        }    
+        }
     }
 }
