@@ -5,7 +5,7 @@
             <label class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" id="tootip-upload-image" for="file"><i class="material-icons">cloud_upload</i></label>
             <input type="file" id="file" ref="file" name="avatar" v-on:change="handleFile">
             <div style="margin-left:10px;">
-                <img :src="imgPath" class="preview" v-bind:ref="'preview'" style="width:180px; height:160px;" v-show="isInsert == true || imgPath!=''"/>
+                <img :src="imgPath" class="preview" v-bind:ref="'preview'" style="width:180px; height:160px;" v-show="isInsert == true || imgPath !== null"/>
             </div>
         </div>
     </div>

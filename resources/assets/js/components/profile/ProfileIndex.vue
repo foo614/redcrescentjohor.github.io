@@ -4,26 +4,25 @@
             <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="updateItem">
                 <v-card>
                     <div class="text-xs-center">
-                        <v-avatar size="125px" color="teal lighten-2" class="material-icons mdl-list__item-avatar elevation-7 mb-1">
+                        <v-avatar size="125px" class="material-icons mdl-list__item-avatar elevation-7 mb-1">
                             <span class="white--text headline" v-if="!show && !item.avatar">{{item.name | getFirstLetter}}</span>
                             <img
-                                v-if="imgUrl || item.avatar"
-                                class="img-circle elevation-7 mb-1"
-                                :src="imgUrl ? imgUrl : item.avatar"
-                                :alt="item.avatar"
+                                v-if="item.avatar != null"
+                                class="img-circle"
+                                :src= "!preview ? (!show ? (!item.avatar ? null : '/img/'+item.avatar ): item.avatar = null) : preview"
+                                alt="profile_image"
                             >
-                            <v-tooltip bottom v-if="show && !item.avatar">
-                            <input type="file" ref="image" v-on:change="handleFile" style="display:none" v-if="show">
-                            <v-icon
-                                dark
-                                large
-                                @click="pickFile"
-                                v-model="item.avatar"
-                                slot="activator"
-                            >
-                                image
-                            </v-icon>
-                            <span>Upload profile photo</span>
+                            <v-tooltip bottom v-if="show && !preview">
+                                <input type="file" ref="avatar" v-on:change="handleFile" style="display:none" v-if="show">
+                                <v-icon
+                                    dark
+                                    large
+                                    @click="pickFile"
+                                    slot="activator"
+                                >
+                                    image
+                                </v-icon>
+                                <span>Upload profile photo</span>
                             </v-tooltip>
                         </v-avatar>
                         <v-card-text>
@@ -49,13 +48,31 @@
                                             :rules="[v => !!v || 'Email is required']"
                                             required
                                         ></v-text-field>
+                                        <v-select
+                                            :items="branches"
+                                            v-model="item.branch"
+                                            item-text="name"
+                                            item-value="id"
+                                            menu-props="auto"
+                                            label="Select"
+                                            hide-details
+                                            prepend-icon="map"
+                                            single-line
+                                        ></v-select>
                                     </v-flex>
                                     <v-flex xs12 sm6>
                                         <v-text-field
                                             v-model="item.contact"
                                             label="Contact"
-                                            prepend-icon="phone"
+                                            prepend-icon="contact_phone"
                                             :rules="[v => !!v || 'Contact is required']"
+                                            required
+                                        ></v-text-field>
+                                        <v-text-field
+                                            v-model="item.ic"
+                                            label="IC"
+                                            prepend-icon="credit_card"
+                                            :rules="[v => !!v || 'IC is required']"
                                             required
                                         ></v-text-field>
                                     </v-flex>
@@ -113,13 +130,15 @@ export default {
                 contact:'',
                 user_id: '',
                 avatar: '',
+                branch: '',
+                ic: '',
             },
             show:false,
             valid: true,
             saveSnackbar:{},
             loading: false,
-            imgUrl: '',
-            imgFile:'',
+            preview:'',
+            branches:[]
         }
     },
     mounted() {
@@ -131,14 +150,13 @@ export default {
                 app.item.user_id = res.data.id;
             })
             .catch(function () {
-                alert("Load error")
+                alert("get user data failed")
             });
+        axios.get('/api/branches').then(function(res){app.branches = res.data;}).catch(function(){console.log('failed to get branches')})
     },
     methods:{
         cancelItem(){
             this.show = false
-            this.imgUrl = null
-            this.item.avatar = null
         },
         updateItem(){
             fetch("/api/member", {
@@ -154,26 +172,23 @@ export default {
             .catch(err => console.log(err));
         },
         pickFile(){
-            this.$refs.image.click()
+            this.$refs.avatar.click()
         },
         handleFile(e){
-            const file = e.target.files
-            if(file[0] !== undefined){
-                this.item.avatar = file[0].name
-                if(this.item.avatar.lastIndexOf('.') <= 0){
-                    return
-                }
-                const read = new FileReader()
-                read.readAsDataURL(file[0])
-                read.addEventListener('load', () => {
-                    this.imgUrl = read.result
-                    this.imgFile = file[0] //send this one
-                })
-            }else{
-                this.imgUrl = ''
-                this.imgFile = ''
-                this.item.avatar = ''
-            }
+            let files = e.target.files || e.dataTransfer.files;
+            if(!files.length)
+            return;
+            this.createImage(files[0]);
+        },
+        createImage(file){
+            let reader = new FileReader();
+            let vm = this;
+            reader.onload = e => {
+                vm.preview = e.target.result;
+                vm.item.avatar = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            console.log(file);
         }
     },
     filters: {

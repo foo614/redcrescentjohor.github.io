@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
-use I8luminate\Http\Request;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
 use App\Role;
@@ -54,24 +54,15 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        \Log::info($request->all());
         $user = $request->isMethod('put') ? User::findOrFail($request->user_id) : new User;
-        //File Upload
-        if($request->isMethod('post')){
-            if($request->hasFile('avatar')){
-                //get filename with extension
-                $imgExt = $request->file('avatar')->getClientOriginalName();
-                //get filename  
-                $imgName = pathinfo($imgExt, PATHINFO_FILENAME);
-                // just get ext
-                $extension = $request->file('avatar')->getClientOriginalExtension();
-                //img to store
-                $imgToStore = $imgName.'_'.time().'.'.$extension;
-                //upload
-                $path = $request->file('avatar')->storeAs('public/img',$imgToStore);
-            }else{
-                $imgToStore='generic.png';
-            }
+        if($request->get('avatar'))
+        {
+            $image = $request->get('avatar');
+            $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            \Image::make($request->get('avatar'))->save(public_path('img/').$name);
         }
+
         if($user){
             $user->name = $request->input('name');
             $user->email = $request->input('email');
@@ -81,7 +72,8 @@ class UserController extends Controller
             $user->ic = $request->ic;
             $user->address = $request->address;
             $user->detachment = $request->detachment;
-            $user->avatar = $imgToStore ? $imgToStore : $request->avatar;
+            if($request->get('avatar'))
+                $user->avatar = $name;
             $user->map_lat = $request->map_lat;
             $user->map_lng = $request->map_lng;
             // $user->health_issues = $request->health_issues;
@@ -98,6 +90,7 @@ class UserController extends Controller
                 }
             }
         }
+        return response()->json(['success' => 'You have successfully uploaded an image'], 200);
     }
 
     /**

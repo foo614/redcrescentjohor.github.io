@@ -6,7 +6,8 @@ use App\Post;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\PostResource;
-
+use App\Event;
+use App\PostCategory;
 class PostController extends Controller
 {
      /**
@@ -16,7 +17,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest('id')->get();
+        $posts = Post::with('postCategory','event')->latest('id')->get();
         return PostResource::collection($posts);
     }
 
@@ -29,8 +30,8 @@ class PostController extends Controller
     public function show($id)
     {
         // return new PostResource($post);
-        $post = Post::findOrFail($id);
-        return new PostResource($post);
+        return Post::findOrFail($id);
+        // return new PostResource($post);
     }
 
     /**
@@ -46,11 +47,19 @@ class PostController extends Controller
         $post->body = $request->body;
         $post->post_type_id = $request->post_type_id;
         $post->status = $request->status;
-
-        // $post = Post::create($post);
-        if($post->save()) {
-            return new PostResource($post);
+        $post->save();
+        if($post->post_type_id === 1){
+            $event = $request->post_id != null ? Event::where('post_id', $post->id)->firstOrFail() : new Event;
+            $event->address = $request->event['address'];
+            $event->map_lat = $request->event['map_lat'];
+            $event->map_lng = $request->event['map_lng'];
+            $event->start = $request->event['start'];
+            $event->end = $request->event['end'];
+            $event->post_id = $post->id;
+            $event->save();
         }
+        return new PostResource($post);
+        
     }
 
     /**

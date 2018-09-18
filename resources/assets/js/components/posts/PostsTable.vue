@@ -8,8 +8,8 @@
           inset
           vertical
         ></v-divider>
-        <!-- <router-link :to="{name: 'createPost'}"><v-btn small color="indigo" dark class="mb-2">New Posts</v-btn></router-link> -->
-        <v-btn small color="indigo" dark class="mb-2" href="/posts/create">New Post</v-btn>
+        <router-link :to="{name: 'createPost'}"><v-btn small color="indigo" dark class="mb-2">New Posts</v-btn></router-link>
+        <!-- <v-btn small color="indigo" dark class="mb-2" href="/posts/create">New Post</v-btn> -->
         <v-btn small color="red" v-show="selected.length > 0"  @click="deleteItem(selected)" dark class="mb-2">Delete</v-btn>
         <v-spacer></v-spacer>
         <v-text-field
@@ -39,6 +39,7 @@
           ></v-checkbox>
         </td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.name }}</td>
+        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.post_category.name }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.created_at }}</td>
         <td>
           <router-link :to="{name:'editPost', params:{id: props.item.id}}">
@@ -108,6 +109,7 @@ export default {
         sortable: false,
         value: "name"
       },
+      { text: "Post Type", value: "type", sortable: true },
       { text: "Created at", value: "created_at", sortable: true },
       { text: "Actions", value: "name", sortable: false }
     ]

@@ -11,12 +11,14 @@ import Vue from 'vue'
 import VueContentPlaceholders from 'vue-content-placeholders'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router';
- 
+import DaySpanVuetify from 'dayspan-vuetify'
+import 'dayspan-vuetify/dist/lib/dayspan-vuetify.min.css'
 window.Vue.use(VueRouter);
 
 import PostsIndex from './components/posts/PostsTable.vue';
 import PostCreate from './components/posts/PostCreate.vue';
 import PostEdit from './components/posts/PostEdit.vue';
+import PostCalendar from './components/posts/PostCalendar.vue';
 
 import ProfileIndex from './components/profile/ProfileIndex.vue';
 
@@ -26,9 +28,11 @@ const routes = [
         components: {
             postsIndex: PostsIndex
         }
-    },
-    {path: '/posts/create', components: {createPost: PostCreate}, name: 'createPost'},
+    }
+    ,
+    {path: '/posts/create', component: PostCreate, name: 'createPost'},
     {path: '/posts/:id/edit', component: PostEdit, name: 'editPost'},
+    {path: '/posts/calendar', component: PostCalendar, name: 'viewPost'},
     {
         path:'/users/:id', 
         component: ProfileIndex,
@@ -47,6 +51,11 @@ Vue.use(Vuetify,{
         warning: '#FFC107'
       }
 })
+Vue.use(DaySpanVuetify, {
+    methods: {
+        getDefaultEventColor: () => '#1976d2'
+    }
+});
 Vue.use(VueContentPlaceholders)
  
 /**

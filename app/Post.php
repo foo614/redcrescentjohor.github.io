@@ -17,4 +17,12 @@ class Post extends Model
     {
         return sprintf('https://picsum.photos/320/180/?random');
     }
+    public function postCategory()
+    {
+        return $this->belongsTo('App\PostCategory', 'post_type_id');
+    }
+    public function event()
+    {
+        return $this->hasOne('App\Event');
+    }
 }

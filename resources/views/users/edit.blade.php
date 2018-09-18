@@ -6,7 +6,7 @@
             <h3 class="mdl-card__title-text">Edit Member</h3>
         </div>
         {{ Form::model($user, array('route' => array('users.update', $user->id), 'method' => 'PUT', 'enctype'=>'multipart/form-data')) }}
-            @include('users.form',['submitText' => 'Edit Member'])
+             @include('users.form',['submitText' => 'Edit Member'])
         {{ Form::close() }}
     </div>
 </div>

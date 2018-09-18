@@ -1,5 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    {{-- <router-view name="profile"></router-view> --}}
+    <router-view name="editPost"></router-view>
     <router-view></router-view>
 @endsection

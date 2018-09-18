@@ -17,7 +17,8 @@ class PostCategoryController extends Controller
     public function index()
     {
         $post_categories = PostCategory::latest('created_at')->get();
-        return new PostCategoryResource($post_categories);
+        // return new PostCategoryResource($post_categories);
+        return PostCategoryResource::collection($post_categories);
     }
 
     /**

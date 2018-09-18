@@ -122,7 +122,7 @@ function tryGeoLocation () {
     },
     function(error){
         if(error.code == error.PERMISSION_DENIED)
-        console.warn('get denied!')
+        console.warn('permission denied!')
     });
 }
 
@@ -142,7 +142,7 @@ function changeAddress (location, formattedAddress) {
         draggable: true
     });
     map.setCenter(location);
-    map.setZoom(14);
+    map.setZoom(17);
 
     let addressInput = document.getElementById('address');
 

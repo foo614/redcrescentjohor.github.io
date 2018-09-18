@@ -52,7 +52,7 @@
                 </div>
             </div>
             @endif
-            <v-text-field prepend-icon="lock" :type="show1 ? 'text' : 'password'" @click:append="show1 = !show1" :append-icon="show1 ? 'visibility_off' : 'visibility'" name="password" label="Password" id="password" type="password"></v-text-field>
+            <v-text-field prepend-icon="lock" name="password" label="Password" id="password" type="password"></v-text-field>
             @if ($errors->has('password'))
             <div class="v-text-field__details">
                 <div class="v-messages theme--light error--text">
@@ -62,18 +62,6 @@
                 </div>
             </div>
             @endif
-            {{-- <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect" for="remember">
-                {!! Form::checkbox('remember', 'remember', null, ['id' => 'remember', 'class' => 'mdl-checkbox__input', old('remember') ?
-                'checked' : '']); !!}
-                <span class="mdl-checkbox__label">{{ trans('auth.rememberMe') }}</span>
-            </label> --}}
-            <v-checkbox
-              label= {{trans('auth.rememberMe')}}
-              color="red"
-            >
-            {!! Form::checkbox('remember', 'remember', null, ['id' => 'remember', 'class' => 'mdl-checkbox__input', old('remember') ?
-                'checked' : '']); !!}
-            </v-checkbox>
         </v-card-text>
         <v-card-actions>
           <v-spacer></v-spacer>

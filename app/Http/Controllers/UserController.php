@@ -61,6 +61,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name'=>'required|max:120',
             'email'=>'required|email|unique:users',
+            'ic' => 'required',
             'password'=>'required|min:6|confirmed',
             'avatar'=>'image|nullable|max:8000'
         ]);
@@ -77,7 +78,7 @@ class UserController extends Controller
             //upload
             $path = $request->file('avatar')->storeAs('public/img',$imgToStore);
         }else{
-            $imgToStore='generic.png';
+            $imgToStore=null;
         }
         if($user){
             $user->name = $request->input('name');
@@ -146,6 +147,7 @@ class UserController extends Controller
         $this->validate($request, [
             'name'=>'required|max:120',
             'email'=>'required|email|unique:users,email,'.$id,
+            'ic' => 'required',
         ]);
 
         //File Upload
@@ -161,7 +163,7 @@ class UserController extends Controller
         //upload
         $path = $request->file('avatar')->storeAs('public/img',$imgToStore);
         }else{
-            $imgToStore='noPic.png';
+            $imgToStore=null;
         }
 
         // $request['password'] = bcrypt($request['password']);

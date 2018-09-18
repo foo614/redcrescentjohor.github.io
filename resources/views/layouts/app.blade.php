@@ -32,7 +32,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="{{ asset('css/toastr.min.css') }}">
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
     <link rel="stylesheet" href="{{asset('css/material.red-blue.min.css')}}">
     <link rel="stylesheet" href="{{ asset('css/getmdl-select.min.css') }}">
@@ -42,10 +41,14 @@
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
-    <script src="{{asset('js/toastr.min.js')}}"></script>
     <script src="{{asset('js/material.min.js')}}"></script>
     <script src="{{asset('js/getmdl-select.min.js')}}"></script>
-    <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
+    @if (Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit')
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
+    @else
+        <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
+    @endif
+    
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}"
     </script>
@@ -59,13 +62,13 @@
             </navbar>
             <v-content>
                 <v-container>
+                        {{ Route::currentRouteName() }}
                     @yield('content')
-                    <router-view></router-view>
                 </v-container>
             </v-content>
         </v-app>
     </div>
-    @include('scripts.toastr')
+    {{-- @include('scripts.toastr') --}}
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{asset('js/google-map.js') }}"></script>
     @yield('footer-scripts')

@@ -66,29 +66,27 @@
         <v-avatar size="36" v-if="mutableAuth.avatar">
           <img :src="'/img/'+mutableAuth.avatar" alt="mutableAuth.avatar">
         </v-avatar>
-        <v-avatar color="teal lighten-2" v-else>
+        <v-avatar class="mdl-list__item-avatar" v-else>
           <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>              
         </v-avatar>
       </button>
     <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right demo-list-icon mdl-list" style="padding-top:0;" for="drop-item" v-if="authCheck==1">
-      <router-link class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;" 
-      :to="{ name: 'profile', params: { id: mutableAuth.id}}">
-            <span class="mdl-list__item-primary-content">
-              <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar" v-if="mutableAuth.avatar">
-                <img :src="/img/+mutableAuth.avatar" :alt="mutableAuth.avatar">
-              </v-avatar>
-              <v-avatar style="margin-right: 16px;" color="teal lighten-2" class="material-icons mdl-list__item-avatar" v-else>
-                <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>
-              </v-avatar>
-              <span>{{mutableAuth.name}} {{mutableAuth.avatar}}</span>
-              <span class="mdl-list__item-sub-title">{{mutableAuth.email}}</span>
-            </span>
-      </router-link>
-        <li class="mdl-menu__item mdl-list__item">
-            <span class="mdl-list__item-primary-content">
-                <i class="material-icons mdl-list__item-icon">account_box</i>Profile
-            </span>
-        </li>
+      <!-- <router-link class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;" 
+      :to="{ name: 'profile', params: { id: mutableAuth.id}}"> -->
+      <li class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;" >
+        <a :href="'/users/'+mutableAuth.id" style="text-decoration:none !important; color: inherit;">
+          <span class="mdl-list__item-primary-content">
+            <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar" v-if="mutableAuth.avatar">
+              <img :src="/img/+mutableAuth.avatar" :alt="mutableAuth.avatar">
+            </v-avatar>
+            <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar" v-else>
+              <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>
+            </v-avatar>
+            <span>{{mutableAuth.name}}</span>
+            <span class="mdl-list__item-sub-title">{{mutableAuth.email}}</span>
+          </span>
+        </a>
+      </li>
         <li class="mdl-menu__item mdl-list__item" @click="logout">
             <a title="logout" style="text-decoration: none; color: rgba(0,0,0,.87);">
                 <span class="mdl-list__item-primary-content">
