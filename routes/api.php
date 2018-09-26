@@ -27,6 +27,8 @@ Route::delete('bloodType/{id}', 'Api\BloodTypeController@destroy');
 
 // posts api route
 Route::get('posts', 'Api\PostController@index');
+Route::get('posts/showEvent', 'Api\PostController@showEvent');
+Route::get('posts/showUpcomingEvent', 'Api\PostController@showUpcomingEvent');
 Route::get('post/{id}', 'Api\PostController@show');
 Route::post('post', 'Api\PostController@store');
 Route::put('post', 'Api\PostController@store');
@@ -72,3 +74,8 @@ Route::get('member/{id}', 'Api\UserController@show');
 Route::post('member', 'Api\UserController@store');
 Route::put('member', 'Api\UserController@store');
 // Route::delete('member/{id}', 'Api\UserController@destroy');
+
+Route::get('donors', 'Api\DonorController@index');
+Route::get('donor/{id}', 'Api\DonorController@show');
+Route::post('donor', 'Api\DonorController@store');
+Route::put('donor', 'Api\DonorController@store');

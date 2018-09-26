@@ -21,7 +21,8 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('roles', 'RoleController');
     Route::resource('membershipTypes', 'MembershipTypeController');
     //post route
-    Route::resource('posts', 'PostController')->except('show');
+    Route::get('posts/calendar', 'PostController@viewCalendar')->name('posts.calendar');
+    Route::resource('posts', 'PostController');
 
     //user
     Route::resource('users', 'UserController');

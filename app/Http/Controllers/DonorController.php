@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Mail\DonatorRegisteredMail;
 use Illuminate\Support\Facades\Mail;
-use App\Donor;
 use App\User;
 use App\BloodType;
 use App\Hospital;
@@ -42,16 +41,15 @@ class DonorController extends Controller
      */
     public function index()
     {
-        $donors = Donor::with('user')->with('bloodType')->get();
+        $donors = User::with('blood_type')->get();
         // $donors = $get_donors->map(function($donor){
         //     return collect($donor->toArray())
         //     ->only(['dob','blood_type_id', 'user'])
         //     ->all();
         // });
-        $totalUsers = count($donors);
         // dd($donors);
         //return response()->json($donors);
-        return view('donors.index', compact(['donors','totalUsers']));
+        return view('donors.index', compact(['donors']));
     }
 
     /**
@@ -75,27 +73,20 @@ class DonorController extends Controller
     {
         $this->validate($request, $this->rules);
 
-        if(!Auth::check()){
-            $user = new User;
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = '';
-            $user->ic = $request->ic;        
-            $user->contact = $request->contact;        
-            $user->address = $request->address;
-            $user->membership_type_id = 4;
-            $user->save();
-        }
-        if($user){
-            $donor = new Donor;
-            $donor->map_lat = $request->map_lat;
-            $donor->map_lng = $request->map_lng;
-            $donor->blood_type_id = $request->blood_type;
-            $donor->health_issues = $request->health_issues;
-            $donor->user_id = $user->id;
-            // $donor->user_id = Auth::check() ? Auth::user()->id : $user->id;
-            $donor->save();
-        }
+        $user = new User;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request['password']);;
+        $user->ic = $request->ic;        
+        $user->contact = $request->contact;        
+        $user->address = $request->address;
+        $user->membership_type_id = 4;
+        $user->blood_type_id = $request->blood_type;
+        $user->map_lat = $request->map_lat;
+        $user->map_lng = $request->map_lng;
+        $user->health_issues = $request->health_issues ? $request->health_issues : '-';
+        $user->save();
+        
         if($user->membership_type_id == 4){
             return $this->mail($user->name, $user->email);
         }
@@ -125,18 +116,8 @@ class DonorController extends Controller
      */
     public function edit($id)
     {
-        $donor = Donor::with('user')->with('bloodType')->find($id);
+        $donor = User::with('blood_type')->find($id);
         $blood_types = BloodType::all();
-        // dd(Auth::user());
-        if (Auth::user()->isAdmin){
-            // abort(403);
-            $notification = array(
-                'message' => 'Access denied',
-                'alert-type' => 'warning'
-            );
-            return redirect('/donors')->with($notification);
-        }
-            
 
         return view('donors.edit', [
             'donor' => $donor,

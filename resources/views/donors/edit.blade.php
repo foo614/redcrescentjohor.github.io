@@ -1,20 +1,6 @@
-@extends('layouts.dashboard') @section('title', 'Donor') @section('breadcrumbs')
-<li>
-    <a href="{{url('/dashboard')}}">
-        <span>
-            Home
-        </span>
-    </a>
-    <i class="material-icons">chevron_right</i>
-</li>
-<li>
-    <a href="/donators/{{$donor->id}}/edit">
-        <span>
-            Edit Donor
-        </span>
-    </a>
-</li>
-@endsection @section('content')
+@extends('layouts.app')
+
+@section('content')
 <div class="mdl-grid mt-0 pt-0">
     <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
         <div class="mdl-card__title">
@@ -34,7 +20,7 @@
                     <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {{ $errors->has('name') ? 'is-invalid' :'' }}">
                             <i class="mdl-textfield__icon material-icons">person</i>
-                            {{ Form::text('name', $donor->user->name, array('id' => 'name', 'class' => 'mdl-textfield__input')) }} {{ Form::label('name',
+                            {{ Form::text('name', $donor->name, array('id' => 'name', 'class' => 'mdl-textfield__input')) }} {{ Form::label('name',
                             'Name', array('class' => 'mdl-textfield__label')) }} @if ($errors->has('name'))
                             <span class="mdl-textfield__error">{{ $errors->first('name') }}</span>
                             @endif
@@ -43,7 +29,7 @@
                     <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {{ $errors->has('email') ? 'is-invalid' :'' }}">
                             <i class="mdl-textfield__icon material-icons">contact_mail</i>
-                            {{ Form::email('email', $donor->user->email, array('id' => 'email', 'class' => 'mdl-textfield__input')) }} {{ Form::label('email',
+                            {{ Form::email('email', $donor->email, array('id' => 'email', 'class' => 'mdl-textfield__input')) }} {{ Form::label('email',
                             trans('auth.email'), array('class' => 'mdl-textfield__label')) }} @if ($errors->has('email'))
                             <span class="mdl-textfield__error">{{ $errors->first('email') }}</span>
                             @endif
@@ -54,7 +40,7 @@
                     <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
                         <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {{ $errors->has('contact') ? 'is-invalid' :'' }}">
                             <i class="mdl-textfield__icon material-icons">contact_phone</i>
-                            {{ Form::text('contact', $donor->user->contact, array('id' => 'contact', 'class' => 'mdl-textfield__input')) }} {{ Form::label('contact',
+                            {{ Form::text('contact', $donor->contact, array('id' => 'contact', 'class' => 'mdl-textfield__input')) }} {{ Form::label('contact',
                             'Contact', array('class' => 'mdl-textfield__label')) }} @if ($errors->has('contact'))
                             <span class="mdl-textfield__error">{{ $errors->first('contact') }}</span>
                             @endif
@@ -92,7 +78,7 @@
                     <div class="mdl-cell mdl-cell--12-col-tablet mdl-cell--6-col-desktop">
                         <div id="address-is-found" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label {{ $errors->has('address') ? 'is-invalid' : '' }}">
                             <i class="mdl-textfield__icon material-icons">map</i>
-                            {{ Form::textarea('address', $donor->user->address, array('id' => 'address', 'rows'=>3, 'class' => 'mdl-textfield__input'))
+                            {{ Form::textarea('address', $donor->address, array('id' => 'address', 'rows'=>3, 'class' => 'mdl-textfield__input'))
                             }} {{ Form::label('address', 'Address', array('class' => 'mdl-textfield__label')) }} @if ($errors->has('address'))
                             <span class="mdl-textfield__error">{{ $errors->first('address') }}</span>
                             @endif

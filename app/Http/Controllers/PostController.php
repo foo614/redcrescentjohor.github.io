@@ -25,10 +25,10 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    // public function create(Request $request)
-    // {
-    //     return view('posts.create');
-    // }
+    public function create(Request $request)
+    {
+        return view('posts.create');
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -39,5 +39,13 @@ class PostController extends Controller
     public function edit($id)
     {
         return view('posts.edit');
+    }
+
+    /**
+     * Show calendar
+     */
+    public function viewCalendar()
+    {
+        return view('posts.index');
     }
 }

@@ -17,6 +17,7 @@ class CreatePostsTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->text('body');
+            $table->text('cover_img')->nullable();
             $table->boolean('status')->default(true);
             $table->integer('post_type_id')->nullable()->unsigned();
             $table->foreign('post_type_id')->references('id')->on('post_categories')->onDelete('cascade');

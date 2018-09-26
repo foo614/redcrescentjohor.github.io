@@ -8,11 +8,12 @@
 require('./bootstrap');
 window.Vue = require('vue');
 import Vue from 'vue'
+// inifinity load
 import VueContentPlaceholders from 'vue-content-placeholders'
+
 import Vuetify from 'vuetify'
+
 import VueRouter from 'vue-router';
-import DaySpanVuetify from 'dayspan-vuetify'
-import 'dayspan-vuetify/dist/lib/dayspan-vuetify.min.css'
 window.Vue.use(VueRouter);
 
 import PostsIndex from './components/posts/PostsTable.vue';
@@ -21,7 +22,6 @@ import PostEdit from './components/posts/PostEdit.vue';
 import PostCalendar from './components/posts/PostCalendar.vue';
 
 import ProfileIndex from './components/profile/ProfileIndex.vue';
-
 const routes = [
     {
         path: '/posts',
@@ -51,13 +51,8 @@ Vue.use(Vuetify,{
         warning: '#FFC107'
       }
 })
-Vue.use(DaySpanVuetify, {
-    methods: {
-        getDefaultEventColor: () => '#1976d2'
-    }
-});
 Vue.use(VueContentPlaceholders)
- 
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -74,6 +69,7 @@ Vue.component('post-list', require('./components/PostList.vue'));
 Vue.component('users-table', require('./components/UsersTable.vue'));
 Vue.component('hospital-table', require('./components/HospitalsTable.vue'));
 Vue.component('branch-table', require('./components/BranchesTable.vue'));
+Vue.component('donors-table', require('./components/DonorsTable.vue'));
 
 //upload components
 Vue.component('upload-files', require('./components/imageUploads/UploadFiles.vue'));

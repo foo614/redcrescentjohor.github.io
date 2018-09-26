@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Post extends Model
 {
+    protected $fillable = ['name', 'body', 'status', 'post_type_id'];
     use SoftDeletes;
     protected $dates = ['deleted_at'];
     /**
@@ -13,10 +14,10 @@ class Post extends Model
      *
      * @return string   
      */
-    public function getAvatarAttribute()
-    {
-        return sprintf('https://picsum.photos/320/180/?random');
-    }
+    // public function getAvatarAttribute()
+    // {
+    //     return sprintf('https://picsum.photos/320/180/?random');
+    // }
     public function postCategory()
     {
         return $this->belongsTo('App\PostCategory', 'post_type_id');

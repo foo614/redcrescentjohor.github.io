@@ -30,7 +30,7 @@
     <link rel="apple-touch-icon" sizes="167x167" href="/icons/apple-167.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-180.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
-
+    <style> [v-cloak] { display: none; } </style>
     <!-- Styles -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
     <link rel="stylesheet" href="{{asset('css/material.red-blue.min.css')}}">
@@ -43,7 +43,7 @@
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('js/material.min.js')}}"></script>
     <script src="{{asset('js/getmdl-select.min.js')}}"></script>
-    @if (Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit')
+    @if (Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar')
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
     @else
         <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
@@ -62,7 +62,6 @@
             </navbar>
             <v-content>
                 <v-container>
-                        {{ Route::currentRouteName() }}
                     @yield('content')
                 </v-container>
             </v-content>

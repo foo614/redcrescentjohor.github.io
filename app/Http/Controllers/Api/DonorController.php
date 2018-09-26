@@ -4,56 +4,50 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Auth;
+use App\Mail\DonatorRegisteredMail;
+use Illuminate\Support\Facades\Mail;
 use App\User;
-use App\Role;
-use App\MembershipType;
-use App\Branch;
 use App\BloodType;
-use App\Donor;
-use Illuminate\Support\Facades\Storage;
-use App\Http\Resources\UserResource;
+use App\Hospital;
+use App\Http\Resources\DonorResource;
 
-class UserController extends Controller
+class DonorController extends Controller
 {
     /**
      * Return a paginated list of posts.
      *
-     * @return UserResource
+     * @return DonorResource
      */
     public function index()
     {
-        // get all users
-        $users = User::with('roles')->whereHas(
-            'roles', function($q){
-                $q->where('roles.id', '!=', 1);
-            }
-        )->get();
-        return UserResource::collection($users);
-        // return view('user.index')->with('users', $users);
-        // return response()->json($users);
+        // get all donors
+        $donors = User::with('blood_type')->where("membership_type_id",4)->get();
+        return DonorResource::collection($donors);
     }
 
     /**
      * Fetch and return the User.
      *
      * @param User $User
-     * @return UserResource
+     * @return DonorResource
      */
     public function show($id)
     {
         // return new PostResource($post);
         $user = User::findOrFail($id);
-        return new UserResource($user);
+        return new DonorResource($user);
     }
 
     /**
      * Validate and save a new signature to the database.
      *
      * @param Request $request
-     * @return UserResource
+     * @return DonorResource
      */
     public function store(Request $request)
     {
+        \Log::info($request->all());
         $user = $request->isMethod('put') ? User::findOrFail($request->user_id) : new User;
         if($request->get('avatar'))
         {
@@ -103,7 +97,7 @@ class UserController extends Controller
         // Get article
         $user = User::findOrFail($id);
         if($user->delete()) {
-            return new UserResource($user);
+            return new DonorResource($user);
         }    
     }
 }

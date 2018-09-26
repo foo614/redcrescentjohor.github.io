@@ -1,11 +1,12 @@
 <template>
     <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="addItem">
-        <v-card>
+                {{item}}
+            <v-card>
             <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
             <v-card-title primary-title>
                 <div class="headline">Add Post</div>
             </v-card-title>
-            <v-container fluid grid-list-lg>
+                <v-container fluid grid-list-lg>
                 <v-layout row wrap>
                     <v-flex xs12 sm6>
                         <v-text-field
@@ -33,7 +34,7 @@
                             v-model="item.status"
                         ></v-switch>
                     </v-flex>
-                    <v-layout row wrap v-if="item.post_type_id === 1">
+                    <v-layout row wrap v-show="item.post_type_id === 1">
                         <v-flex xs12 sm12>
                             <div class="v-input v-text-field theme--light">
                                 <div class="v-input__prepend-outer">
@@ -48,21 +49,20 @@
                                             <input ref="autocomplete" 
                                             placeholder="Search" 
                                             class="search-location"
-                                            onfocus="value = ''" 
-                                            type="text" v-model="item.event.address" />
+                                            v-model="item.address"/>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </v-flex>
-                        <!-- start date pciker -->
+                        <!-- start date picker -->
                         <v-flex xs12 sm3>
                             <v-menu
                                 ref="date_menu1"
                                 :close-on-content-click="false"
                                 v-model="date_menu1"
                                 :nudge-right="40"
-                                :return-value.sync="item.event.start_date"
+                                :return-value.sync="item.start_date"
                                 lazy
                                 transition="scale-transition"
                                 offset-y
@@ -71,16 +71,16 @@
                             >
                                 <v-text-field
                                 slot="activator"
-                                v-model="item.event.start_date"
+                                v-model="item.start_date"
                                 label="Start Date"
                                 prepend-icon="event"
                                 readonly
                                 ></v-text-field>
                                 <v-date-picker 
-                                    v-model="item.event.start_date" 
+                                    v-model="item.start_date" 
                                     no-title 
                                     scrollable 
-                                    @input="$refs.date_menu1.save(item.event.start_date)"
+                                    @input="$refs.date_menu1.save(item.start_date)"
                                     :min= currentDate>
                                 <v-spacer></v-spacer>
                                 </v-date-picker>
@@ -93,7 +93,7 @@
                                 :close-on-content-click="false"
                                 v-model="time_menu1"
                                 :nudge-right="40"
-                                :return-value.sync="item.event.start_time"
+                                :return-value.sync="item.start_time"
                                 lazy
                                 transition="scale-transition"
                                 offset-y
@@ -103,27 +103,27 @@
                             >
                                 <v-text-field
                                 slot="activator"
-                                v-model="item.event.start_time"
+                                v-model="item.start_time"
                                 label="Start time"
                                 prepend-icon="access_time"
                                 readonly
                                 ></v-text-field>
                                 <v-time-picker
                                 v-if="time_menu1"
-                                v-model="item.event.start_time"
-                                @change="$refs.menu1.save(item.event.start_time)"
+                                v-model="item.start_time"
+                                @change="$refs.menu1.save(item.start_time)"
                                 ></v-time-picker>
                             </v-menu>
                         </v-flex>
-                        <v-flex xs12 sm6><v-btn @click="optionalEnd = !optionalEnd">{{optionalEnd ? 'REMOVE ' : 'ADD ' }}End DateTime</v-btn></v-flex>
+                        <v-flex xs12 sm6><v-btn @click="optionalEnd = !optionalEnd" v-show="!item.end_date || !item.end_time">{{ optionalEnd ? 'REMOVE ' : 'ADD ' }}End DateTime</v-btn></v-flex>
                         <!-- end date picker -->
-                        <v-flex xs12 sm3 v-show="optionalEnd">
+                        <v-flex xs12 sm3 v-show="optionalEnd || item.end_date">
                             <v-menu
                                 ref="date_menu2"
                                 :close-on-content-click="false"
                                 v-model="date_menu2"
                                 :nudge-right="40"
-                                :return-value.sync="item.event.end_date"
+                                :return-value.sync="item.end_date"
                                 lazy
                                 transition="scale-transition"
                                 offset-y
@@ -132,29 +132,29 @@
                             >
                                 <v-text-field
                                 slot="activator"
-                                v-model="item.event.end_date"
+                                v-model="item.end_date"
                                 label="End Date"
                                 prepend-icon="event"
                                 readonly
                                 ></v-text-field>
                                 <v-date-picker 
-                                    v-model="item.event.end_date" 
+                                    v-model="item.end_date" 
                                     no-title 
                                     scrollable 
-                                    @input="$refs.date_menu2.save(item.event.end_date)"
-                                    :min= item.event.start_date>
+                                    @input="$refs.date_menu2.save(item.end_date)"
+                                    :min= item.start_date>
                                 <v-spacer></v-spacer>
                                 </v-date-picker>
                             </v-menu>
                         </v-flex>
                         <!-- end time picker -->
-                        <v-flex xs12 sm3 v-show="optionalEnd">
+                        <v-flex xs12 sm3 v-show="optionalEnd || item.end_time">
                             <v-menu
                                 ref="menu"
                                 :close-on-content-click="false"
                                 v-model="time_menu2"
                                 :nudge-right="40"
-                                :return-value.sync="item.event.end_time"
+                                :return-value.sync="item.end_time"
                                 lazy
                                 transition="scale-transition"
                                 offset-y
@@ -164,24 +164,23 @@
                             >
                                 <v-text-field
                                 slot="activator"
-                                v-model="item.event.end_time"
+                                v-model="item.end_time"
                                 label="End time"
                                 prepend-icon="access_time"
                                 readonly
                                 ></v-text-field>
                                 <v-time-picker
                                 v-if="time_menu2"
-                                v-model="item.event.end_time"
-                                @change="$refs.menu.save(item.event.end_time)"
+                                v-model="item.end_time"
+                                @change="$refs.menu.save(item.end_time)"
                                 ></v-time-picker>
                             </v-menu>
                         </v-flex>
                     </v-layout>
-                    <!-- hidden value start and end time -->
-                    <v-text-field v-model="item.event.start">{{start}}</v-text-field>
-                    <v-text-field v-model="item.event.end">{{end}}</v-text-field>
+                    <v-text-field v-model="item.start" style="display:none">{{start}}</v-text-field>
+                    <v-text-field v-model="item.end" style="display:none">{{end}}</v-text-field>
                     <v-flex xs12 sm12>
-                        <vue-ckeditor v-model="item.body" :config="config"/>
+                        <vue-ckeditor v-model="item.body"/>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -201,7 +200,6 @@
             <v-icon>close</v-icon>
             </v-btn>
         </v-snackbar>
-        {{item}}
     </v-form>
 </template>
 
@@ -220,48 +218,36 @@ export default {
             {'country': ['my', 'sg']});
         this.autocomplete.addListener('place_changed', () => {
             let place = this.autocomplete.getPlace();
-            let ac = place.address_components;
             let lat = place.geometry.location.lat();
             let lng = place.geometry.location.lng();
-            let city = ac[0]["short_name"];
 
-            this.item.event.address = place.name;
-            this.item.event.map_lat = lat;
-            this.item.event.map_lng = lng;
-
-            console.log(`The user picked ${city} with the coordinates ${lat}, ${lng} AND ${ac}`) ;
+            this.item.address = place.name;
+            this.item.map_lat = lat;
+            this.item.map_lng = lng;
         });
     },
     data () {
     return {
-        config: {
-            toolbar: [
-                ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript']
-            ],
-            height: 300
-        },
         items:[],
         sending: false,
         edit: false,
         valid: true,
         item: {
-          post_id:'',
-          id: "",
-          name: "",
-          post_type_id: "",
-          status: true,
-          body: "",
-          event:{
+            post_id:'',
+            id: "",
+            name: "",
+            post_type_id: "",
+            status: true,
+            body: "",
             address: "",
             map_lng:"",
             map_lat:"",
-            start:"",
-            end:"",
+            start:null,
+            end:null,
             start_date:null,
             end_date:null,
             start_time:null,
             end_time:null,
-          },
         },
         saveSnackbar:{},
         currentDate:"",
@@ -273,11 +259,21 @@ export default {
     };
     },
     computed: {
-        start: function () {
-            return this.item.event.start = moment.utc((this.item.event.start_date + " " + this.item.event.start_time)).format("YYYY-MM-DD HH:mm:ss");
+        // start: function () {
+        //     return this.item.start = moment.utc((this.item.start_date + " " + this.item.start_time)).format("YYYY-MM-DD HH:mm:ss");
+        // },
+        // end: function(){
+        //     return this.item.end = moment.utc((this.item.end_date + " " + this.item.end_time)).format("YYYY-MM-DD HH:mm:ss");
+        // }
+        start:{
+            get: function(){
+                return this.item.start = moment.utc((this.item.start_date + " " + this.item.start_time)).format("YYYY-MM-DD HH:mm:ss");
+            }
         },
-        end: function(){
-            return this.item.event.end = moment.utc((this.item.event.end_date + " " + this.item.event.end_time)).format("YYYY-MM-DD HH:mm:ss");
+        end:{
+            get: function(){
+                return this.item.end = moment.utc((this.item.end_date + " " + this.item.end_time)).format("YYYY-MM-DD HH:mm:ss");
+            }
         }
     },
     created(){
@@ -299,7 +295,9 @@ export default {
                         body: JSON.stringify(this.item),
                         headers:{"content-type": "application/json"}
                         })
-                        .then(res => {})
+                        .then(res => {
+                            this.$router.push('/posts')
+                        })
                         .then(data => {
                             this.sending = false;
                             this.$refs.form.reset();

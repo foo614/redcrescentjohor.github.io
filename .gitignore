@@ -2,10 +2,13 @@
 /public/hot
 /public/storage
 /public/ckeditor
+/public/fonts
+/public/img
 /storage/*.key
 /vendor
 /.idea
 /.vagrant
+/app/google-calendar
 Homestead.json
 Homestead.yaml
 npm-debug.log
