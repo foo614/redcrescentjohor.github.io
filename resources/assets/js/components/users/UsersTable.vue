@@ -42,16 +42,17 @@
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.contact }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">
           <span v-for="role in props.item.roles" :key="role.id">
-            <v-chip :color="role.name === 'member' ? 'orange' : 'red'" text-color="white">
+            <v-chip :color="role === 2 ? 'green' : (role === 1 ? 'red' : 'amber')" text-color="white">
               <v-avatar>
                 <v-icon>account_circle</v-icon>
               </v-avatar>
-              {{role.name}}
+              {{role === 1 ? "admin" : (role === 2 ? "member" : "coach") }}
             </v-chip>
           </span>
         </td>
         <td>
-          <a :href="'/users/'+props.item.id+'/edit'" style="display: inline-flex;"> 
+          <!-- <a :href="'/users/'+props.item.id+'/edit'" style="display: inline-flex;">  -->
+          <router-link :to="{name:'editUser', params:{id: props.item.id}}">
             <v-tooltip bottom>
               <v-icon
                 slot="activator"
@@ -64,7 +65,8 @@
                 edit
               </span>
             </v-tooltip>
-          </a>
+          </router-link>
+          <!-- </a> -->
           <v-tooltip bottom>
             <v-icon
               slot="activator"

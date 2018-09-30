@@ -33,6 +33,7 @@
     "vue-infinite-loading": "^2.3.2",
     "vue-router": "^3.0.1",
     "vue-simple-calendar": "^4.0.2",
+    "vue-toasted": "^1.1.24",
     "vuetify": "^1.2.2"
   },
   "repository": {

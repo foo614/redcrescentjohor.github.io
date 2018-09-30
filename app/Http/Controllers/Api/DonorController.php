@@ -47,7 +47,6 @@ class DonorController extends Controller
      */
     public function store(Request $request)
     {
-        \Log::info($request->all());
         $user = $request->isMethod('put') ? User::findOrFail($request->user_id) : new User;
         if($request->get('avatar'))
         {
@@ -69,21 +68,17 @@ class DonorController extends Controller
                 $user->avatar = $name;
             $user->map_lat = $request->map_lat;
             $user->map_lng = $request->map_lng;
-            // $user->health_issues = $request->health_issues;
-
-            $user->membership_type_id = $request->membership_type;
-            $user->branch_id = $request->branch;
-            $user->blood_type_id = $request->blood_type;
+            $user->membership_type_id = $request->membership_type_id;
+            $user->branch_id = $request->branch_id;
+            $user->blood_type_id = $request->blood_type_id;
             $user->save();
             $roles = $request['roles'];
-            if(isset($roles)){
-                foreach($roles as $role){
-                    if($user->roles()->syncWithoutDetaching([$role.id]))
-                    $user->roles()->attach(Role::where('id', $role)->firstOrFail());
-                }
+            if (isset($roles)) {        
+                $user->roles()->sync($roles);  // sync the new role
+            }else{
+                $user->roles()->detach(); // detach the role related
             }
         }
-        return response()->json(['success' => 'You have successfully uploaded an image'], 200);
     }
 
     /**
@@ -99,5 +94,22 @@ class DonorController extends Controller
         if($user->delete()) {
             return new DonorResource($user);
         }    
+    }
+
+    /**
+     * send mail to registered donator
+     */
+    public function mail($name, $email){
+        $content = new \stdClass();
+        $content->name = $name;
+
+        Mail::to($email)->send(new DonatorRegisteredMail( $content ));  
+        $notification = array(
+            'message' => 'Thank you for joined as donator! Please check email to get more details.',
+            'title' => 'Donator account created',
+            'alert-type' => 'success'
+        );
+        return redirect('/')
+        ->with($notification);
     }
 }

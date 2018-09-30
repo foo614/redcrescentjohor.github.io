@@ -1,4 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <users-table></users-table>
+    <router-view name="usersIndex"></router-view>
+    <router-view></router-view>
 @endsection

@@ -11,6 +11,16 @@ import Vue from 'vue'
 // inifinity load
 import VueContentPlaceholders from 'vue-content-placeholders'
 
+//vue toasted
+import Toasted from 'vue-toasted'
+Vue.use(Toasted, {
+    iconPack : 'material',
+    theme: "bubble", 
+    position: "top-right",
+    icon : 'check',
+    duration: 2500,
+})
+
 import Vuetify from 'vuetify'
 
 import VueRouter from 'vue-router';
@@ -22,22 +32,30 @@ import PostEdit from './components/posts/PostEdit.vue';
 import PostCalendar from './components/posts/PostCalendar.vue';
 
 import ProfileIndex from './components/profile/ProfileIndex.vue';
+import UserIndex from './components/users/UsersTable.vue';
+// import UserEdit from './components/users/UserEdit.vue';
+import UserForm from './components/users/UserCreate.vue';
+
+import DonorsIndex from './components/donors/DonorsTable.vue';
+import DonorCreate from './components/donors/DonorCreate.vue';
+import DonorEdit from './components/donors/DonorEdit.vue';
+
 const routes = [
-    {
-        path: '/posts',
-        components: {
-            postsIndex: PostsIndex
-        }
-    }
-    ,
+    //posts
+    {path: '/posts',components: {postsIndex: PostsIndex}},
     {path: '/posts/create', component: PostCreate, name: 'createPost'},
     {path: '/posts/:id/edit', component: PostEdit, name: 'editPost'},
     {path: '/posts/calendar', component: PostCalendar, name: 'viewPost'},
-    {
-        path:'/users/:id', 
-        component: ProfileIndex,
-        name: 'profile'
-    }
+    //users
+    {path: '/users', components: {usersIndex: UserIndex}},
+    {path: '/users/:id/edit', component: UserForm, name: 'editUser'},
+    {path: '/users/create', component: UserForm, name: 'createUser'},
+    //user profile
+    {path:'/users/:id', component: ProfileIndex,name: 'profile'},
+    //donors
+    {path: '/donors', components:{donorsIndex: DonorsIndex}},
+    {path: '/donors/create', component: DonorCreate, name: 'createDonor'},
+    {path: '/donors/:id/edit', component: DonorEdit, name: 'editDonor'},
 ]
 const router = new VueRouter({mode: 'history', routes })
 Vue.use(Vuetify,{
@@ -58,18 +76,20 @@ Vue.use(VueContentPlaceholders)
  * the page. Then, you may begin adding components to this application
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
-Vue.component('navbar', require('./components/includes/Navbar.vue'));
+Vue.component('fld-navbar', require('./components/includes/Navbar.vue'));
 Vue.component('password-field', require('./components/Password.vue'));
 
 //homepage
 Vue.component('posts', require('./components/Posts.vue'));
 Vue.component('post-list', require('./components/PostList.vue'));
 
+//users || members || donors
+// Vue.component('user-create', require('./components/users/UserCreate.vue'));
+// Vue.component('users-table', require('./components/users/UsersTable.vue'));
 
-Vue.component('users-table', require('./components/UsersTable.vue'));
 Vue.component('hospital-table', require('./components/HospitalsTable.vue'));
 Vue.component('branch-table', require('./components/BranchesTable.vue'));
-Vue.component('donors-table', require('./components/DonorsTable.vue'));
+// Vue.component('donors-table', require('./components/donors/DonorsTable.vue'));
 
 //upload components
 Vue.component('upload-files', require('./components/imageUploads/UploadFiles.vue'));

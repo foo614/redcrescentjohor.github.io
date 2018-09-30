@@ -10,15 +10,15 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 class DonatorRegisteredMail extends Mailable
 {
     use Queueable, SerializesModels;
-
+    public $content;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($content)
     {
-        //
+        $this->content = $content;
     }
 
     /**

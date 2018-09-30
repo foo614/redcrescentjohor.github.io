@@ -42,12 +42,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $roles = Role::pluck('name','id')->all();
-        $membership_types = MembershipType::pluck('name','id')->all();
-        $branches = Branch::pluck('name', 'id')->all();
-        $blood_types = BloodType::pluck('name', 'id')->all();
-        return view('users.create', ['roles'=>$roles, 'membership_types'=>$membership_types, 'branches'=>$branches, 'blood_types'=>$blood_types]);
-        // dd($roles);
+        return view('users.create');
     }
 
     /**
@@ -126,13 +121,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::findOrFail($id);
-        $roles = Role::pluck('name','id')->all();
-        $membership_types = MembershipType::pluck('name','id')->all();
-        $branches = Branch::pluck('name', 'id')->all();
-        $blood_types = BloodType::pluck('name', 'id')->all();
-        // return response()->json($user);
-        return view('users.edit', compact('user', 'roles', 'membership_types', 'branches', 'blood_types'));
+        // $user = User::findOrFail($id);
+        // $roles = Role::pluck('name','id')->all();
+        // $membership_types = MembershipType::pluck('name','id')->all();
+        // $branches = Branch::pluck('name', 'id')->all();
+        // $blood_types = BloodType::pluck('name', 'id')->all();
+        // // return response()->json($user);
+        // return view('users.edit', compact('user', 'roles', 'membership_types', 'branches', 'blood_types'));
+        return view('users.edit');
     }
 
     /**

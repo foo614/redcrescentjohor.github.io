@@ -59,8 +59,7 @@ class DonorController extends Controller
      */
     public function create()
     {
-        $blood_types = BloodType::all();
-        return view('donors.create',compact('blood_types'));
+        return view('donors.create');
     }
 
     /**

@@ -43,7 +43,7 @@
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('js/material.min.js')}}"></script>
     <script src="{{asset('js/getmdl-select.min.js')}}"></script>
-    @if (Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar')
+    @if (Route::currentRouteName() === 'donors.create' || Route::currentRouteName() === 'donors.edit' || Route::currentRouteName() === 'users.edit' || Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar' || Route::currentRouteName() === 'users.create')
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
     @else
         <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
@@ -56,10 +56,10 @@
 <body>
     <div id="app">
         <v-app id="inspire" >
-            <navbar 
+            <fld-navbar
                 auth="{{ Auth::user() ? Auth::user()->toJson() : '' }}"
                 auth-check="{{Auth::check()}}">
-            </navbar>
+            </fld-navbar>
             <v-content>
                 <v-container>
                     @yield('content')

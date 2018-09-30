@@ -1,6 +1,6 @@
 <template>
     <v-layout>
-        <v-flex xs12 sm8>
+        <v-flex xs12 md8>
             <div style="display: flex; font-family: Calibri, sans-serif; min-height: 80vh;">
                 <div class="calendar-parent">
                     <calendar-view :events="events" :show-date="showDate" :time-format-options="{hour: 'numeric', minute:'2-digit'}"
@@ -26,87 +26,92 @@
             </div>
         </v-flex>
 
-        <v-flex xs12 sm4 class="ml-3">
-            <v-card>
-                <v-layout row wrap>
-                    <v-flex xs12>
-                        <v-card>
-                            <v-card-title primary-title>
-                                <div class="headline">Options</div>
-                            </v-card-title>
-                            <v-card-text>
-                                <v-container grid-list-xl>
-                                    <v-layout wrap>
-                                        <v-flex xs12 sm6 d-flex>
-                                            <v-select :items="['month','week','year']" label="Period UOM" v-model="displayPeriodUom"></v-select>
-                                        </v-flex>
-                                        
-                                        <v-flex xs12 sm6 d-flex>
-                                            <v-select :items="[1,2,3]" label="Period Count" v-model="displayPeriodCount"></v-select>
-                                        </v-flex>
-                                    </v-layout>
-                                </v-container>
-                            </v-card-text>
-                        </v-card>
-                    </v-flex>
-                    <v-flex xs12 class="mt-2" v-if="eventDetail">
-                        <v-card>
-                            <v-toolbar
-                                dark
-                                :style="'background-image:url(/img/'+eventDetail.cover_img+')'"
-                                class="event-cover--image"
-                                extended
-                            >
-                                <v-toolbar-title slot="extension" class="white--text">{{eventDetail.title | capitalize}}</v-toolbar-title>
-                                <v-btn
-                                    color="secondary"
-                                    small absolute bottom left fab icon
-                                    @click="fetchEventData(eventDetail, 'edit')">
-                                    <v-icon>edit</v-icon>
+        <v-flex xs12 md4 class="ml-3">
+            <v-layout row wrap>
+                <v-flex xs12>
+                    <v-card>
+                        <v-card-title primary-title>
+                            <div class="headline">Options</div>
+                            <v-spacer></v-spacer>
+                            <v-btn icon @click="showOptions = !showOptions">
+                                <v-icon>{{ showOptions ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+                            </v-btn>
+                        </v-card-title>
+                        <v-slide-y-transition>
+                        <v-card-text v-show="showOptions">
+                            <v-container grid-list-xl>
+                                <v-layout wrap>
+                                    <v-flex xs12 sm6 d-flex>
+                                        <v-select :items="['month','week','year']" label="Period UOM" v-model="displayPeriodUom"></v-select>
+                                    </v-flex>              
+                                    <v-flex xs12 sm6 d-flex>
+                                        <v-select :items="[1,2,3]" label="Period Count" v-model="displayPeriodCount"></v-select>
+                                    </v-flex>
+                                </v-layout>
+                            </v-container>
+                        </v-card-text>
+                        </v-slide-y-transition>
+                    </v-card>
+                </v-flex>
+                <v-flex xs12 class="mt-2">
+                    <v-card v-if="!eventDetail">
+                        <v-card-title primary-title style="justify-content: center;">
+                            <div style="text-align: center;">
+                                <v-icon 
+                                    size="60px"
+                                    color="rgba(0,0,0,.26)">event</v-icon>
+                                <div>Click any event to check details.</div>
+                            </div>
+                        </v-card-title>
+                    </v-card>
+                    <v-card v-if="eventDetail">
+                        <v-toolbar
+                            dark
+                            :style="'background-image:url(/img/'+eventDetail.cover_img+')'"
+                            class="event-cover--image"
+                            extended
+                        >
+                            <v-toolbar-title slot="extension" class="white--text">{{eventDetail.title | capitalize}}</v-toolbar-title>
+                            <v-btn
+                                color="secondary"
+                                small absolute bottom left fab icon
+                                @click="fetchEventData(eventDetail, 'edit')">
+                                <v-icon>edit</v-icon>
+                            </v-btn>
+                            <v-spacer></v-spacer>
+                            <v-menu bottom left>
+                                <v-btn icon slot="activator">
+                                    <v-icon>more_vert</v-icon>
                                 </v-btn>
-                                <v-spacer></v-spacer>
-
-                                <v-menu bottom left>
-                                    <v-btn icon slot="activator">
-                                        <v-icon>more_vert</v-icon>
-                                    </v-btn>
-                                    <v-list light>
-                                    <v-list-tile @click="">
-                                        <v-list-tile-title>Delete</v-list-tile-title>
-                                    </v-list-tile>
-                                    </v-list>
-                                </v-menu>
-                            </v-toolbar>
-                            <v-card-text>
-                                <!-- <div>
-                                    <span>Title: {{eventDetail.title}}</span><br>
-                                    <span>Location: {{eventDetail.address}}</span><br>
-                                    <span>Start: {{eventDetail.startDate}}</span><br>
-                                    <span>End: {{eventDetail.endDate}}</span>
-                                </div>
-                                <div>{{message}}</div> -->
-                                <v-list dense>
-
-                                    <v-list-tile v-if="eventDetail.startDate">
-                                        <v-list-tile-avatar>
-                                        <v-icon>access_time</v-icon>
-                                        </v-list-tile-avatar>
-                                        <v-list-tile-content>
-                                            <v-list-tile-title>{{ eventDetail.startDate }}</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                    <v-list-tile v-if="eventDetail.endDate">
-                                        <v-list-tile-avatar>
-                                        <v-icon>access_time</v-icon>
-                                        </v-list-tile-avatar>
-                                        <v-list-tile-content>
-                                            <v-list-tile-title>{{ eventDetail.endDate }}</v-list-tile-title>
-                                        </v-list-tile-content>
-                                    </v-list-tile>
-                                    <v-list-tile v-if="eventDetail.address">
-                                        <v-list-tile-avatar>
-                                        <v-icon>map</v-icon>
-                                        </v-list-tile-avatar>
+                                <v-list light>
+                                <v-list-tile @click="deleteEvent(eventDetail)">
+                                    <v-list-tile-title>Delete</v-list-tile-title>
+                                </v-list-tile>
+                                </v-list>
+                            </v-menu>
+                        </v-toolbar>
+                        <v-card-text>
+                            <v-list dense>
+                                <v-list-tile v-if="eventDetail.startDate">
+                                    <v-list-tile-avatar>
+                                    <v-icon>access_time</v-icon>
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>{{ eventDetail.startDate | timeFormat }}</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-list-tile v-if="eventDetail.endDate">
+                                    <v-list-tile-avatar>
+                                    <v-icon>access_time</v-icon>
+                                    </v-list-tile-avatar>
+                                    <v-list-tile-content>
+                                        <v-list-tile-title>{{ eventDetail.endDate | timeFormat }}</v-list-tile-title>
+                                    </v-list-tile-content>
+                                </v-list-tile>
+                                <v-list-tile v-if="eventDetail.address">
+                                    <v-list-tile-avatar>
+                                    <v-icon>map</v-icon>
+                                    </v-list-tile-avatar>
                                         <v-list-tile-content>
                                             <v-list-tile-title>{{ eventDetail.address }}</v-list-tile-title>
                                         </v-list-tile-content>
@@ -118,29 +123,43 @@
                     </v-flex>
 
                     <v-flex xs12 class="mt-2">
-                        <v-card-title primary-title>
-                            <div class="headline">Upcoming events</div>
-                        </v-card-title>
-                        <v-card-text style="height:355px; overflow: auto;">
-                            <v-list two-line subheader>
-                                <v-list-tile v-for="upcomingEvent in upcomingEvents" v-model="item.active" :key="upcomingEvent.title"
-                                    no-action>
-                                    <v-list-tile-content>
-                                        <v-list-tile-title>{{ upcomingEvent.title }} ( {{upcomingEvent.address}} )</v-list-tile-title>
-                                        <v-list-tile-sub-title>{{ upcomingEvent.startDate }}</v-list-tile-sub-title>
-                                    </v-list-tile-content>
+                        <v-card v-show="upcomingEvents.length === 0 || !upcomingEvents">
+                            <v-card-title primary-title style="justify-content: center;">
+                                <div style="text-align: center;">
+                                    <v-icon 
+                                        size="60px"
+                                        color="rgba(0,0,0,.26)">event</v-icon>
+                                    <div>Create your first event.</div>
+                                </div>
+                            </v-card-title>
+                            <v-card-actions style="justify-content: center;">
+                                <v-btn color="primary" @click="addDialog = true">Create event</v-btn>
+                            </v-card-actions>
+                        </v-card>
+                        <v-card v-show="upcomingEvents.length > 0">
+                            <v-card-title primary-title>
+                                <div class="headline">Upcoming events</div>
+                            </v-card-title>
+                            <v-card-text style="height:220px; overflow: auto;">
+                                <v-list two-line subheader>
+                                    <v-list-tile v-for="upcomingEvent in upcomingEvents" :key="upcomingEvent.title"
+                                        no-action>
+                                        <v-list-tile-content>
+                                            <v-list-tile-title>{{ upcomingEvent.title }} ( {{upcomingEvent.address}} )</v-list-tile-title>
+                                            <v-list-tile-sub-title>{{ upcomingEvent.startDate }}</v-list-tile-sub-title>
+                                        </v-list-tile-content>
 
-                                    <v-list-tile-action>
-                                        <v-btn icon ripple>
-                                            <v-icon color="grey lighten-1" @click="fetchEventData(upcomingEvent, 'read')">info</v-icon>
-                                        </v-btn>
-                                    </v-list-tile-action>
-                                </v-list-tile>
-                            </v-list>
-                        </v-card-text>
+                                        <v-list-tile-action>
+                                            <v-btn icon ripple>
+                                                <v-icon color="grey lighten-1" @click="fetchEventData(upcomingEvent, 'read')">info</v-icon>
+                                            </v-btn>
+                                        </v-list-tile-action>
+                                    </v-list-tile>
+                                </v-list>
+                            </v-card-text>
+                        </v-card>
                     </v-flex>
                 </v-layout>
-            </v-card>
         </v-flex>
         <v-fab-transition>
             <v-btn color="primary" dark @click="addDialog = true" bottom fixed right fab>
@@ -150,6 +169,7 @@
         <v-dialog v-model="addDialog" max-width="600px" persistent>
             <v-form v-model="valid" ref="form" @submit.prevent="addEvent">
                 <v-card>
+                    <v-progress-linear height=3 color="red" :indeterminate="true" v-if="sending"></v-progress-linear>
                     <v-card-title>
                        {{readEvent ? 'View ' : editEvent ? 'Edit ' : 'Add '}} Event
                     </v-card-title>
@@ -251,12 +271,12 @@
                             <v-flex xs12 sm12>
                                 <v-icon>image</v-icon>
                                 <v-badge overlap>
-                                    <span slot="badge" v-if="preview && !readEvent" @click="item.cover_img = null; preview= null">x</span>
+                                    <span slot="badge" v-if="(preview || item.cover_img) && !readEvent" @click="item.cover_img = null; preview= null">x</span>
                                     <v-avatar tile class="elevation-7 v-avatar-custom--size">
                                         <v-img lazy-src aspect-ratio="2" v-if="item.cover_img || preview" 
-                                        :src="readEvent || editEvent ? '/img/'+preview : preview ? preview : null"
+                                        :src="readEvent || (editEvent && item.cover_img && !preview) ? '/img/'+item.cover_img : preview ? preview : null"
                                             alt="profile_image"></v-img>
-                                        <v-tooltip bottom v-if="!preview">
+                                        <v-tooltip bottom v-if="!preview && !item.cover_img">
                                             <input type="file" ref="cover_img" v-on:change="handleFile" style="display:none">
                                             <v-icon large @click="pickFile" slot="activator">
                                                 image
@@ -348,7 +368,8 @@
                 upcomingEvents: [],
                 //ltr do edit event
                 editEvent: false,
-                readEvent: false
+                readEvent: false,
+                showOptions: false
             }
         },
         computed: {
@@ -420,7 +441,7 @@
                 action == 'read' ? this.readEvent = true : this.editEvent = true;
                 this.item.name = data.title
                 this.item.address = data.address
-                this.preview = data.cover_img
+                this.item.cover_img = data.cover_img
                 this.item.start_date = data.startDate ? moment(data.startDate).format("YYYY-MM-DD") : null
                 this.item.start_time = data.startDate ? moment(data.startDate).format("HH:mm:ss") : null
                 this.item.end_date = data.endDate ? moment(data.endDate).format("YYYY-MM-DD") : null
@@ -498,6 +519,9 @@
                                         top: true
                                     }
                                     this.$refs.form.reset()
+                                    this.item.address = null
+                                    this.item.cover_img = null
+                                    this.eventDetail = null
                                     this.fetchEvents()
                                     this.fetchUpcomingEvents()
                                 })
@@ -524,12 +548,15 @@
                                     this.saveSnackbar = {
                                         snackbar: true,
                                         color: 'success',
-                                        text: this.item.name + ' added',
+                                        text: this.item.name + ' updated',
                                         absolute: true,
                                         right: true,
                                         top: true
                                     }
                                     this.$refs.form.reset()
+                                    this.item.address = null
+                                    this.item.cover_img = null
+                                    this.eventDetail = null
                                     this.fetchEvents()
                                     this.fetchUpcomingEvents()
                                 })
@@ -545,6 +572,28 @@
                 this.readEvent=false
                 this.preview=null
                 this.item.address = null
+                this.item.cover_img = null
+            },
+            deleteEvent(event){
+                fetch(`../api/post/${event.id}`,{
+                    method: "delete"
+                })
+                .then(res => this.$router.push('/posts/calendar'))
+                .then(data => {
+                    this.sending = false
+                    this.saveSnackbar = {
+                        snackbar: true,
+                        color: 'success',
+                        text: this.eventDetail.title + ' deleted',
+                        absolute: true,
+                        right: true,
+                        top: true
+                    }
+                    this.eventDetail = null
+                    this.fetchEvents()
+                    this.fetchUpcomingEvents()
+                })
+                .catch(err => console.log(err));
             }
         },
         filters: {
@@ -552,6 +601,10 @@
                 if (!value) return ''
                 value = value.toString()
                 return value.charAt(0).toUpperCase() + value.slice(1)
+            },
+            timeFormat: function(value){
+                if(!value) return ''
+                return moment(value).format("YYYY-MM-DD HH:mm")
             }
         }
     }

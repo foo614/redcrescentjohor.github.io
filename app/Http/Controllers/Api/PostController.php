@@ -47,17 +47,18 @@ class PostController extends Controller
     {
         $post = $request->isMethod('put') ? Post::findOrFail($request->post_id) : new Post;
         \Log::info($request->all());
-        if($request->get('cover_img'))
+        if(! \File::exists(public_path('img/'.$request->get('cover_img'))))
         {
             $image = $request->get('cover_img');
             $image_name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($request->get('cover_img'))->save(public_path('img/').$image_name);
         }
+
         $post->name = $request->name;
         $post->body = $request->body ? $request->body : '';
         $post->post_type_id = $request->post_type_id;
         $post->status = $request->status;
-        if($request->get('cover_img'))
+        if(! \File::exists(public_path('img/'.$request->get('cover_img'))))
             $post->cover_img = $image_name;
         $post->save();
         if($post->post_type_id === 1){

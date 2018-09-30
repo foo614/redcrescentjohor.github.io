@@ -55,7 +55,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = $request->isMethod('put') ? User::findOrFail($request->user_id) : new User;
-        if($request->get('avatar'))
+        if($request->get('avatar') && file_exists(public_path($request->get('avatar'))))
         {
             $image = $request->get('avatar');
             $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
@@ -71,25 +71,31 @@ class UserController extends Controller
             $user->ic = $request->ic;
             $user->address = $request->address;
             $user->detachment = $request->detachment;
-            if($request->get('avatar'))
+            if($request->get('avatar') && file_exists(public_path($request->get('avatar'))))
                 $user->avatar = $name;
             $user->map_lat = $request->map_lat;
             $user->map_lng = $request->map_lng;
             // $user->health_issues = $request->health_issues;
 
-            $user->membership_type_id = $request->membership_type;
-            $user->branch_id = $request->branch;
-            $user->blood_type_id = $request->blood_type;
+            $user->membership_type_id = $request->membership_type_id;
+            $user->branch_id = $request->branch_id;
+            $user->blood_type_id = $request->blood_type_id;
             $user->save();
             $roles = $request['roles'];
-            if(isset($roles)){
-                foreach($roles as $role){
-                    if($user->roles()->syncWithoutDetaching([$role.id]))
-                    $user->roles()->attach(Role::where('id', $role)->firstOrFail());
-                }
+            // if(isset($roles)){
+            //     foreach($roles as $role){
+            //         $user->roles()->sync($role['id']); //dont delete old entry = false
+            //         $user->roles()->attach(Role::where('id', $role->id)->firstOrFail());
+            //     }
+            // }
+            if (isset($roles)) {        
+                $user->roles()->sync($roles);  // sync the new role
+            }else{
+                $user->roles()->detach(); // detach the role related
             }
         }
-        return response()->json(['success' => 'You have successfully uploaded an image'], 200);
+        // return response()->json(['success' => 'You have successfully uploaded an image'], 200);
+        return new UserResource($user);
     }
 
     /**
