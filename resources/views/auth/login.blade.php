@@ -31,6 +31,7 @@
             @endif
         </v-card-text>
         <v-card-actions>
+          <v-btn color="red" dark href="{{ url('/password/reset') }}">Forgot password?</v-btn>
           <v-spacer></v-spacer>
           <v-btn color="red" dark type="submit">Login</v-btn>
         </v-card-actions>

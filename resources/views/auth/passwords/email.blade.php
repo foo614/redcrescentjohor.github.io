@@ -1,47 +1,40 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-
-                <div class="panel-body">
-                    @if (session('status'))
-                        <div class="alert alert-success">
-                            {{ session('status') }}
+@if (session('status'))
+<v-alert
+    :value="true"
+    type="success"
+    >
+    {{ session('status') }}
+</v-alert>
+@endif
+<v-layout align-center justify-center>
+    <v-flex xs12 sm8 md6>
+        <form method="POST" action="{{ route('password.email') }}">
+            {{ csrf_field() }}
+        <v-card class="elevation-12">
+                <v-toolbar dark color="red">
+                    <v-toolbar-title>Reset Password</v-toolbar-title>
+                </v-toolbar>
+                <v-card-text>
+                    <v-text-field prepend-icon="email" name="email" label="Email" type="email" value="{{ old('email') }}" required></v-text-field>
+                    @if ($errors->has('email'))
+                    <div class="v-text-field__details">
+                        <div class="v-messages theme--light error--text">
+                            <div class="v-messages__wrapper">
+                                <div class="v-messages__message">{{$errors->first('email')}}</div>
+                            </div>
                         </div>
+                    </div>
                     @endif
-
-                    <form class="form-horizontal" method="POST" action="{{ route('password.email') }}">
-                        {{ csrf_field() }}
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Send Password Reset Link
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="red" dark type="submit">Send Password Reset Link</v-btn>
+                </v-card-actions>
+        </v-card>
+    </form>
+    </v-flex>
+</v-layout>
 @endsection

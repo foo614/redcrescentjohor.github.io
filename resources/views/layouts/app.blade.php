@@ -15,34 +15,29 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    {{-- <link rel="manifest" href="{{url('/manifest.json')}}"> --}}
+    <link rel="manifest" href="{{url('/manifest.json')}}">
     <meta name="theme-color" content="#fff"/>
-
     <title>Red Crescent Johor</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css"> --}}
 
     {{-- icons for IOS devices --}}
-    <link rel="apple-touch-icon" sizes="60x60" href="/icons/apple-60.png">
-    <link rel="apple-touch-icon" sizes="76x76" href="/icons/apple-76.png">
-    <link rel="apple-touch-icon" sizes="120x120" href="/icons/apple-120.png">
-    <link rel="apple-touch-icon" sizes="152x152" href="/icons/apple-152.png">
-    <link rel="apple-touch-icon" sizes="167x167" href="/icons/apple-167.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-180.png">
+    <link rel="apple-touch-icon" sizes="36x36" href="/icons/png/36x36.png">
+    <link rel="apple-touch-icon" sizes="64x64" href="/icons/png/64x64.png">
+    <link rel="apple-touch-icon" sizes="128x128" href="/icons/png/128x128.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/icons/png/144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/icons/png/152x152.png">
+    <link rel="apple-touch-icon" sizes="192x192" href="/icons/png/192x192.png">
+    <link rel="apple-touch-icon" sizes="256x256" href="/icons/png/256x256.png">
+    <link rel="apple-touch-icon" sizes="512x512" href="/icons/png/512x512.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <style> [v-cloak] { display: none; } </style>
     <!-- Styles -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
-    <link rel="stylesheet" href="{{asset('css/material.red-blue.min.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/getmdl-select.min.css') }}">
-    <link rel="stylesheet" href="{{asset('css/custom.css')}}">
     <link href="{{asset('css/vuetify.min.css')}}" rel="stylesheet">
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
-    <script src="{{asset('js/material.min.js')}}"></script>
-    <script src="{{asset('js/getmdl-select.min.js')}}"></script>
     @if (Route::currentRouteName() === 'branches.create' || Route::currentRouteName() === 'branches.edit' || Route::currentRouteName() === 'donors.create' || Route::currentRouteName() === 'donors.edit' || Route::currentRouteName() === 'users.edit' || Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar' || Route::currentRouteName() === 'users.create')
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
     @else
@@ -76,7 +71,7 @@
     @yield('footer-scripts')
 </body>
 </html>
-{{-- <script>
+<script>
     if ('serviceWorker' in navigator ) {
         window.addEventListener('load', function() {
             navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
@@ -88,4 +83,4 @@
             });
         });
     }
-</script> --}}
+</script>

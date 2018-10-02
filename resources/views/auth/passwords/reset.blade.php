@@ -1,70 +1,55 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
-
-                <div class="panel-body">
-                    <form class="form-horizontal" method="POST" action="{{ route('password.request') }}">
-                        {{ csrf_field() }}
-
-                        <input type="hidden" name="token" value="{{ $token }}">
-
-                        <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">E-Mail Address</label>
-
-                            <div class="col-md-6">
-                                <input id="email" type="email" class="form-control" name="email" value="{{ $email or old('email') }}" required autofocus>
-
-                                @if ($errors->has('email'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('email') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
+<v-layout align-center justify-center>
+    <v-flex xs12 sm8 md6>
+        <form method="POST" action="{{ route('password.request') }}">
+        {{ csrf_field() }}
+        <input type="hidden" name="token" value="{{ $token }}">
+        <v-card class="elevation-12">
+            <v-toolbar dark color="red">
+                <v-toolbar-title>Reset Password</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+                <v-text-field prepend-icon="email" name="email" label="Email" type="email" value="{{ old('email') }}" required></v-text-field>
+                @if ($errors->has('email'))
+                <div class="v-text-field__details">
+                    <div class="v-messages theme--light error--text">
+                        <div class="v-messages__wrapper">
+                            <div class="v-messages__message">{{$errors->first('email')}}</div>
                         </div>
-
-                        <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }}">
-                            <label for="password" class="col-md-4 control-label">Password</label>
-
-                            <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password" required>
-
-                                @if ($errors->has('password'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group{{ $errors->has('password_confirmation') ? ' has-error' : '' }}">
-                            <label for="password-confirm" class="col-md-4 control-label">Confirm Password</label>
-                            <div class="col-md-6">
-                                <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
-
-                                @if ($errors->has('password_confirmation'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('password_confirmation') }}</strong>
-                                    </span>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
-                                    Reset Password
-                                </button>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</div>
+                @endif
+
+                <v-text-field prepend-icon="lock" name="password" label="Password" id="password" type="password"></v-text-field>
+                @if ($errors->has('password'))
+                <div class="v-text-field__details">
+                    <div class="v-messages theme--light error--text">
+                        <div class="v-messages__wrapper">
+                            <div class="v-messages__message">{{$errors->first('password')}}</div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+
+                <v-text-field prepend-icon="lock" name="password_confirmation" label="Confirm Password" id="password-confirm" type="password"></v-text-field>
+                @if ($errors->has('password_confirmation'))
+                <div class="v-text-field__details">
+                    <div class="v-messages theme--light error--text">
+                        <div class="v-messages__wrapper">
+                            <div class="v-messages__message">{{$errors->first('password_confirmation')}}</div>
+                        </div>
+                    </div>
+                </div>
+                @endif
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="red" dark type="submit">Reset Password</v-btn>
+            </v-card-actions>
+        </v-card>
+    </form>
+    </v-flex>
+</v-layout>
 @endsection

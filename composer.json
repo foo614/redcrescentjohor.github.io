@@ -6,8 +6,6 @@
     "type": "project",
     "require": {
         "php": "^7.0.0",
-        "botman/botman": "^2.3",
-        "brozot/laravel-fcm": "^1.2",
         "fideloper/proxy": "~4.0",
         "google/apiclient": "^2.2",
         "intervention/image": "^2.4",
