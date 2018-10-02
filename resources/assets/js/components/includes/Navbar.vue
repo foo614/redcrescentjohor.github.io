@@ -62,18 +62,44 @@
         <span class="hidden-sm-and-down">Red Crescent Johor</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <button id="drop-item" class="theme--dark" v-if="authCheck==1">
-        <v-avatar size="36" v-if="mutableAuth.avatar">
-          <img :src="'/img/'+mutableAuth.avatar" alt="mutableAuth.avatar">
-        </v-avatar>
-        <v-avatar class="mdl-list__item-avatar" v-else>
-          <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>              
-        </v-avatar>
-      </button>
-    <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right demo-list-icon mdl-list" style="padding-top:0;" for="drop-item" v-if="authCheck==1">
+      <!-- <button id="drop-item" class="theme--dark" v-if="authCheck==1"> -->
+        <v-menu offset-y v-model="showMenu" v-if="authCheck==1">
+            <v-avatar size="36" v-if="mutableAuth.avatar" slot="activator">
+              <img :src="'/img/'+mutableAuth.avatar" alt="mutableAuth.avatar">
+            </v-avatar>
+            <v-avatar color="#757575" slot="activator" v-else>
+              <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>              
+            </v-avatar> 
+          <v-list style="min-width: 250px;">
+            <v-list-tile :to="{ name: 'profile', params: { id: mutableAuth.id}}">
+              <v-list-tile-avatar color="#757575">
+                <img :src="/img/+mutableAuth.avatar" :alt="mutableAuth.avatar" v-if="mutableAuth.avatar">
+                <span class="white--text headline" v-else>{{mutableAuth.name | getFirstLetter}}</span>
+              </v-list-tile-avatar>
+              <v-list-tile-content>
+                <v-list-tile-title>{{mutableAuth.name}}</v-list-tile-title>
+                <v-list-tile-sub-title>{{mutableAuth.email}}</v-list-tile-sub-title>
+              </v-list-tile-content>
+            </v-list-tile>
+            <v-divider inset></v-divider>
+            <v-list-tile @click="logout">
+              <v-list-tile-action>
+                <v-icon style="transform: rotate(270deg);">save_alt</v-icon>
+              </v-list-tile-action>
+              <v-list-tile-content>
+                <v-list-tile-title>Logout</v-list-tile-title>
+              </v-list-tile-content>
+              <form style="display: hidden" action="/logout" method="POST" id="logout">
+                <input type="hidden" name="_token" :value="csrf_token"/>
+              </form>
+            </v-list-tile>
+          </v-list>
+        </v-menu>
+      <!-- </button> -->
+    <!-- <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right demo-list-icon mdl-list" style="padding-top:0;" for="drop-item" v-if="authCheck==1"> -->
       <!-- <router-link class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;" 
       :to="{ name: 'profile', params: { id: mutableAuth.id}}"> -->
-      <li class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;" >
+      <!-- <li class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;" >
         <a :href="'/users/'+mutableAuth.id" style="text-decoration:none !important; color: inherit;">
           <span class="mdl-list__item-primary-content">
             <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar" v-if="mutableAuth.avatar">
@@ -97,7 +123,8 @@
               <input type="hidden" name="_token" :value="csrf_token"/>
             </form>
         </li>
-    </ul>
+    </ul> -->
+    
     </v-toolbar>
   </div>
 </template>
@@ -109,6 +136,7 @@ export default {
   ,
   data: () => ({
     csrf_token: window.csrf_token,
+    showMenu: false,
     dialog: false,
     drawer: null,
     menu: false,
@@ -178,7 +206,7 @@ export default {
     mutableAuth:{}
   }),
   created() {
-    this.mutableAuth = JSON.parse(this.auth);
+    this.mutableAuth = this.auth ? JSON.parse(this.auth) : "";
   },
   methods: {
     logout() {
@@ -200,9 +228,6 @@ export default {
 </script>
 
 <style>
-/* .v-menu__content{
-   left: -100% !important; 
-   min-width: 250px !important; 
-} */
+
 </style>
 

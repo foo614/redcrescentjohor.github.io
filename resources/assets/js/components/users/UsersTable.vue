@@ -8,7 +8,7 @@
           inset
           vertical
         ></v-divider>
-        <v-btn small color="indigo" dark class="mb-2" :href="'/users/create'">New Member</v-btn>
+        <router-link :to="{name:'createUser'}">	<v-btn small color="indigo" dark class="mb-2">New Member</v-btn></router-link>
         <v-btn small color="red" v-show="selected.length > 0"  @click="deleteItem(selected)" dark class="mb-2">Delete</v-btn>
         <v-spacer></v-spacer>
         <v-text-field
@@ -26,7 +26,6 @@
       :items="members"
       :search="search"
       select-all
-      item-key="name"
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
@@ -51,7 +50,6 @@
           </span>
         </td>
         <td>
-          <!-- <a :href="'/users/'+props.item.id+'/edit'" style="display: inline-flex;">  -->
           <router-link :to="{name:'editUser', params:{id: props.item.id}}">
             <v-tooltip bottom>
               <v-icon
@@ -66,7 +64,6 @@
               </span>
             </v-tooltip>
           </router-link>
-          <!-- </a> -->
           <v-tooltip bottom>
             <v-icon
               slot="activator"
@@ -86,79 +83,16 @@
         From {{ pageStart }} - {{ pageStop }}
       </template>
     </v-data-table>
-
-    <p>{{selected}}</p>
-    <v-snackbar
-      :absolute="saveSnackbar.absolute"
-      :right="saveSnackbar.right"
-      :top="saveSnackbar.top"
-      :timeout="saveSnackbar.timeout" 
-      :color="saveSnackbar.color" 
-      v-model="saveSnackbar.snackbar">
-    {{ saveSnackbar.text }}
-    <v-btn dark flat @click.native="saveSnackbar.snackbar = false">
-      <v-icon>close</v-icon>
-    </v-btn>
-    </v-snackbar>
   </v-flex>
 </v-layout>
 </template>
 
 <script>
-// import axios from 'axios';
-
-// const toLower = text => {
-//   return text.toString().toLowerCase()
-// }
-
-// const searchByName = (items, term) => {
-//   if (term) {
-//     return items.filter(
-//       item => toLower(item.name).includes(toLower(term))
-//     );
-//   }
-//   return items
-// }
-//   export default {
-//     data: () => ({
-//       search: null,
-//       selected: [],
-//       items:[],
-//       data:[],
-//     }),
-//     created(){
-//       this.fetchPosts();
-//     },
-//     methods: {
-//       fetchPosts: function (){
-//         axios.get('api/members').then(res =>{
-//           this.data = res.data;
-//           this.items = this.data;
-//         })
-//       },
-//       onSelect (items) {
-//         this.selected = items
-//       },
-//       getAlternateLabel (count) {
-//         let plural = ''
-
-//         if (count > 1) {
-//           plural = 's'
-//         }
-
-//         return `${count} user${plural} selected`
-//       },
-//       searchOnTable () {
-//         this.items = searchByName(this.data, this.search);
-//       }
-//     }
-//   }
 export default {
   data(){
     return{
     rowsDefaultItem: [10],
     search: '',
-    saveSnackbar: {},
     selected: [],
     members: [],
     headers: [
@@ -175,43 +109,39 @@ export default {
     ]
     };
   },
-  created() {
+  mounted() {
     this.fetchMembers()
   },
   methods: {
-    fetchMembers() {
+    fetchMembers: function (){
       axios.get("api/members").then(res => {
-        this.members = res.data;
-      });
+        this.members = res.data
+      })
     },
     toggleAll() {
-      if (this.selected.length) this.selected = [];
-      else this.selected = this.members.slice();
-    },
-    editItem() {
-      alert("");
+      if (this.selected.length) this.selected = []
+      else this.selected = this.members.slice()
     },
     deleteItem(selectedItem) {
-      if(this.selected.length === 0)
-        this.selected.push(selectedItem);
-      this.selected.forEach(function(v,k){
-        axios.delete('api/members/'+ v.id)
+      let self = this;
+      if(self.selected.length === 0){
+        self.selected.push(selectedItem)
+      }
+      self.selected.forEach(function(v,k){
+        fetch(`/api/member/${v.id}`, {
+          method: "delete"
+        })
+        .then(res => res.json())
+        .then(data => {
+          self.fetchMembers()
+        })
         .catch(err => console.log(err));
       })
-      this.saveSnackbar = {
-        absolute:true,
-        right:true,
-        top:true,
-        snackbar: true,
-        timeout: 3000,
-        color: 'green',
-        text: this.selected.length === 1 ? this.selected[0].name+' deleted' : this.selected.length+' user(s) deleted',
-      }
-      this.fetchMembers();
-      this.selected = [];
+      self.$toasted.success(this.selected.length === 1 ? this.selected[0].name+' deleted' : this.selected.length+' user(s) deleted' , {icon:"check"})
+      self.selected = []
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

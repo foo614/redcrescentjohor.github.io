@@ -27,7 +27,7 @@ class MembershipTypeController extends Controller
      */
     public function store(Request $request)
     {
-        $membership_type = $request->isMethod('put') ? MembershipType::findOrFail($request->membershipType_id) : new MembershipType;
+        $membership_type = $request->isMethod('put') ? MembershipType::findOrFail($request->membership_type_id) : new MembershipType;
         $membership_type->name = $request->name;
         if($membership_type->save()){
             return new MembershipTypeResource($membership_type);

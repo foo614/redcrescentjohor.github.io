@@ -17,7 +17,6 @@ Vue.use(Toasted, {
     iconPack : 'material',
     theme: "bubble", 
     position: "top-right",
-    icon : 'check',
     duration: 2500,
 })
 
@@ -27,35 +26,54 @@ import VueRouter from 'vue-router';
 window.Vue.use(VueRouter);
 
 import PostsIndex from './components/posts/PostsTable.vue';
-import PostCreate from './components/posts/PostCreate.vue';
-import PostEdit from './components/posts/PostEdit.vue';
+import PostForm from './components/posts/PostForm.vue';
+// import PostEdit from './components/posts/PostEdit.vue';
 import PostCalendar from './components/posts/PostCalendar.vue';
 
 import ProfileIndex from './components/profile/ProfileIndex.vue';
 import UserIndex from './components/users/UsersTable.vue';
-// import UserEdit from './components/users/UserEdit.vue';
-import UserForm from './components/users/UserCreate.vue';
+import UserForm from './components/users/UserForm.vue';
 
 import DonorsIndex from './components/donors/DonorsTable.vue';
-import DonorCreate from './components/donors/DonorCreate.vue';
-import DonorEdit from './components/donors/DonorEdit.vue';
+import DonorForm from './components/donors/DonorForm.vue';
+
+import BranchesIndex from './components/branches/BranchesTable.vue';
+import BranchForm from './components/branches/BranchForm.vue';
+
+import HospitalsIndex from './components/hospitals/HospitalsTable.vue';
+import HospitalForm from './components/hospitals/HospitalForm.vue';
+
+import Dashboard from './components/includes/Dashboard.vue';
+// import Login from './components/includes/LoginPage.vue';
 
 const routes = [
+    //login
+    // {path: '/login',components: {login: Login}},
+    //dashboard
+    {path: '/',components: {dashboard: Dashboard}},
     //posts
     {path: '/posts',components: {postsIndex: PostsIndex}},
-    {path: '/posts/create', component: PostCreate, name: 'createPost'},
-    {path: '/posts/:id/edit', component: PostEdit, name: 'editPost'},
+    {path: '/posts/create', component: PostForm, name: 'createPost'},
+    {path: '/posts/:id/edit', component: PostForm, name: 'editPost'},
     {path: '/posts/calendar', component: PostCalendar, name: 'viewPost'},
     //users
     {path: '/users', components: {usersIndex: UserIndex}},
     {path: '/users/:id/edit', component: UserForm, name: 'editUser'},
     {path: '/users/create', component: UserForm, name: 'createUser'},
     //user profile
-    {path:'/users/:id', component: ProfileIndex,name: 'profile'},
+    {path:'/users/:id', component: ProfileIndex, name: 'profile'},
     //donors
     {path: '/donors', components:{donorsIndex: DonorsIndex}},
-    {path: '/donors/create', component: DonorCreate, name: 'createDonor'},
-    {path: '/donors/:id/edit', component: DonorEdit, name: 'editDonor'},
+    {path: '/donors/create', component: DonorForm, name: 'createDonor'},
+    {path: '/donors/:id/edit', component: DonorForm, name: 'editDonor'},
+    //branches
+    {path: '/branches', components:{branchesIndex: BranchesIndex}},
+    {path: '/branches/:id/edit', component: BranchForm, name: 'editBranch'},
+    {path: '/branches/create', component: BranchForm, name: 'createBranch'},
+    //hospitals
+    {path: '/hospitals', components:{hospitalsIndex: HospitalsIndex}},
+    {path: '/hospitals/:id/edit', component: HospitalForm, name: 'editHospital'},
+    {path: '/hospitals/create', component: HospitalForm, name: 'createHospital'},
 ]
 const router = new VueRouter({mode: 'history', routes })
 Vue.use(Vuetify,{
@@ -77,19 +95,12 @@ Vue.use(VueContentPlaceholders)
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 Vue.component('fld-navbar', require('./components/includes/Navbar.vue'));
+// Vue.component('fld-login', require('./components/includes/LoginPage.vue'));
 Vue.component('password-field', require('./components/Password.vue'));
 
 //homepage
 Vue.component('posts', require('./components/Posts.vue'));
 Vue.component('post-list', require('./components/PostList.vue'));
-
-//users || members || donors
-// Vue.component('user-create', require('./components/users/UserCreate.vue'));
-// Vue.component('users-table', require('./components/users/UsersTable.vue'));
-
-Vue.component('hospital-table', require('./components/HospitalsTable.vue'));
-Vue.component('branch-table', require('./components/BranchesTable.vue'));
-// Vue.component('donors-table', require('./components/donors/DonorsTable.vue'));
 
 //upload components
 Vue.component('upload-files', require('./components/imageUploads/UploadFiles.vue'));

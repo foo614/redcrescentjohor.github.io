@@ -28,6 +28,7 @@ class UserResource extends JsonResource
             'detachment' => $this->detachment,
             'membership_type_id' => $this->membership_type_id,
             'blood_type_id' => $this->blood_type_id,
+            'blood_type' => $this->blood_type,
             'branch_id' => $this->branch_id,
             'created_at' => $this->created_at->format('F d, Y'),
             'profile_url' => url('/users/'.$this->id)

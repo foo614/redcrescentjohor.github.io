@@ -1,10 +1,9 @@
 <template>
-    <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="addItem">
-                {{item}}
-            <v-card>
+    <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="saveItem">
+        <v-card>
             <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
             <v-card-title primary-title>
-                <div class="headline">Add Post</div>
+                <div class="headline">{{$route.name == "editPost" ? 'Edit' : 'Add' }} Post</div>
             </v-card-title>
                 <v-container fluid grid-list-lg>
                 <v-layout row wrap>
@@ -189,17 +188,6 @@
                 <v-btn flat color="primary" type="submit">Submit</v-btn>
             </v-card-actions>
         </v-card>
-        <v-snackbar
-            :absolute="saveSnackbar.absolute"
-            :right="saveSnackbar.right"
-            :top="saveSnackbar.top"
-            :color="saveSnackbar.color" 
-            v-model="saveSnackbar.snackbar">
-            {{ saveSnackbar.text }}
-            <v-btn dark flat @click.native="saveSnackbar.snackbar = false">
-            <v-icon>close</v-icon>
-            </v-btn>
-        </v-snackbar>
     </v-form>
 </template>
 
@@ -212,25 +200,42 @@ export default {
         this.currentDate = moment().format('YYYY-MM-DD');
         this.autocomplete = new google.maps.places.Autocomplete(
             (this.$refs.autocomplete),
-            // {types: ['geocode']}
         );
         this.autocomplete.setComponentRestrictions(
             {'country': ['my', 'sg']});
         this.autocomplete.addListener('place_changed', () => {
-            let place = this.autocomplete.getPlace();
-            let lat = place.geometry.location.lat();
-            let lng = place.geometry.location.lng();
+            let place = this.autocomplete.getPlace()
+            let lat = place.geometry.location.lat()
+            let lng = place.geometry.location.lng()
 
-            this.item.address = place.name;
-            this.item.map_lat = lat;
-            this.item.map_lng = lng;
-        });
+            this.item.address = place.name
+            this.item.map_lat = lat
+            this.item.map_lng = lng
+        })
+        if(this.$route.name === "editPost"){
+            let app = this;
+            let id = this.$route.params.id;
+            axios.get('/api/post/' + id)
+            .then(function (res) {
+                app.item = res.data;
+                app.item.post_id = res.data.id;
+                if(app.item.event){
+                    app.item.address = res.data.event.address;
+                    app.item.start_date = moment(res.data.event.start).format("YYYY-MM-DD");
+                    app.item.end_date = moment(res.data.event.end).format("YYYY-MM-DD");
+                    app.item.start_time = moment(res.data.event.start).format("HH:mm");
+                    app.item.end_time = moment(res.data.event.end).format("HH:mm");
+                }
+            })
+            .catch(function () {
+                this.$toasted.error("Something wrong...", {icon:"error"})
+            });
+        }
     },
     data () {
     return {
         items:[],
         sending: false,
-        edit: false,
         valid: true,
         item: {
             post_id:'',
@@ -249,7 +254,6 @@ export default {
             start_time:null,
             end_time:null,
         },
-        saveSnackbar:{},
         currentDate:"",
         optionalEnd:false,
         date_menu1:false,
@@ -259,12 +263,6 @@ export default {
     };
     },
     computed: {
-        // start: function () {
-        //     return this.item.start = moment.utc((this.item.start_date + " " + this.item.start_time)).format("YYYY-MM-DD HH:mm:ss");
-        // },
-        // end: function(){
-        //     return this.item.end = moment.utc((this.item.end_date + " " + this.item.end_time)).format("YYYY-MM-DD HH:mm:ss");
-        // }
         start:{
             get: function(){
                 return this.item.start = moment.utc((this.item.start_date + " " + this.item.start_time)).format("YYYY-MM-DD HH:mm:ss");
@@ -277,40 +275,36 @@ export default {
         }
     },
     created(){
-        this.fetchPostCategories();
+        this.fetchPostCategories()
     },
     methods:{
         fetchPostCategories() {
-            axios.get("../api/postCategories").then(res => {
-                this.items = res.data;
-            });
+            axios.get("/api/postCategories").then(res => {
+                this.items = res.data
+            })
         },
-        addItem(){
-            if(this.edit === false){
-                 if (this.$refs.form.validate()){
-                    this.sending = true;
-                    setTimeout(()=> {
-                        fetch("../api/post", {
-                        method: "post",
-                        body: JSON.stringify(this.item),
-                        headers:{"content-type": "application/json"}
+        saveItem(){
+            if (this.$refs.form.validate()){
+                this.sending = true;
+                setTimeout(()=> {
+                    fetch("/api/post", {
+                    method: this.$route.name == 'createPost' ? "post" : "put",
+                    body: JSON.stringify(this.item),
+                    headers:{"content-type": "application/json"}
+                    })
+                    .then(res => {
+                        this.sending = false
+                        let currentPage = this.$route.name
+                        this.$router.push({ path: '/posts' }, ()=> {
+                            this.$toasted.success(this.item.name + (currentPage === 'createPost' ? ' added' : ' updated') , {icon:"check"})
                         })
-                        .then(res => {
-                            this.$router.push('/posts')
-                        })
-                        .then(data => {
-                            this.sending = false;
-                            this.$refs.form.reset();
-                            this.saveSnackbar = {snackbar: true, color: 'success', text: data.data.name +' added', absolute: true, right: true, top: true}
-                        })
-                        .catch(err => console.log(err));
-                    }, 2000);
-                }
+                    })
+                    .catch(err => console.log(err))
+                }, 2000)
             }
         }
     }
-
-  }
+}
 </script>
 
 <style>

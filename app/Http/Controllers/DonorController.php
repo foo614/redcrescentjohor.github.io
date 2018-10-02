@@ -12,28 +12,6 @@ use Illuminate\Http\Request;
 
 class DonorController extends Controller
 {
-    private $blockFor = 90;
-
-    /**
-    * Validation rules for hospital model
-    *
-    * @var Array
-    */
-    public $rules = [
-        'name' => 'required|max:120',
-        'email'=>'required|email|unique:users',
-        // 'dob' => 'required|date|before:-18 years',
-        'address' => 'required',
-        'map_lat' => 'required',
-        'map_lng' => 'required',
-        'ic' => 'required|digits:12',
-        'contact' => 'required',
-        'blood_type' => 'required',
-    ];
-
-    public $messages = [
-        // 'dob.before' => 'Your age must be atleast 18 years',
-    ];
     /**
      * Display a listing of the resource.
      *
@@ -42,13 +20,6 @@ class DonorController extends Controller
     public function index()
     {
         $donors = User::with('blood_type')->get();
-        // $donors = $get_donors->map(function($donor){
-        //     return collect($donor->toArray())
-        //     ->only(['dob','blood_type_id', 'user'])
-        //     ->all();
-        // });
-        // dd($donors);
-        //return response()->json($donors);
         return view('donors.index', compact(['donors']));
     }
 
@@ -70,26 +41,7 @@ class DonorController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, $this->rules);
-
-        $user = new User;
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = bcrypt($request['password']);;
-        $user->ic = $request->ic;        
-        $user->contact = $request->contact;        
-        $user->address = $request->address;
-        $user->membership_type_id = 4;
-        $user->blood_type_id = $request->blood_type;
-        $user->map_lat = $request->map_lat;
-        $user->map_lng = $request->map_lng;
-        $user->health_issues = $request->health_issues ? $request->health_issues : '-';
-        $user->save();
-        
-        if($user->membership_type_id == 4){
-            return $this->mail($user->name, $user->email);
-        }
-        // return redirect()->route('login');
+        //
     }
 
     /**
@@ -134,39 +86,7 @@ class DonorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->validate($request, $this->messages);
-
-        $donor = Donor::find($id);
-
-        // if (Auth::user()->id !== $donor->user->id)
-        //     abort(403);
-
-        // if ($request->hasFile('avatar')) {
-        //     $donor->avatar = $this->imageStorageService->storeAvatar($request->file('avatar'));
-        // }
-        if($donor){
-            $user = User::where('id', '=', $donor->user_id)->first();
-        }
-        $user->name = $request->name;
-        $user->email = $request->email;
-        // $user->ic = $request->ic;        
-        $user->contact = $request->contact;        
-        $user->address = $request->address;
-        $user->save();
-
-        // $donor->dob = $request->dob;
-        $donor->map_lat = $request->map_lat;
-        $donor->map_lng = $request->map_lng;
-        $donor->blood_type_id = $request->blood_type;
-        $donor->health_issues = $request->health_issues;
-        $donor->save();
-        //return response()->json($donor);
-        $notification = array(
-            'message' => $request->name.' is updated',
-            'title' => 'Edit donator',
-            'alert-type' => 'success'
-        );
-        return redirect('donors')->with($notification);
+        //
     }
 
     /**

@@ -65,17 +65,18 @@ Route::put('branch', 'Api\BranchController@store');
 Route::delete('branch/{id}', 'Api\BranchController@destroy');
 
 // hospitals api route
-Route::apiResource('hospitals', 'Api\HospitalController');
+// Route::apiResource('hospitals', 'Api\HospitalController');
+Route::get('hospitals', 'Api\HospitalController@index');
+Route::get('hospital/{id}', 'Api\HospitalController@show');
+Route::post('hospital', 'Api\HospitalController@store');
+Route::delete('hospital/{id}', 'Api\HospitalController@destroy');
+Route::put('hospital', 'Api\HospitalController@store');
 
 // users api route
 // Route::apiResource('members', 'Api\UserController');
 Route::get('members', 'Api\UserController@index');
+Route::get('donors', 'Api\UserController@donors');
 Route::get('member/{id}', 'Api\UserController@show');
 Route::post('member', 'Api\UserController@store');
 Route::put('member', 'Api\UserController@store');
-// Route::delete('member/{id}', 'Api\UserController@destroy');
-
-Route::get('donors', 'Api\DonorController@index');
-Route::get('donor/{id}', 'Api\DonorController@show');
-Route::post('donor', 'Api\DonorController@store');
-Route::put('donor', 'Api\DonorController@store');
+Route::delete('member/{id}', 'Api\UserController@destroy');

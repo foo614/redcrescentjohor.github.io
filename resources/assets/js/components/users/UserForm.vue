@@ -3,7 +3,7 @@
         <v-card>
             <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
             <v-card-title primary-title>
-                <div class="headline">{{$router.name = "editUser" ? 'Edit' : 'Add'}} Member</div>
+                <div class="headline">{{$route.name == "editUser" ? 'Edit' : 'Add' }} Member</div>
             </v-card-title>
                 <v-container fluid grid-list-lg>
                     <v-layout row wrap>
@@ -188,7 +188,7 @@ export default {
             this.$refs.autocomplete
         );
         this.autocomplete.setComponentRestrictions(
-            {'country': ['my', 'sg']});
+            {'country': ['my', 'sg']})
         this.autocomplete.addListener('place_changed', () => {
             let place = this.autocomplete.getPlace()
             let lat = place.geometry.location.lat()
@@ -207,7 +207,7 @@ export default {
                 app.item.user_id = res.data.id
             })
             .catch(function () {
-                alert("Load error")
+                this.$toasted.error("Something wrong...", {icon:"error"})
             });
         }
     },
@@ -238,7 +238,6 @@ export default {
                 avatar: "",
                 roles:null
             },
-            snackbar:{},
         };
     },
     computed: {},
@@ -277,7 +276,6 @@ export default {
                 vm.item.avatar = e.target.result
             };
             reader.readAsDataURL(file)
-            console.log(file)
         },
         saveItem(){
             if (this.$refs.form.validate()){
@@ -292,10 +290,10 @@ export default {
                         this.sending = false
                         let currentPage = this.$route.name
                         this.$router.push({ path: '/users' }, ()=> {
-                            this.$toasted.success(this.item.name + (currentPage === 'createUser' ? ' added' : ' updated'));
+                            this.$toasted.success(this.item.name + (currentPage === 'createUser' ? ' added' : ' updated') , {icon:"check"})
                         })
                     })
-                    .catch(err => console.log(err));
+                    .catch(err => console.log(err))
                 }, 2000)
             }
         }

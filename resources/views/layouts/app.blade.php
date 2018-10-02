@@ -43,7 +43,7 @@
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
     <script src="{{asset('js/material.min.js')}}"></script>
     <script src="{{asset('js/getmdl-select.min.js')}}"></script>
-    @if (Route::currentRouteName() === 'donors.create' || Route::currentRouteName() === 'donors.edit' || Route::currentRouteName() === 'users.edit' || Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar' || Route::currentRouteName() === 'users.create')
+    @if (Route::currentRouteName() === 'branches.create' || Route::currentRouteName() === 'branches.edit' || Route::currentRouteName() === 'donors.create' || Route::currentRouteName() === 'donors.edit' || Route::currentRouteName() === 'users.edit' || Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar' || Route::currentRouteName() === 'users.create')
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
     @else
         <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
@@ -67,6 +67,9 @@
             </v-content>
         </v-app>
     </div>
+    <div id="embed-api-auth-container"></div>
+    <div id="chart-container"></div>
+    <div id="view-selector-container"></div>
     {{-- @include('scripts.toastr') --}}
     <script src="{{ asset('js/app.js') }}"></script>
     <script src="{{asset('js/google-map.js') }}"></script>

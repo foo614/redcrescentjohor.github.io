@@ -9,11 +9,11 @@
               <h3 class="headline mb-0 mt-0" >{{title}} Role</h3>
             </div>
           </v-card-title>
-          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="addItem">
+          <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="saveItem">
             <v-card-text>
               <v-text-field
                 v-model="role.name"
-                :rules="nameRules"
+                :rules="[v => !!v || 'Name is required']"
                 label="Name"
                 required
               ></v-text-field>
@@ -96,19 +96,6 @@
           Your search for "{{ search }}" found no results.
         </v-alert>
       </v-data-table>
-      <p>{{selected}}</p>
-      <v-snackbar
-        :absolute="saveSnackbar.absolute"
-        :right="saveSnackbar.right"
-        :top="saveSnackbar.top"
-        :timeout="saveSnackbar.timeout" 
-        :color="saveSnackbar.color" 
-        v-model="saveSnackbar.snackbar">
-        {{ saveSnackbar.text }}
-        <v-btn dark flat @click.native="saveSnackbar.snackbar = false">
-          <v-icon>close</v-icon>
-        </v-btn>
-      </v-snackbar>
       </v-flex>
     </v-layout>
   </div>
@@ -119,7 +106,6 @@
       return {
         title: "Add",
         valid: true,
-        saveSnackbar: {},
         rowsDefaultItem: [5],
         selected: [],
         search: '',
@@ -134,9 +120,6 @@
         ],
         sending: false,
         edit: false,
-        nameRules: [
-          v => !!v || 'Name is required'
-        ],
       };
     },
     created(){
@@ -149,41 +132,24 @@
           this.roles = res.data;
         })
       },
-      addItem(){
+      saveItem(){
         this.sending = true;
-        if(this.edit === false){
           setTimeout(()=> {
             fetch("api/role", {
-              method: "post",
+              method: this.edit === false ? "post" : "put",
               body: JSON.stringify(this.role),
               headers:{"content-type": "application/json"}
             })
-            .then(res => res.json())
-            .then(data => {
-              this.fetchRoles();
-              this.$refs.form.reset();
-              this.sending = false;
-              this.edit = false;
+            .then(res => {
+                this.$toasted.success(this.role.name + (this.edit === false ? ' added' : ' updated') , {icon:"check"})
+                this.fetchRoles();
+                this.$refs.form.reset();
+                this.sending = false;
+                this.title = "Add";
+                this.edit = false;
             })
             .catch(err => console.log(err));
-          }, 1000);
-        }else{
-          setTimeout(()=> {
-          fetch("api/role",{
-            method: "put",
-            body: JSON.stringify(this.role),
-            headers:{"content-type": "application/json"}
-          })
-          .then(res => res.json())
-            .then(data => {
-              this.fetchRoles();
-              this.sending = false;
-              this.title = "Add";
-              this.$refs.form.reset();
-            })
-            .catch(err => console.log(err));
-            }, 1000);
-        }
+          }, 1500);
       },
       editItem(item) {
         this.edit = true;
@@ -193,36 +159,22 @@
         this.role.name = item.name;
       },
       deleteItem(selectedItem){
-        if(this.selected.length > 1){
-          this.selected.forEach(function(v,k){
-            fetch(`api/role/${v.id}`,{
-              method: "delete"
-            })
-            .then(res => res.json())
-            .catch(err => console.log(err));
-          });
-          this.fetchRoles();
-        }else{
-          fetch(`api/role/${selectedItem.id}`,{
+        let self = this;
+        if(self.selected.length === 0){
+          self.selected.push(selectedItem)
+        }
+        self.selected.forEach(function(v,k){
+          fetch(`/api/role/${v.id}`, {
             method: "delete"
           })
           .then(res => res.json())
           .then(data => {
-            this.fetchRoles();
+            self.fetchRoles()
           })
           .catch(err => console.log(err));
-        }
-          this.saveSnackbar = {
-            absolute:true,
-            right:true,
-            top:true,
-            snackbar: true,
-            timeout: 3000,
-            color: 'success',
-            text: this.selected.length > 1 ? this.selected.length+' role(s) deleted' : selectedItem.name+' deleted',
-          }
-          this.$refs.form.reset();
-          this.fetchRoles();
+        })
+        self.$toasted.success(this.selected.length === 1 ? this.selected[0].name+' deleted' : this.selected.length+' user(s) deleted' , {icon:"check"})
+        self.selected = []
       },
       reset () {
         this.$refs.form.reset();
@@ -231,3 +183,8 @@
     },
   };
 </script>
+<style lang="css">
+  .mdl-progress{
+    width: 100%;
+  }
+</style>

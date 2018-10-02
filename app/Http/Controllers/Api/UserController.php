@@ -23,14 +23,18 @@ class UserController extends Controller
     public function index()
     {
         // get all users
-        $users = User::with('roles')->whereHas(
-            'roles', function($q){
-                $q->where('roles.id', '!=', 1);
-            }
-        )->get();
+        $users = User::whereHas('roles', function($q){
+            $q->where('roles.id', '!=', 1);
+        })->get();
         return UserResource::collection($users);
-        // return view('user.index')->with('users', $users);
-        // return response()->json($users);
+    }
+
+    /**
+     * Return members who contains value with blood type
+     */
+    public function donors(){
+        $donors = User::where("blood_type_id", "!=", null)->get();
+        return UserResource::collection($donors);
     }
 
     /**
@@ -55,10 +59,10 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = $request->isMethod('put') ? User::findOrFail($request->user_id) : new User;
-        if($request->get('avatar') && file_exists(public_path($request->get('avatar'))))
+        if(!file_exists(public_path('img/').$request->get('avatar')))
         {
             $image = $request->get('avatar');
-            $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+        $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($request->get('avatar'))->save(public_path('img/').$name);
         }
 
@@ -71,7 +75,7 @@ class UserController extends Controller
             $user->ic = $request->ic;
             $user->address = $request->address;
             $user->detachment = $request->detachment;
-            if($request->get('avatar') && file_exists(public_path($request->get('avatar'))))
+            if(!file_exists(public_path('img/').$request->get('avatar')))
                 $user->avatar = $name;
             $user->map_lat = $request->map_lat;
             $user->map_lng = $request->map_lng;
@@ -82,19 +86,12 @@ class UserController extends Controller
             $user->blood_type_id = $request->blood_type_id;
             $user->save();
             $roles = $request['roles'];
-            // if(isset($roles)){
-            //     foreach($roles as $role){
-            //         $user->roles()->sync($role['id']); //dont delete old entry = false
-            //         $user->roles()->attach(Role::where('id', $role->id)->firstOrFail());
-            //     }
-            // }
             if (isset($roles)) {        
                 $user->roles()->sync($roles);  // sync the new role
             }else{
                 $user->roles()->detach(); // detach the role related
             }
         }
-        // return response()->json(['success' => 'You have successfully uploaded an image'], 200);
         return new UserResource($user);
     }
 
@@ -106,7 +103,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        // Get article
         $user = User::findOrFail($id);
         if($user->delete()) {
             return new UserResource($user);

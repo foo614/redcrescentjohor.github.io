@@ -9,7 +9,6 @@
           vertical
         ></v-divider>
         <router-link :to="{name: 'createPost'}"><v-btn small color="indigo" dark class="mb-2">New Posts</v-btn></router-link>
-        <!-- <v-btn small color="indigo" dark class="mb-2" href="/posts/create">New Post</v-btn> -->
         <v-btn small color="red" v-show="selected.length > 0"  @click="deleteItem(selected)" dark class="mb-2">Delete</v-btn>
         <v-spacer></v-spacer>
         <v-text-field
@@ -75,20 +74,6 @@
         From {{ pageStart }} - {{ pageStop }}
       </template>
     </v-data-table>
-
-    <p>{{selected}}</p>
-    <v-snackbar
-      :absolute="saveSnackbar.absolute"
-      :right="saveSnackbar.right"
-      :top="saveSnackbar.top"
-      :timeout="saveSnackbar.timeout" 
-      :color="saveSnackbar.color" 
-      v-model="saveSnackbar.snackbar">
-    {{ saveSnackbar.text }}
-    <v-btn dark flat @click.native="saveSnackbar.snackbar = false">
-      <v-icon>close</v-icon>
-    </v-btn>
-    </v-snackbar>
   </v-flex>
 </v-layout>
 </template>
@@ -116,26 +101,31 @@ export default {
     };
   },
   created() {
-    this.fetchposts()
+    this.fetchPosts()
   },
   methods: {
-    fetchposts() {
+    fetchPosts() {
       axios.get("../api/posts").then(res => {
         this.posts = res.data;
       });
     },
     deleteItem(selectedItem) {
-      if(this.selected.length === 0)
-        this.selected.push(selectedItem);
-      this.selected.forEach(function(v){
-        axios.delete('../api/post/'+ v.id)
+      let self = this;
+      if(self.selected.length === 0){
+        self.selected.push(selectedItem)
+      }
+      self.selected.forEach(function(v,k){
+        fetch(`/api/post/${v.id}`, {
+          method: "delete"
+        })
+        .then(res => res.json())
+        .then(data => {
+          self.fetchPosts()
+        })
         .catch(err => console.log(err));
       })
-      this.saveSnackbar = {snackbar: true, color: 'success', absolute: true, right: true, top: true,
-        text: this.selected.length === 1 ? this.selected[0].name+' deleted' : this.selected.length+' post(s) deleted'
-      }
-      this.fetchposts();
-      this.selected = [];
+      self.$toasted.success(this.selected.length === 1 ? this.selected[0].name+' deleted' : this.selected.length+' user(s) deleted' , {icon:"check"})
+      self.selected = []
     }
   }
 };

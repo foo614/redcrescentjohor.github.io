@@ -29,6 +29,7 @@ class CreateUsersTable extends Migration
             $table->string('health_issues')->nullable();
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
 
             $table->integer('membership_type_id')->nullable()->unsigned();
             $table->foreign('membership_type_id')->references('id')->on('membership_types')->onDelete('cascade');

@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<div class="mdl-grid mt-0 pt-0">
+{{-- <div class="mdl-grid mt-0 pt-0">
     <div class="mdl-card mdl-shadow--2dp mdl-cell mdl-cell--12-col mdl-cell--8-col-tablet mdl-cell--12-col-desktop">
         <div class="mdl-card__title">
             <h2 class="mdl-card__title-text">Edit branch</h2>
@@ -66,12 +66,11 @@
             </fieldset>
         </div>
         <div class="mdl-card__actions mdl-card--border">
-                {{-- {!! Form::button('SUBMIT', 
-                    array('class' => 'mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary' ,'style' => 'float: right; margin-bottom: 8px;',
-                    'type' => 'submit','id' => 'submit')) !!} --}}
                     {!!Form::submit('Click Me!')!!}
         </div>
         {{ Form::close() }}
     </div>
-</div>
+</div> --}}
+<router-view name="editBranch"></router-view>
+<router-view></router-view>
 @endsection

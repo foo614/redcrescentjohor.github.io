@@ -1,4 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <branch-table></branch-table>
+    <router-view name="branchesIndex"></router-view>
+    <router-view></router-view>
 @endsection

@@ -50,7 +50,7 @@
                                         ></v-text-field>
                                         <v-select
                                             :items="branches"
-                                            v-model="item.branch"
+                                            v-model="item.branch_id"
                                             item-text="name"
                                             item-value="id"
                                             menu-props="auto"
@@ -105,18 +105,6 @@
                 </v-card>
             </v-form>
         </v-flex>
-        <v-snackbar
-            :absolute="saveSnackbar.absolute"
-            :right="saveSnackbar.right"
-            :top="saveSnackbar.top"
-            :color="saveSnackbar.color" 
-            :timeout="saveSnackbar.timeout" 
-            v-model="saveSnackbar.snackbar">
-            {{ saveSnackbar.text }}
-            <v-btn dark flat @click.native="saveSnackbar.snackbar = false">
-            <v-icon>close</v-icon>
-            </v-btn>
-        </v-snackbar>
     </v-layout>
 </template>
 
@@ -130,12 +118,11 @@ export default {
                 contact:'',
                 user_id: '',
                 avatar: '',
-                branch: '',
+                branch_id: '',
                 ic: '',
             },
             show:false,
             valid: true,
-            saveSnackbar:{},
             loading: false,
             preview:'',
             branches:[]
@@ -150,7 +137,7 @@ export default {
                 app.item.user_id = res.data.id;
             })
             .catch(function () {
-                alert("get user data failed")
+                this.$toasted.error("Something wrong...", {icon:"error"})
             });
         axios.get('/api/branches').then(function(res){app.branches = res.data;}).catch(function(){console.log('failed to get branches')})
     },
@@ -164,9 +151,8 @@ export default {
             body: JSON.stringify(this.item),
             headers:{"content-type": "application/json"}
             })
-            .then(res => console.log(res))
-            .then(data => {
-                this.saveSnackbar = {timeout:3000, snackbar: true, color: 'success', text: this.item.name +' updated', absolute: true, right: true, top: true}
+            .then(res => {
+                this.$toasted.success(this.item.name + ' updated' , {icon:"check"})
                 this.show = false
             })
             .catch(err => console.log(err));
@@ -188,7 +174,6 @@ export default {
                 vm.item.avatar = e.target.result;
             };
             reader.readAsDataURL(file);
-            console.log(file);
         }
     },
     filters: {
