@@ -46,33 +46,45 @@ import HospitalForm from './components/hospitals/HospitalForm.vue';
 import Dashboard from './components/includes/Dashboard.vue';
 // import Login from './components/includes/LoginPage.vue';
 
+import MembershipTypeSetting from './components/settings/MembershipType.vue';
+import BloodTypeSetting from './components/settings/BloodType.vue';
+import MemberRoleTypeSetting from './components/settings/MemberRoleType.vue';
+import PostCategoryTypeSetting from './components/settings/PostCategoryType.vue';
+
+
 const routes = [
     //login
     // {path: '/login',components: {login: Login}},
     //dashboard
-    {path: '/',components: {dashboard: Dashboard}},
+    {path: '/', component: Dashboard, name:'dashboard'},
+    //settings
+    {path: '/settings/roles', component: MemberRoleTypeSetting, name:'roles'},
+    {path: '/settings/membershipTypes', component: MembershipTypeSetting, name:'membershipTypes'},
+    {path: '/settings/bloodTypes', component: BloodTypeSetting, name:'bloodTypes'},
+    {path: '/settings/postCategories', component: PostCategoryTypeSetting, name:'postCategories'},
+
     //posts
-    {path: '/posts',components: {postsIndex: PostsIndex}},
+    {path: '/posts',component: PostsIndex, name:'listPosts'},
     {path: '/posts/create', component: PostForm, name: 'createPost'},
     {path: '/posts/:id/edit', component: PostForm, name: 'editPost'},
     {path: '/posts/calendar', component: PostCalendar, name: 'viewPost'},
     //users
-    {path: '/users', components: {usersIndex: UserIndex}},
+    {path: '/users', component:UserIndex, name:'listUsers'},
     {path: '/users/:id/edit', component: UserForm, name: 'editUser'},
     {path: '/users/create', component: UserForm, name: 'createUser'},
     //user profile
     {path:'/users/:id', component: ProfileIndex, name: 'profile'},
     //donors
-    {path: '/donors', components:{donorsIndex: DonorsIndex}},
+    {path: '/donors', component: DonorsIndex, name:'listDonors'},
     {path: '/donors/create', component: DonorForm, name: 'createDonor'},
     {path: '/donors/:id/edit', component: DonorForm, name: 'editDonor'},
     {path: '/search', component: DonorSearch, name: 'searchDonor'},
     //branches
-    {path: '/branches', components:{branchesIndex: BranchesIndex}},
+    {path: '/branches', component: BranchesIndex, name:'listBranches'},
     {path: '/branches/:id/edit', component: BranchForm, name: 'editBranch'},
     {path: '/branches/create', component: BranchForm, name: 'createBranch'},
     //hospitals
-    {path: '/hospitals', components:{hospitalsIndex: HospitalsIndex}},
+    {path: '/hospitals', component: HospitalsIndex, name:'listHospitals'},
     {path: '/hospitals/:id/edit', component: HospitalForm, name: 'editHospital'},
     {path: '/hospitals/create', component: HospitalForm, name: 'createHospital'},
 ]
@@ -106,12 +118,6 @@ Vue.component('post-list', require('./components/PostList.vue'));
 //upload components
 Vue.component('upload-files', require('./components/imageUploads/UploadFiles.vue'));
 Vue.component('upload-file', require('./components/imageUploads/UploadFile.vue'));
-
-// settings
-Vue.component('membership-type', require('./components/settings/MembershipType.vue'));
-Vue.component('blood-type', require('./components/settings/BloodType.vue'));
-Vue.component('member-role-type', require('./components/settings/MemberRoleType.vue'));
-Vue.component('post-category-type', require('./components/settings/PostCategoryType.vue'));
 
 const app = new Vue({
     el: '#app',

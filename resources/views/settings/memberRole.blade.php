@@ -1,4 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <member-role-type></member-role-type>
+<router-view name="roles"></router-view>
+<router-view></router-view>
 @endsection

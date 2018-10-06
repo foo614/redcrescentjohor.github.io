@@ -127,7 +127,7 @@
     },
     methods: {
       fetchPostCategoryTypes: function(){
-        axios.get("api/postCategories")
+        axios.get("/api/postCategories")
         .then(res =>{
           this.postCategories = res.data;
         })
@@ -135,7 +135,7 @@
       addItem(){
         this.sending = true;
           setTimeout(()=> {
-            fetch("api/postCategory", {
+            fetch("/api/postCategory", {
               method: this.edit === false ? "post" : "put",
               body: JSON.stringify(this.postCategory),
               headers:{"content-type": "application/json"}

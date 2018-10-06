@@ -128,7 +128,7 @@
     },
     methods: {
       fetchBloodTypes: function(){
-        axios.get("api/bloodTypes")
+        axios.get("/api/bloodTypes")
         .then(res =>{
           this.bloodTypes = res.data;
         })
@@ -136,7 +136,7 @@
       saveItem(){
         this.sending = true;
           setTimeout(()=> {
-            fetch("api/bloodType", {
+            fetch("/api/bloodType", {
               method: this.edit === false ? "post" : "put",
               body: JSON.stringify(this.bloodType),
               headers:{"content-type": "application/json"}

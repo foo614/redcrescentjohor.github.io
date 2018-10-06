@@ -26,7 +26,8 @@
             <v-list-tile
               v-for="(child, i) in item.children"
               :key="i"
-              :href="child.link"
+              :to="child.link"
+              :class="' v-list__tile--active ' ? $route.name.match(child.name) : '' "
             >
               <v-list-tile-action v-if="child.icon">
                 <v-icon>{{ child.icon }}</v-icon>
@@ -62,7 +63,6 @@
         <span class="hidden-sm-and-down">Red Crescent Johor</span>
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <!-- <button id="drop-item" class="theme--dark" v-if="authCheck==1"> -->
         <v-menu offset-y v-model="showMenu" v-if="authCheck==1">
             <v-avatar size="36" v-if="mutableAuth.avatar" slot="activator">
               <img :src="'/img/'+mutableAuth.avatar" alt="mutableAuth.avatar">
@@ -95,36 +95,6 @@
             </v-list-tile>
           </v-list>
         </v-menu>
-      <!-- </button> -->
-    <!-- <ul class="mdl-menu mdl-js-menu mdl-js-ripple-effect mdl-menu--bottom-right demo-list-icon mdl-list" style="padding-top:0;" for="drop-item" v-if="authCheck==1"> -->
-      <!-- <router-link class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;" 
-      :to="{ name: 'profile', params: { id: mutableAuth.id}}"> -->
-      <!-- <li class="mdl-menu__item mdl-list__item--two-line" style="width: 280px;height: 72px; background-color:#eeeeee;padding:10px;" >
-        <a :href="'/users/'+mutableAuth.id" style="text-decoration:none !important; color: inherit;">
-          <span class="mdl-list__item-primary-content">
-            <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar" v-if="mutableAuth.avatar">
-              <img :src="/img/+mutableAuth.avatar" :alt="mutableAuth.avatar">
-            </v-avatar>
-            <v-avatar style="margin-right: 16px;" class="material-icons mdl-list__item-avatar" v-else>
-              <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>
-            </v-avatar>
-            <span>{{mutableAuth.name}}</span>
-            <span class="mdl-list__item-sub-title">{{mutableAuth.email}}</span>
-          </span>
-        </a>
-      </li>
-        <li class="mdl-menu__item mdl-list__item" @click="logout">
-            <a title="logout" style="text-decoration: none; color: rgba(0,0,0,.87);">
-                <span class="mdl-list__item-primary-content">
-                    <i class="material-icons mdl-list__item-icon" style="transform: rotate(270deg);">save_alt</i>Sign out
-                </span>
-            </a>
-            <form style="display: hidden" action="/logout" method="POST" id="logout">
-              <input type="hidden" name="_token" :value="csrf_token"/>
-            </form>
-        </li>
-    </ul> -->
-    
     </v-toolbar>
   </div>
 </template>
@@ -146,49 +116,49 @@ export default {
         icon: "people",
         text: "Member",
         children: [
-          { text: "Add member", link: "/users/create" },
-          { text: "Manage member", link: "/users" }
+          { text: "Add member", link: "/users/create", name:"createUser" },
+          { text: "Manage member", link: "/users", name:"listUsers"}
         ]
       },
       {
         icon: "supervised_user_circle",
         text: "Donor",
         children: [
-          { text: "Add donor", link: "/donors/create" },
-          { text: "Manage donor", link: "/donors" },
-          { text: "Search donor", link: "/donors/search" }
+          { text: "Add donor", link: "/donors/create", name:"createDonor" },
+          { text: "Manage donor", link: "/donors", name:"listDonors" },
+          { text: "Search donor", link: "/search", name:"searchDonor" }
         ]
       },
       {
         icon: "local_hospital",
         text: "Hospital",
         children: [
-          { text: "Add hospital", link: "/hospitals/create" },
-          { text: "Manage hospital", link: "/hospitals" }
+          { text: "Add hospital", link: "/hospitals/create", name:"createHospital" },
+          { text: "Manage hospital", link: "/hospitals", name:"listHospitals" }
         ]
       },
       {
         icon: "bookmarks",
         text: "Course",
         children: [
-          { text: "Add course", link: "/courses/create" },
-          { text: "Manage course", link: "/courses" }
+          { text: "Add course", link: "/courses/create", name:"createCourse" },
+          { text: "Manage course", link: "/courses", name:"listCoursess1" }
         ]
       },
       {
         icon: "event_note",
         text: "Post",
         children: [
-          { text: "Add post", link: "/posts/create" },
-          { text: "Manage post", link: "/posts" }
+          { text: "Add post", link: "/posts/create", name:"createPost" },
+          { text: "Manage post", link: "/posts", name:"listPosts" }
         ]
       },
       {
         icon: "home",
         text: "Branch",
         children: [
-          { text: "Add branch", link: "/branches/create" },
-          { text: "Manage branch", link: "/branches" }
+          { text: "Add branch", link: "/branches/create", name:"createBranch" },
+          { text: "Manage branch", link: "/branches", name:"listBranches" }
         ]
       },
       {
@@ -196,10 +166,10 @@ export default {
         text: "Setting",
         model: false,
         children: [
-          { text: "Role", link: "/roles" },
-          { text: "Membership type", link: "/membershipTypes" },
-          { text: "Blood type", link: "/bloodTypes" },
-          { text: "Post category type", link: "/postCategories" }
+          { text: "Role", link: "/settings/roles", name:"roles" },
+          { text: "Membership type", link: "/settings/membershipTypes", name:"membershipTypes" },
+          { text: "Blood type", link: "/settings/bloodTypes", name:"bloodTypes" },
+          { text: "Post category type", link: "/settings/postCategories", name:"postCategories" }
         ]
       }
     ],
@@ -228,6 +198,5 @@ export default {
 </script>
 
 <style>
-
 </style>
 

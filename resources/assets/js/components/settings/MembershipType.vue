@@ -127,7 +127,7 @@
     },
     methods: {
       fetchMembershipTypes: function(){
-        axios.get("api/membershipTypes")
+        axios.get("/api/membershipTypes")
         .then(res =>{
           this.membershipTypes = res.data;
         })
@@ -135,7 +135,7 @@
       saveItem(){
         this.sending = true;
           setTimeout(()=> {
-            fetch("api/membershipType", {
+            fetch("/api/membershipType", {
               method: this.edit === false ? "post" : "put",
               body: JSON.stringify(this.membershipType),
               headers:{"content-type": "application/json"}

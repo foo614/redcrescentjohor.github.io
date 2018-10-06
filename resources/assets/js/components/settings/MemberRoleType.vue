@@ -127,7 +127,7 @@
     },
     methods: {
       fetchRoles: function(){
-        axios.get("api/roles")
+        axios.get("/api/roles")
         .then(res =>{
           this.roles = res.data;
         })
@@ -135,7 +135,7 @@
       saveItem(){
         this.sending = true;
           setTimeout(()=> {
-            fetch("api/role", {
+            fetch("/api/role", {
               method: this.edit === false ? "post" : "put",
               body: JSON.stringify(this.role),
               headers:{"content-type": "application/json"}

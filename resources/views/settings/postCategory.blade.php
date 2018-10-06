@@ -1,4 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <post-category-type></post-category-type>
+<router-view name="postCategories"></router-view>
+<router-view></router-view>
 @endsection

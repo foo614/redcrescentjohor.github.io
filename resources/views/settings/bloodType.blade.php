@@ -1,4 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <blood-type></blood-type>
+<router-view name="bloodTypes"></router-view>
+<router-view></router-view>
 @endsection

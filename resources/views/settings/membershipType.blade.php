@@ -1,4 +1,5 @@
 @extends('layouts.app')
 @section('content')
-    <membership-type></membership-type>
+<router-view name="membershipTypes"></router-view>
+<router-view></router-view>
 @endsection
