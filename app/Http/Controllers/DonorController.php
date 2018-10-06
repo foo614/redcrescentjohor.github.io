@@ -115,7 +115,7 @@ class DonorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request) {
-        return view('donors.search2');
+        return view('donors.search');
     }
 
     /**

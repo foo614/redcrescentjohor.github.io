@@ -71317,35 +71317,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       dialog: false,
       drawer: null,
       menu: false,
-      items: [{ icon: "laptop", text: "Website" }, {
+      items: [{ icon: "laptop", text: "Website", name: "website" }, {
         icon: "people",
         text: "Member",
         children: [{ text: "Add member", link: "/users/create", name: "createUser" }, { text: "Manage member", link: "/users", name: "listUsers" }]
       }, {
         icon: "supervised_user_circle",
         text: "Donor",
-        children: [{ text: "Add donor", link: "/donors/create", name: "createDonor" }, { text: "Manage donor", link: "/donors", name: "listDonors" }, { text: "Search donor", link: "/search", name: "searchDonor" }]
+        children: [{ text: "Add donor", link: "/donors/create" }, { text: "Manage donor", link: "/donors" }, { text: "Search donor", link: "/search" }]
       }, {
         icon: "local_hospital",
         text: "Hospital",
-        children: [{ text: "Add hospital", link: "/hospitals/create", name: "createHospital" }, { text: "Manage hospital", link: "/hospitals", name: "listHospitals" }]
+        children: [{ text: "Add hospital", link: "/hospitals/create" }, { text: "Manage hospital", link: "/hospitals" }]
       }, {
         icon: "bookmarks",
         text: "Course",
-        children: [{ text: "Add course", link: "/courses/create", name: "createCourse" }, { text: "Manage course", link: "/courses", name: "listCoursess1" }]
+        children: [{ text: "Add course", link: "/courses/create" }, { text: "Manage course", link: "/courses" }]
       }, {
         icon: "event_note",
         text: "Post",
-        children: [{ text: "Add post", link: "/posts/create", name: "createPost" }, { text: "Manage post", link: "/posts", name: "listPosts" }]
+        children: [{ text: "Add post", link: "/posts/create" }, { text: "Manage post", link: "/posts" }]
       }, {
         icon: "home",
         text: "Branch",
-        children: [{ text: "Add branch", link: "/branches/create", name: "createBranch" }, { text: "Manage branch", link: "/branches", name: "listBranches" }]
+        children: [{ text: "Add branch", link: "/branches/create" }, { text: "Manage branch", link: "/branches" }]
       }, {
         icon: "settings",
         text: "Setting",
         model: false,
-        children: [{ text: "Role", link: "/settings/roles", name: "roles" }, { text: "Membership type", link: "/settings/membershipTypes", name: "membershipTypes" }, { text: "Blood type", link: "/settings/bloodTypes", name: "bloodTypes" }, { text: "Post category type", link: "/settings/postCategories", name: "postCategories" }]
+        children: [{ text: "Role", link: "/settings/roles" }, { text: "Membership type", link: "/settings/membershipTypes", name: "membershipTypes" }, { text: "Blood type", link: "/settings/bloodTypes", name: "bloodTypes" }, { text: "Post category type", link: "/settings/postCategories", name: "postCategories" }]
       }],
       mutableAuth: {}
     };
@@ -71449,10 +71449,7 @@ var render = function() {
                                   "v-list-tile",
                                   {
                                     key: i,
-                                    class: " v-list__tile--active "
-                                      ? _vm.$route.name.match(child.name)
-                                      : "",
-                                    attrs: { to: child.link }
+                                    attrs: { exact: "", to: child.link }
                                   },
                                   [
                                     child.icon

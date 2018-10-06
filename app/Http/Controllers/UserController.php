@@ -10,7 +10,6 @@ use App\Role;
 use App\MembershipType;
 use App\Branch;
 use App\BloodType;
-use App\Donor;
 use Illuminate\Support\Facades\Storage;
 
 class UserController extends Controller
