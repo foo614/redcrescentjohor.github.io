@@ -10,9 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::post('bot', 'BotController');
 Route::get('/', 'HomeController@index');
-Route::get('test', 'HomeController@test');
 // Route::get('posts', 'HomeController@posts');
 Route::resource('donors', 'DonorController');
 

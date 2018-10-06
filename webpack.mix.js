@@ -12,7 +12,7 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-//    .sass('resources/assets/sass/app.scss', 'public/css');
+// .sass('resources/assets/sass/app.scss', 'public/css');
 // mix.copy('node_modules/vuetify/dist/vuetify.min.css', 'public/css');
 // mix.copy('node_modules/vuetify/dist/vuetify.min.js', 'public/js');
    
@@ -39,7 +39,7 @@ mix.webpackConfig({
                //and have full support for offline first (example below)
                
             '/': ['resources/views/home.blade.php'],
-            '/posts': ['resources/views/posts.blade.php']
+            '/posts': ['resources/views/posts/index.blade.php']
         },
         staticFileGlobsIgnorePatterns: [/\.map$/, /mix-manifest\.json$/, /manifest\.json$/, /service-worker\.js$/],
         navigateFallback: '/',

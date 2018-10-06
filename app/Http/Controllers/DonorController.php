@@ -19,8 +19,7 @@ class DonorController extends Controller
      */
     public function index()
     {
-        $donors = User::with('blood_type')->get();
-        return view('donors.index', compact(['donors']));
+        return view('donors.index');
     }
 
     /**
@@ -52,11 +51,7 @@ class DonorController extends Controller
      */
     public function show($id)
     {
-        $donor = Donor::find($id);
-
-        return view('donors.show',[
-            'donor' => $donor,
-        ]);
+        //
     }
 
     /**
@@ -67,14 +62,7 @@ class DonorController extends Controller
      */
     public function edit($id)
     {
-        $donor = User::with('blood_type')->find($id);
-        $blood_types = BloodType::all();
-
-        return view('donors.edit', [
-            'donor' => $donor,
-            'blood_types' => $blood_types,
-        ]);
-        //return response()->json($donor);
+        //
     }
 
     /**
@@ -116,18 +104,10 @@ class DonorController extends Controller
      * Return donor details
      */
     public function donor(Request $request){
-        $donors = Donor::with('bloodType', 'user')->get();
+        $donors = User::with('blood_type')->get();
         $hospitals = Hospital::get();
         return response([$donors, $hospitals]);
     }
-
-    /**
-     * Return donor details
-     */
-    // public function hospital(Request $request){
-    //     $hospitals = Hospital::get();
-    //     return response($hospitals);
-    // }
 
     /**
      * Search donors
@@ -135,26 +115,16 @@ class DonorController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function search(Request $request) {
-        // if ($request->user()->donor)
-        //     abort(403);
-        $blood_types = BloodType::all();
-        $hospitals = Hospital::all();
-        return view('donors.search', compact(['blood_types', 'hospitals']));
+        return view('donors.search2');
     }
+
     /**
      * send mail to registered donator
      */
-    public function mail($name, $email){
+    public function sendMail($name, $email){
         $content = new \stdClass();
         $content->name = $name;
 
-        Mail::to($email)->send(new DonatorRegisteredMail( $content ));  
-        $notification = array(
-            'message' => 'Thank you for joined as donator! Please check email to get more details.',
-            'title' => 'Donator account created',
-            'alert-type' => 'success'
-        );
-        return redirect('/')
-        ->with($notification);
+        Mail::to($email)->send(new DonatorRegisteredMail( $content ));
     }
 }

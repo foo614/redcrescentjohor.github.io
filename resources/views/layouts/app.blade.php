@@ -15,8 +15,8 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">    
-    <link rel="manifest" href="{{url('/manifest.json')}}">
-    <meta name="theme-color" content="#fff"/>
+    {{-- <link rel="manifest" href="{{url('/manifest.json')}}"> --}}
+    {{-- <meta name="theme-color" content="#fff"/> --}}
     <title>Red Crescent Johor</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -38,11 +38,12 @@
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
-    @if (Route::currentRouteName() === 'branches.create' || Route::currentRouteName() === 'branches.edit' || Route::currentRouteName() === 'donors.create' || Route::currentRouteName() === 'donors.edit' || Route::currentRouteName() === 'users.edit' || Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar' || Route::currentRouteName() === 'users.create')
+    {{-- @if (Route::currentRouteName() === 'donors.search ' || Route::currentRouteName() === 'branches.create' || Route::currentRouteName() === 'branches.edit' || Route::currentRouteName() === 'donors.create' || Route::currentRouteName() === 'donors.edit' || Route::currentRouteName() === 'users.edit' || Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar' || Route::currentRouteName() === 'users.create')
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
     @else
         <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
-    @endif
+    @endif --}}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
     
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}"
@@ -65,13 +66,11 @@
     <div id="embed-api-auth-container"></div>
     <div id="chart-container"></div>
     <div id="view-selector-container"></div>
-    {{-- @include('scripts.toastr') --}}
     <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{asset('js/google-map.js') }}"></script>
-    @yield('footer-scripts')
+    {{-- <script src="{{asset('js/google-map.js') }}"></script> --}}
 </body>
 </html>
-<script>
+{{-- <script>
     if ('serviceWorker' in navigator ) {
         window.addEventListener('load', function() {
             navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
@@ -83,4 +82,4 @@
             });
         });
     }
-</script>
+</script> --}}

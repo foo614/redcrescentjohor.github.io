@@ -259,7 +259,7 @@ function findDonors () {
         for (let i = 0; i < donors[0].length; i++) {
             let donor = donors[0][i];
 
-            if (donor.blood_type.name !== bloodType)
+            if ((donor.blood_type ? donor.blood_type.name : null) !== bloodType)
                 continue;
 
             let loc = new google.maps.LatLng(donor.map_lat, donor.map_lng);
@@ -267,7 +267,7 @@ function findDonors () {
             if (google.maps.geometry.spherical.computeDistanceBetween(hospitalLocation, loc) > searchRadius)
                 continue;
             // var markerLetter = String.fromCharCode('A'.charCodeAt(0) + (i % 26));
-            var markerLetter = donor.user.name.charAt(0).toUpperCase();
+            var markerLetter = donor.name.charAt(0).toUpperCase();
             var markerIcon = customMarker + markerLetter + '.png';
             let mkr = new google.maps.Marker({
                 map: map,
@@ -294,11 +294,11 @@ function findDonors () {
     function makeInfoWindow (donor, mkr) {
         let contentString = '<div class=" mdl-card mdl-shadow--2dp">'+
                 '<div class="mdl-card__supporting-text">' + 
-                '<h4 class="mdl-card__title-text"><i class="material-icons">person</i> ' + donor.user.name + '</h4>'+
-                '<strong>IC Number:</strong> ' + donor.user.ic + '<br/>' + 
+                '<h4 class="mdl-card__title-text"><i class="material-icons">person</i> ' + donor.name + '</h4>'+
+                '<strong>IC Number:</strong> ' + donor.ic + '<br/>' + 
                 '<strong>Blood Type:</strong> ' + donor.blood_type.name + '<br/>' +
-                '<strong>Contact Number:</strong> ' + donor.user.contact + '<br/>' +
-                '<strong>Address:</strong> ' + donor.user.address  + '</div>'+
+                '<strong>Contact Number:</strong> ' + donor.contact + '<br/>' +
+                '<strong>Address:</strong> ' + donor.address  + '</div>'+
                 '<div class="mdl-card__actions mdl-card--border"><a class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--primary" onclick="sendNotification(this, ' + donor.id +',' + hospitalSelectedId +')">' + 'Send Invitation'  + '</a></div>'
 
         let infoWindow = new google.maps.InfoWindow({
@@ -385,7 +385,7 @@ $(function () {
 
 function addResult(result, i, mkr) {
     var results = document.getElementById('results');
-    var markerLetter = result[i].user.name.charAt(0).toUpperCase();
+    var markerLetter = result[i].name.charAt(0).toUpperCase();
     var markerIcon = customMarker + markerLetter + '.png';
 
     var tr = document.createElement('tr');
@@ -410,11 +410,11 @@ function addResult(result, i, mkr) {
     checkbox.checked = true; 
 
     label.appendChild(checkbox);
-    var name = document.createTextNode(result[i].user.name);
+    var name = document.createTextNode(result[i].name);
 
     iconTd.appendChild(label);
     nameTd.appendChild(name);
-    componentHandler.upgradeElement(label);
+    // componentHandler.upgradeElement(label);
     tr.appendChild(iconTd);
     tr.appendChild(nameTd);  
 

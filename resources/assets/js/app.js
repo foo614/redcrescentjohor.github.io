@@ -35,6 +35,7 @@ import UserForm from './components/users/UserForm.vue';
 
 import DonorsIndex from './components/donors/DonorsTable.vue';
 import DonorForm from './components/donors/DonorForm.vue';
+import DonorSearch from './components/donors/DonorSearch.vue';
 
 import BranchesIndex from './components/branches/BranchesTable.vue';
 import BranchForm from './components/branches/BranchForm.vue';
@@ -65,6 +66,7 @@ const routes = [
     {path: '/donors', components:{donorsIndex: DonorsIndex}},
     {path: '/donors/create', component: DonorForm, name: 'createDonor'},
     {path: '/donors/:id/edit', component: DonorForm, name: 'editDonor'},
+    {path: '/search', component: DonorSearch, name: 'searchDonor'},
     //branches
     {path: '/branches', components:{branchesIndex: BranchesIndex}},
     {path: '/branches/:id/edit', component: BranchForm, name: 'editBranch'},

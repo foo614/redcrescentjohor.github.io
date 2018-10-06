@@ -4,7 +4,7 @@
             <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="updateItem">
                 <v-card>
                     <div class="text-xs-center">
-                        <v-avatar size="125px" class="material-icons mdl-list__item-avatar elevation-7 mb-1">
+                        <v-avatar size="125px" color="#757575" class="material-icons elevation-7 mb-1">
                             <span class="white--text headline" v-if="!show && !item.avatar">{{item.name | getFirstLetter}}</span>
                             <img
                                 v-if="item.avatar != null"
@@ -15,8 +15,8 @@
                             <v-tooltip bottom v-if="show && !preview">
                                 <input type="file" ref="avatar" v-on:change="handleFile" style="display:none" v-if="show">
                                 <v-icon
-                                    dark
                                     large
+                                    dark
                                     @click="pickFile"
                                     slot="activator"
                                 >

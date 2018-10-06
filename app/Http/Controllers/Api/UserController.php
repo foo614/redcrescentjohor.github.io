@@ -10,8 +10,10 @@ use App\MembershipType;
 use App\Branch;
 use App\BloodType;
 use App\Donor;
+
 use Illuminate\Support\Facades\Storage;
 use App\Http\Resources\UserResource;
+use App\Http\Resources\DonorResource;
 
 class UserController extends Controller
 {
@@ -34,7 +36,7 @@ class UserController extends Controller
      */
     public function donors(){
         $donors = User::where("blood_type_id", "!=", null)->get();
-        return UserResource::collection($donors);
+        return DonorResource::collection($donors);
     }
 
     /**
@@ -91,6 +93,9 @@ class UserController extends Controller
             }else{
                 $user->roles()->detach(); // detach the role related
             }
+        }
+        if(!$user->membership_type_id){
+            app('App\Http\Controllers\DonorController')->sendMail($user->name, $user->email);
         }
         return new UserResource($user);
     }
