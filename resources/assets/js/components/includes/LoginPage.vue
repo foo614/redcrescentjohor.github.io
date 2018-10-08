@@ -28,7 +28,7 @@
             </v-card-text>
             <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn dark color="red" type="submit">Login</v-btn>
+            <v-btn dark color="red" type="submit" @click="login">Login</v-btn>
             </v-card-actions>
         </v-card>
         </v-flex>
@@ -60,7 +60,7 @@
                 let vm = this
                 axios.post('/login', vm.loginDetails)
                 .then(function (response) {
-                    vm.$router.push({ path: '/' }, ()=> {
+                    vm.$router.push({name:'dashboard'}, ()=> {
                         vm.$toasted.success("Welcome." , {icon:"check"})
                     })
                 })

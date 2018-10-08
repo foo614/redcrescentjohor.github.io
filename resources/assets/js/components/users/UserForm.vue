@@ -294,7 +294,7 @@ export default {
                         })
                     })
                     .catch(err => console.log(err))
-                }, 2000)
+                }, 1500)
             }
         }
     }

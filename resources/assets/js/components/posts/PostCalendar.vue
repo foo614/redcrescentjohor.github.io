@@ -526,7 +526,7 @@
                                     this.fetchUpcomingEvents()
                                 })
                                 .catch(err => console.log(err));
-                        }, 2000);
+                        }, 1500);
                     }
                 }else{
                     if (this.$refs.form.validate()) {
@@ -561,7 +561,7 @@
                                     this.fetchUpcomingEvents()
                                 })
                                 .catch(err => console.log(err));
-                        }, 2000);
+                        }, 1500);
                     }
                 }
             },

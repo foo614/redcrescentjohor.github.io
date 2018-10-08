@@ -34,7 +34,8 @@
     "vue-router": "^3.0.1",
     "vue-simple-calendar": "^4.0.2",
     "vue-toasted": "^1.1.24",
-    "vuetify": "^1.2.2"
+    "vuetify": "^1.2.2",
+    "circular-json": "^0.3.0"
   },
   "repository": {
     "type": "git",

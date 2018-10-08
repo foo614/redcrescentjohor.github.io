@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Auth;
-use App\Mail\DonatorRegisteredMail;
+use App\Mail\Register;
 use Illuminate\Support\Facades\Mail;
 use App\User;
 use App\BloodType;
@@ -125,6 +125,6 @@ class DonorController extends Controller
         $content = new \stdClass();
         $content->name = $name;
 
-        Mail::to($email)->send(new DonatorRegisteredMail( $content ));
+        Mail::to($email)->send(new Register( $content ));
     }
 }

@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class BloodDonationInvitationMail extends Mailable
+class Invitation extends Mailable
 {
     use Queueable, SerializesModels;
     public $invitation_content;
@@ -16,7 +16,7 @@ class BloodDonationInvitationMail extends Mailable
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($invitation_content)
     {
         $this->invitation_content = $invitation_content;
     }
@@ -28,7 +28,6 @@ class BloodDonationInvitationMail extends Mailable
      */
     public function build()
     {
-        // return $this->view('view.name');
-        return $this->view('mails.blood_donation_invitation_mail')->text('mails.blood_donation_invitation_mail_plain');
+        return $this->markdown('emails.invitation');
     }
 }

@@ -7,9 +7,9 @@
                 v-model="item.blood_type"
                 item-text="name"
                 menu-props="auto"
-                label="Select"
+                label="Blood Type"
                 hide-details
-                prepend-icon="map"
+                prepend-icon="opacity"
                 single-line
                 @change="onChange"
             ></v-select>
@@ -20,9 +20,9 @@
                 v-model="item.hospital"
                 item-text="name"
                 menu-props="auto"
-                label="Select"
+                label="Hospital"
                 hide-details
-                prepend-icon="map"
+                prepend-icon="local_hospital"
                 single-line
                 @change="onChange"
                 return-object
@@ -33,19 +33,18 @@
                 :items="radius"
                 v-model="item.search_radius"
                 menu-props="auto"
-                label="Select"
+                label="Radius (kilometer)"
                 hide-details
-                prepend-icon="map"
+                prepend-icon="360"
                 single-line
                 @change="onChange"
             ></v-select>
         </v-flex>
         <v-flex sm8 xs12 mt-3>
             <div class="google-map" :id="mapName"></div>
-            <!-- <v-list-tile dense id="legend"></v-list-tile> -->
         </v-flex>
         <v-flex sm4 xs12 mt-3>
-            <v-card elevation-5 style="margin-left:10px">
+            <v-card elevation-5 style="margin-left:10px">   
                 <v-list>
                     <v-list-tile>
                     <v-list-tile-content>
@@ -58,19 +57,49 @@
                     </v-list-tile>
                 </v-list>
                 <v-divider></v-divider>
-                <v-list>
+                <v-list v-if="searchResults.length > 0">
                     <v-list-tile>
                     <v-list-tile-action>
-                        <v-switch color="purple"></v-switch>
+                        <v-checkbox ripple v-model="selectAll" :indeterminate="selected.length > 0 && selected.length < searchResults.length" :input-value="selected.length === searchResults.length ? true : false"></v-checkbox>
                     </v-list-tile-action>
-                    <v-list-tile-title>Enable messages</v-list-tile-title>
+                    <v-list-tile-title>Name</v-list-tile-title>
+                    <v-list-tile-title>Distance Between</v-list-tile-title>
+                    <v-list-tile-action>Action</v-list-tile-action>
+                    </v-list-tile>
+                </v-list>
+                <v-list>
+                    <v-list-tile-content v-if="searchResults.length < 1" class="ml-2"> Let's discover donators nearby</v-list-tile-content>
+                    <v-list-tile 
+                    v-for="(result, index) in searchResults"
+                    :key="index"                    
+                    >
+                    <v-list-tile-action>
+                        <v-checkbox v-model="selected" :value="index" multiple ripple></v-checkbox>
+                    </v-list-tile-action>
+                    <v-list-tile-title @click="onClickDonor(result.donorMarker)" style="cursor: pointer">{{result.donor['name']}}</v-list-tile-title>
+                    <v-list-tile-title>{{result.verifyDistanceBetweenLocation | formatDistance}}</v-list-tile-title>
+                    <v-list-tile-action>
+                        <v-icon
+                        v-if="result.search == true"
+                        color="green lighten-1"
+                        >
+                        check
+                        </v-icon>
+
+                        <v-icon
+                        v-else
+                        color="blue darken-2"
+                        @click="sendNotificationBySelected(this, result.donor['id'], item.hospital.id, result)"
+                        >
+                        send
+                        </v-icon>
+                </v-list-tile-action>
                     </v-list-tile>
                 </v-list>
         
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn flat @click="menu = false">Cancel</v-btn>
-                    <v-btn color="primary" flat @click="menu = false">Save</v-btn>
+                    <v-btn color="primary" :disabled="searchResults.length < 1" @click="sendNotificationBySelected(this, selected , item.hospital.id, searchResults)">Send</v-btn>
                 </v-card-actions>
             </v-card>
         </v-flex>
@@ -78,6 +107,7 @@
     </v-card>
 </template>
 <script>
+const CircularJSON = require('circular-json');
 export default {
     name: 'google-map',
     props: ['name'],
@@ -91,7 +121,8 @@ export default {
         item:{
             blood_type:'',
             hospital:'',
-            search_radius:''
+            search_radius:'',
+            icon:true
         },
         mapName: this.name + "-map",
         originMarker: [{latitude:51.501527, longitude:-0.1921837}],
@@ -108,8 +139,9 @@ export default {
         marker: null,
         donorMarkers: [],
         donorInfoWindows: [],
-        filteredList: [],
         customMarker: 'https://developers.google.com/maps/documentation/javascript/images/marker_green',
+        searchResults:[],
+        selected: [],
         }
     },
     created() {
@@ -121,7 +153,7 @@ export default {
         const mapCentre = this.originMarker[0]
         let loc = new google.maps.LatLng(1.534054, 103.621729);
         const options = {
-            zoom:10,
+            zoom:8,
             center: loc
         }
         this.map = new google.maps.Map(element, options);
@@ -130,7 +162,7 @@ export default {
         window.sendNotification = function (elm, donorId, hospitalId) {
             $(elm).prop('disabled', true);
             $(elm).text('Sending...');
-            $.ajax('mail/send', {
+            $.ajax('/mail/send', {
                 method: 'GET',
                 data: {
                     _token: csrf_token,
@@ -143,14 +175,13 @@ export default {
                 error: function () {
                     $(elm).text('Failed');
                     setTimeout(function () {
-                        $(elm).text('Send Notification');
+                        $(elm).text('Try resend');
                         $(elm).prop('disabled', false);
-                    }, 1000);
+                    }, 1500);
                 }
             });
         };
     },
-    watch:{},
     methods:{
         fetchSelectTypes() {
             axios.get("/api/bloodTypes").then(res => {
@@ -163,7 +194,7 @@ export default {
         onChange(){
             if(!this.item.blood_type || !this.item.hospital || !this.item.search_radius)
                 return
-            this.findDonors();
+            this.findDonors()
         },
         findDonors(){
             axios.get("api/donors").then(res => {
@@ -211,38 +242,49 @@ export default {
             let bounds = new google.maps.LatLngBounds(null)
             bounds.extend(this.hospitalLocation)
 
-            for(let i=0; i<donors.length; i++){
-                let donor = donors[i]
-                if(donor.blood_type.name != this.item.blood_type)
-                    continue
-                let donorLocation = new google.maps.LatLng(donor.map_lat, donor.map_lng)
-                if(google.maps.geometry.spherical.computeDistanceBetween(this.hospitalLocation, donorLocation) > search_radius)
-                    continue
-                let markerDonorLetter = donor.name.charAt(0).toUpperCase()
-                let markerDonorIcon = this.customMarker + markerDonorLetter + '.png'
-                let donorMarker = new google.maps.Marker({
-                    map: this.map,
-                    position: donorLocation,
-                    animation: google.maps.Animation.DROP,
-                    icon: markerDonorIcon
-                })
-                this.makeInfoWindow(donor, donorMarker)
+            if(donors.length === 0){
+                this.$toasted.info('No donors in records' , {icon:"error"})
+            }else{
+                this.searchResults=[]
+                for(let i=0; i<donors.length; i++){
+                    let donor = donors[i]
+                    if(donor.blood_type.name != this.item.blood_type)
+                        continue
+                    let donorLocation = new google.maps.LatLng(donor.map_lat, donor.map_lng)
+                    let verifyDistanceBetweenLocation = google.maps.geometry.spherical.computeDistanceBetween(this.hospitalLocation, donorLocation)
+                    if(verifyDistanceBetweenLocation > search_radius)
+                        continue
+                    let markerDonorLetter = donor.name.charAt(0).toUpperCase()
+                    let markerDonorIcon = this.customMarker + markerDonorLetter + '.png'
+                    let donorMarker = new google.maps.Marker({
+                        map: this.map,
+                        position: donorLocation,
+                        animation: google.maps.Animation.DROP,
+                        icon: markerDonorIcon
+                    })
+                    this.makeInfoWindow(donor, donorMarker)
 
-                this.donorMarkers.push(donorMarker)
+                    this.donorMarkers.push(donorMarker)
 
-                bounds.extend(donorLocation)
+                    bounds.extend(donorLocation)
 
-                
-            }
+                    let search = false
+                    this.searchResults.push({donor, donorMarker, verifyDistanceBetweenLocation, search})
+                }
+                if(this.searchResults.length === 0)
+                    this.$toasted.error('No donors found!' , {icon:"error"})
             this.map.setCenter(this.hospitalLocation);
             this.map.fitBounds(bounds);
             this.map.panToBounds(bounds);
-
+            }
 
         },
         makeInfoWindow(donor, marker){
             let contentString =
-            '<div class="info-box"><h2 style="display: inline-flex"><i class="material-icons mr-1">people</i>' + donor.name + '</h2>'+ '<div><hr class="v-divider theme--light mt-1 mb-1"><h4>Blood Type: ' + donor.blood_type.name +'</h4></div><div><h4>Contact: '+ donor.contact + '</h4></div><div><h4>Email: '+ donor.email + '</h4></div><div><h4>Location: ' + donor.address + '</h4></div></div><a class="v-btn__content" onclick="sendNotification(this, ' + donor.id +',' + this.item.hospital.id +')">Send</a>';
+            '<div class="info-box"><h2 style="display: inline-flex"><i class="material-icons mr-1">person</i>' + donor.name +'</h2>'+ 
+            '<div><hr class="v-divider theme--light mt-1 mb-1"><h4>Blood Type: ' + donor.blood_type.name +'</h4></div><div><h4>Contact: '
+            + donor.contact +'</h4></div><div><h4>Email: '+ donor.email +'</h4></div><div><h4>Location: '+ donor.address + 
+            '</h4></div><div class="v-btn theme--light success ml-0"><a class="v-btn__content" onclick="sendNotification(this, ' + donor.id +',' + this.item.hospital.id +')">Send</a></div></div>';
             let infoWindow = new google.maps.InfoWindow({
                 content: contentString,
             })
@@ -255,10 +297,64 @@ export default {
             })
             app.donorInfoWindows.push(infoWindow)
         },
-
+        sendNotificationBySelected(elm, donorId, hospitalId, status){
+            if(donorId){
+                if(donorId.length > 0){
+                donorId.forEach(function(v){
+                    var donor_id = status[v].donor['id']
+                    status[v].search = true
+                    setTimeout(() => {$.ajax('/mail/send', {
+                        method: 'GET',
+                        data: {
+                            _token: csrf_token,
+                            donor_id: donor_id,
+                            hospital_id: hospitalId
+                        },
+                    })} , 1500)
+                })
+                }else{
+                    status.search = true
+                    setTimeout(() => { $.ajax('/mail/send', {
+                        method: 'GET',
+                        data: {
+                            _token: csrf_token,
+                            donor_id: donorId,
+                            hospital_id: hospitalId
+                        },
+                    })} , 1500)
+                }
+                this.$toasted.success('Notification Sent' , {icon:"check"})
+                this.selected = [];
+            }
+        },
+        onClickDonor(donorMarker){
+            google.maps.event.trigger(donorMarker, 'click');
+        }
     },
-    
-    
+    computed: {
+        selectAll: {
+            get: function () {
+                return this.searchResults ? this.selected.length == this.searchResults.length : false;
+            },
+            set: function (value) {
+                var selected = [];
+
+                if (value) {
+                    this.searchResults.forEach(function (obj,index) {
+                        selected.push(index);
+                    });
+                }
+
+                this.selected = selected;
+            }
+        }
+    },
+    filters:{
+        formatDistance(v) {
+            let val = (v/1000).toFixed(1) + ' km'
+            return val
+        }
+    }
 };
 </script>
 <style scoped>

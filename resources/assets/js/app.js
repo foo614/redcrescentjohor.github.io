@@ -44,7 +44,7 @@ import HospitalsIndex from './components/hospitals/HospitalsTable.vue';
 import HospitalForm from './components/hospitals/HospitalForm.vue';
 
 import Dashboard from './components/includes/Dashboard.vue';
-// import Login from './components/includes/LoginPage.vue';
+import Login from './components/includes/LoginPage.vue';
 
 import MembershipTypeSetting from './components/settings/MembershipType.vue';
 import BloodTypeSetting from './components/settings/BloodType.vue';
@@ -54,7 +54,7 @@ import PostCategoryTypeSetting from './components/settings/PostCategoryType.vue'
 
 const routes = [
     //login
-    // {path: '/login',components: {login: Login}},
+    {path: '/login',components: {login: Login}},
     //dashboard
     {path: '/', component: Dashboard, name:'dashboard'},
     //settings
