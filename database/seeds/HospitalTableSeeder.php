@@ -19,6 +19,8 @@ class HospitalTableSeeder extends Seeder
             'contact' => '07-225 3000',
             'map_lat' => '1.475979',
             'map_lng' => '103.74124200000006',
+            'place_id' => 'ChIJk8Bjl7IS2jERmnURVrR-s0o',
+            'formatted_address' => 'Kolam Ayer',
             'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
             'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
         ]);

@@ -9,6 +9,7 @@ class Post extends Model
     protected $fillable = ['name', 'body', 'status', 'post_type_id'];
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+    protected $perPage = 1000;
     /**
      * Get the user Gravatar by their email address.
      *
@@ -25,5 +26,8 @@ class Post extends Model
     public function event()
     {
         return $this->hasOne('App\Event');
+    }
+    public function blood_donation_records(){
+        return $this->hasMany(BloodDonationRecord::class);
     }
 }

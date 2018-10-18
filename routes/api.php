@@ -80,3 +80,17 @@ Route::get('member/{id}', 'Api\UserController@show');
 Route::post('member', 'Api\UserController@store');
 Route::put('member', 'Api\UserController@store');
 Route::delete('member/{id}', 'Api\UserController@destroy');
+
+//course api route
+Route::get('courses', 'Api\CourseController@index');
+Route::get('course/{id}', 'Api\CourseController@show');
+Route::post('course', 'Api\CourseController@store');
+Route::delete('course/{id}', 'Api\CourseController@destroy');
+Route::put('course', 'Api\CourseController@store');
+
+//course api route
+Route::get('bloodDonationRecords', 'Api\BloodDonationRecordController@index');
+Route::get('bloodDonationRecord/{id}', 'Api\BloodDonationRecordController@show');
+Route::post('bloodDonationRecord', 'Api\BloodDonationRecordController@store');
+Route::delete('bloodDonationRecord/{id}', 'Api\BloodDonationRecordController@destroy');
+Route::put('bloodDonationRecord', 'Api\BloodDonationRecordController@store');

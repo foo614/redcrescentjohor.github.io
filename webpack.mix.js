@@ -11,20 +11,11 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
+mix.js('resources/assets/js/app.js', 'public/js');
 // .sass('resources/assets/sass/app.scss', 'public/css');
-// mix.copy('node_modules/vuetify/dist/vuetify.min.css', 'public/css');
-// mix.copy('node_modules/vuetify/dist/vuetify.min.js', 'public/js');
+mix.copy('node_modules/vuetify/dist/vuetify.min.css', 'public/css');
+mix.copy('node_modules/vuetify/dist/vuetify.min.js', 'public/js');
    
-// mix.copy('node_modules/material-design-lite/dist/material.red-blue.min.css', 'public/css');
-// mix.copy('node_modules/material-design-lite/material.min.js', 'public/js');
-// mix.copy('node_modules/jquery/dist/jquery.min.js', 'public/js');
-// mix.copy('node_modules/getmdl-select/getmdl-select.min.css', 'public/css');
-// mix.copy('node_modules/getmdl-select/getmdl-select.min.js', 'public/js');
-// mix.copy('node_modules/toastr/build/toastr.min.css', 'public/css');
-// mix.copy('node_modules/toastr/build/toastr.min.js', 'public/js');
-
-
 var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 mix.webpackConfig({
     plugins: [
@@ -38,7 +29,7 @@ mix.webpackConfig({
         dynamicUrlToDependencies: { //you should add the path to your blade files here so they can be cached
                //and have full support for offline first (example below)
                
-            '/': ['resources/views/home.blade.php'],
+            '/': ['resources/views/home/home.blade.php'],
             '/posts': ['resources/views/posts/index.blade.php']
         },
         staticFileGlobsIgnorePatterns: [/\.map$/, /mix-manifest\.json$/, /manifest\.json$/, /service-worker\.js$/],

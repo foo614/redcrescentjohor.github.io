@@ -35,6 +35,8 @@ class HospitalController extends Controller
         $hospital->contact = $request->contact;
         $hospital->map_lat = $request->map_lat;
         $hospital->map_lng = $request->map_lng;
+        $hospital->place_id = $request->place_id;
+        $hospital->formatted_address = $request->formatted_address;
 
         if($hospital->save()){
             return new HospitalResource($hospital);

@@ -1,6 +1,6 @@
 <template>
     <v-layout>
-        <v-flex xs12 md8>
+        <v-flex xs12 sm8>
             <div style="display: flex; font-family: Calibri, sans-serif; min-height: 80vh;">
                 <div class="calendar-parent">
                     <calendar-view :events="events" :show-date="showDate" :time-format-options="{hour: 'numeric', minute:'2-digit'}"
@@ -15,7 +15,8 @@
                         :on-period-change="periodChanged"
                         @drop-on-date="onDrop" 
                         @click-date="onClickDay" 
-                        @click-event="onClickEvent">
+                        @click-event="onClickEvent"
+                        style="display: flex; flex-direction: column; flex-grow: 1;">
                         <calendar-view-header 
                             slot="header" 
                             slot-scope="{ headerProps }" 
@@ -26,7 +27,7 @@
             </div>
         </v-flex>
 
-        <v-flex xs12 md4 class="ml-3">
+        <v-flex xs12 sm4 class="ml-3">
             <v-layout row wrap>
                 <v-flex xs12>
                     <v-card>
@@ -34,7 +35,7 @@
                             <div class="headline">Options</div>
                             <v-spacer></v-spacer>
                             <v-btn icon @click="showOptions = !showOptions">
-                                <v-icon>{{ showOptions ? 'keyboard_arrow_down' : 'keyboard_arrow_up' }}</v-icon>
+                                <v-icon>{{ showOptions ? 'keyboard_arrow_up' : 'keyboard_arrow_down' }}</v-icon>
                             </v-btn>
                         </v-card-title>
                         <v-slide-y-transition>
@@ -67,7 +68,7 @@
                     <v-card v-if="eventDetail">
                         <v-toolbar
                             dark
-                            :style="'background-image:url(/img/'+eventDetail.cover_img+')'"
+                            :style="eventDetail.cover_img ? 'background-image:url(/img/'+eventDetail.cover_img+')' : ''"
                             class="event-cover--image"
                             extended
                         >
@@ -178,7 +179,7 @@
                         <v-layout>
                             <v-flex xs12 sm12>
                                 <v-text-field v-model="item.name" label="Title" prepend-icon="event_note" :rules="[v => !!v || 'Title is required']"
-                                    required :readonly="!readEvent ? false : true"></v-text-field>
+                                    required :readonly="!readEvent ? false : true" ></v-text-field>
                             </v-flex>
                         </v-layout>
                         <!-- address -->
@@ -196,7 +197,7 @@
                                                 <label aria-hidden="true" class="v-label v-label--active theme--light"
                                                     style="left: 0px; right: auto; position: absolute;">Location</label>
                                                 <input :ref="!readEvent ? 'autocomplete' : ''" placeholder="Search" class="search-location"
-                                                    v-model="item.address" :readonly="!readEvent ? false : true"/>
+                                                    v-model="item.address" :disabled="!readEvent ? false : true"/>
                                             </div>
                                         </div>
                                     </div>
@@ -245,8 +246,12 @@
                         <v-layout>
                             <!-- end date picker -->
                             <v-flex xs12 sm4 v-show="optionalEnd || item.end_date">
-                                <v-menu ref="date_menu2" :close-on-content-click="false" v-model="date_menu2"
-                                    :nudge-right="40" :return-value.sync="item.end_date" lazy transition="scale-transition"
+                                <v-menu ref="date_menu2" 
+                                    :close-on-content-click="false" 
+                                    v-model="date_menu2"
+                                    :nudge-right="40"
+                                    :return-value.sync="item.end_date" 
+                                    lazy transition="scale-transition"
                                     offset-y full-width min-width="290px">
                                     <v-text-field slot="activator" v-model="item.end_date" label="End Date"
                                         prepend-icon="event" readonly></v-text-field>
@@ -274,15 +279,16 @@
                                     <span slot="badge" v-if="(preview || item.cover_img) && !readEvent" @click="item.cover_img = null; preview= null">x</span>
                                     <v-avatar tile class="elevation-7 v-avatar-custom--size">
                                         <v-img lazy-src aspect-ratio="2" v-if="item.cover_img || preview" 
-                                        :src="readEvent || (editEvent && item.cover_img && !preview) ? '/img/'+item.cover_img : preview ? preview : null"
+                                        :src="readEvent || (editEvent && item.cover_img != null && !preview) ? '/img/'+item.cover_img : preview ? preview : null"
                                             alt="profile_image"></v-img>
-                                        <v-tooltip bottom v-if="!preview && !item.cover_img">
+                                        <v-tooltip bottom v-if="!preview && !item.cover_img && !readEvent">
                                             <input type="file" ref="cover_img" v-on:change="handleFile" style="display:none">
                                             <v-icon large @click="pickFile" slot="activator">
                                                 image
                                             </v-icon>
                                             <span>Upload Event Cover Photo</span>
                                         </v-tooltip>
+                                        <span v-if="readEvent && !item.cover_img">No cover image</span>
                                     </v-avatar>
                                 </v-badge>
                             </v-flex>
@@ -298,13 +304,6 @@
                 </v-card>
             </v-form>
         </v-dialog>
-        <v-snackbar :absolute="saveSnackbar.absolute" :right="saveSnackbar.right" :top="saveSnackbar.top" :color="saveSnackbar.color"
-            v-model="saveSnackbar.snackbar">
-            {{ saveSnackbar.text }}
-            <v-btn dark flat @click.native="saveSnackbar.snackbar = false">
-                <v-icon>close</v-icon>
-            </v-btn>
-        </v-snackbar>
     </v-layout>
 </template>
 <script>
@@ -364,7 +363,6 @@
                 optionalEnd: false,
                 valid: false,
                 sending: false,
-                saveSnackbar: {},
                 upcomingEvents: [],
                 //ltr do edit event
                 editEvent: false,
@@ -386,16 +384,18 @@
                     "holiday-us-official": this.useHolidayTheme,
                 }
             },
-            start: {
-                get: function () {
-                    return this.item.start = moment.utc((this.item.start_date + " " + this.item.start_time)).format(
-                        "YYYY-MM-DD HH:mm:ss");
+            start: function(){
+                var startDate = moment(this.item.start_date, "YYYY-MM-DD")
+                var startTime = moment(this.item.start_time, "HH:mm")
+                if(startDate.isValid() && startTime.isValid()){
+                    return this.item.start = moment(startDate._i + ' ' + startTime._i)._i
                 }
             },
-            end: {
-                get: function () {
-                    return this.item.end = moment.utc((this.item.end_date + " " + this.item.end_time)).format(
-                        "YYYY-MM-DD HH:mm:ss");
+            end: function(){
+                var endDate = moment(this.item.end_date, "YYYY-MM-DD")
+                var endTime = moment(this.item.end_time, "HH:mm")
+                if(endDate.isValid() && endTime.isValid()){
+                    return this.item.end = moment(endDate._i + ' ' + endTime._i)._i
                 }
             }
         },
@@ -443,9 +443,9 @@
                 this.item.address = data.address
                 this.item.cover_img = data.cover_img
                 this.item.start_date = data.startDate ? moment(data.startDate).format("YYYY-MM-DD") : null
-                this.item.start_time = data.startDate ? moment(data.startDate).format("HH:mm:ss") : null
+                this.item.start_time = data.startDate ? moment(data.startDate).format("HH:mm") : null
                 this.item.end_date = data.endDate ? moment(data.endDate).format("YYYY-MM-DD") : null
-                this.item.end_time = data.endDate ? moment(data.endDate).format("HH:mm:ss") : null
+                this.item.end_time = data.endDate ? moment(data.endDate).format("HH:mm") : null
             },
             periodChanged(range) {
                 //show date peroid filterd
@@ -510,14 +510,7 @@
                                 .then(data => {
                                     this.sending = false
                                     this.addDialog = false
-                                    this.saveSnackbar = {
-                                        snackbar: true,
-                                        color: 'success',
-                                        text: this.item.name + ' added',
-                                        absolute: true,
-                                        right: true,
-                                        top: true
-                                    }
+                                    this.$toasted.success(this.item.name +' added', {icon:"check"})
                                     this.$refs.form.reset()
                                     this.item.address = null
                                     this.item.cover_img = null
@@ -545,14 +538,8 @@
                                 .then(data => {
                                     this.sending = false
                                     this.addDialog = false
-                                    this.saveSnackbar = {
-                                        snackbar: true,
-                                        color: 'success',
-                                        text: this.item.name + ' updated',
-                                        absolute: true,
-                                        right: true,
-                                        top: true
-                                    }
+                                    this.$toasted.success(this.item.name +' updated', {icon:"check"})
+                                    this.editEvent = null
                                     this.$refs.form.reset()
                                     this.item.address = null
                                     this.item.cover_img = null
@@ -567,6 +554,7 @@
             },
             closeDialog()
             {
+                this.editEvent=false
                 this.addDialog=false
                 this.$refs.form.reset()
                 this.readEvent=false
@@ -581,14 +569,7 @@
                 .then(res => this.$router.push('/posts/calendar'))
                 .then(data => {
                     this.sending = false
-                    this.saveSnackbar = {
-                        snackbar: true,
-                        color: 'success',
-                        text: this.eventDetail.title + ' deleted',
-                        absolute: true,
-                        right: true,
-                        top: true
-                    }
+                    this.$toasted.success(this.eventDetail.title +' deleted', {icon:"check"})
                     this.eventDetail = null
                     this.fetchEvents()
                     this.fetchUpcomingEvents()
@@ -621,11 +602,11 @@
     }
 
     .theme-default .cv-event:nth-of-type(odd) {
-        background-color: gold;
+        background-color: rgb(144, 202, 249);
     }
 
     .theme-default .cv-event:nth-of-type(even) {
-        background-color: lightblue;
+        background-color: rgb(159, 168, 218);
     }
 
     .calendar-controls {
@@ -673,5 +654,59 @@
     }
     .cv-event{
         cursor: pointer;
+    }
+    .theme-default .cv-header, .theme-default .cv-header-day{
+        background-color: #fff;
+
+    }
+
+    .calendar-parent{
+        box-shadow: 0px 3px 3px -2px rgba(0,0,0,0.2), 0px 3px 4px 0px rgba(0,0,0,0.14), 0px 1px 8px 0px rgba(0,0,0,0.12) !important
+    }
+    .currentPeriod, .previousYear, .previousPeriod, .nextPeriod , .nextYear{
+        align-items: center;
+        border-radius: 2px;
+        display: inline-flex;
+        height: 36px;
+        flex: 0 0 auto;
+        font-size: 14px;
+        font-weight: 500;
+        justify-content: center;
+        margin: 6px 8px;
+        min-width: 88px;
+        outline: 0;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: 0.3s cubic-bezier(0.25, 0.8, 0.5, 1), color 1ms;
+        position: relative;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .previousYear, .previousPeriod, .nextPeriod , .nextYear {
+        background: transparent;
+        box-shadow: none !important;
+        border-radius: 50%;
+        justify-content: center;
+        min-width: 0;
+        width: 36px;
+    }
+    .periodLabel{
+        color: #757575!important;
+        font-size: 20px!important;
+        font-weight: 500;
+        line-height: 1!important;
+        letter-spacing: .02em!important;
+        font-family: Roboto,sans-serif!important;
+    }
+    .theme-default .cv-event .startTime, .theme-default .cv-event .endTime {
+        font-weight: bold;
+        color: #fff
+    }
+
+    .theme-default .cv-event{
+        color: #fff
     }
 </style>

@@ -3,7 +3,7 @@
         <v-card>
             <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
             <v-card-title primary-title>
-                <div class="headline">{{$route.name = "editDonor" ? 'Edit' : 'Add'}} Donor</div>
+                <div class="headline">{{$route.name == "editDonor" ? 'Edit' : 'Add'}} Donor</div>
             </v-card-title>
                 <v-container fluid grid-list-lg>
                     <v-layout row wrap>
@@ -144,7 +144,9 @@ export default {
             let place = this.autocomplete.getPlace()
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
+            let place_id = place.place_id
 
+            this.item.place_id = place_id
             this.item.address = place.name
             this.item.map_lat = lat
             this.item.map_lng = lng
@@ -180,6 +182,7 @@ export default {
                 blood_type_id: "",
                 address: "",
                 avatar: "",
+                place_id: null,
             },
         };
     },

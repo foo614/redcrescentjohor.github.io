@@ -37,6 +37,8 @@ class BranchController extends Controller
         $branch->fax = $request->fax;
         $branch->map_lat = $request->map_lat;
         $branch->map_lng = $request->map_lng;
+        $branch->place_id = $request->place_id;
+        $branch->formatted_address = $request->formatted_address;
 
         if($branch->save()) {
             return new BranchResource($branch);

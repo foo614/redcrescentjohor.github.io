@@ -30,7 +30,7 @@
     <link rel="apple-touch-icon" sizes="256x256" href="/icons/png/256x256.png">
     <link rel="apple-touch-icon" sizes="512x512" href="/icons/png/512x512.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <style> [v-cloak] { display: none; } </style>
+    <style> [v-cloak] { display: none; } a{text-decoration: none}</style>
     <!-- Styles -->
     <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Roboto:400,500,700,400italic|Material+Icons">
     <link href="{{asset('css/vuetify.min.css')}}" rel="stylesheet">
@@ -38,29 +38,30 @@
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
-    {{-- @if (Route::currentRouteName() === 'donors.search ' || Route::currentRouteName() === 'branches.create' || Route::currentRouteName() === 'branches.edit' || Route::currentRouteName() === 'donors.create' || Route::currentRouteName() === 'donors.edit' || Route::currentRouteName() === 'users.edit' || Route::currentRouteName() === 'posts.create' || Route::currentRouteName() === 'posts.edit' || Route::currentRouteName() === 'posts.calendar' || Route::currentRouteName() === 'users.create')
-        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
-    @else
-        <script defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry&callback=initMap"></script>
-    @endif --}}
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
-    
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}"
     </script>
 </head>
 <body>
     <div id="app">
-        <v-app id="inspire" >
+        <v-app id="inspire">
+            @if (Route::currentRouteName() != 'home')
             <fld-navbar
                 auth="{{ Auth::user() ? Auth::user()->toJson() : '' }}"
                 auth-check="{{Auth::check()}}">
             </fld-navbar>
+            @endif
             <v-content>
-                <v-container>
+                @if (Route::currentRouteName() != 'home' && Route::currentRouteName() != 'login')
+                    <v-container>
+                        @yield('content')
+                        <router-view></router-view>
+                    </v-container>  
+                @else
                     @yield('content')
                     <router-view></router-view>
-                </v-container>
+                @endif
             </v-content>
         </v-app>
     </div>
@@ -68,7 +69,6 @@
     <div id="chart-container"></div>
     <div id="view-selector-container"></div>
     <script src="{{ asset('js/app.js') }}"></script>
-    {{-- <script src="{{asset('js/google-map.js') }}"></script> --}}
 </body>
 </html>
 {{-- <script>

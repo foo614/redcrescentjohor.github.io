@@ -10,11 +10,14 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/', 'HomeController@index');
-// Route::get('posts', 'HomeController@posts');
+Route::get('/', 'HomeController@index')->name('home');
+Route::get('news-stories', 'HomeController@posts');
+Route::get('news-stories/{id}', 'HomeController@showPost');
 Route::resource('donors', 'DonorController');
 
 Route::group(['middleware' => ['auth']], function () {
+    //blank template
+    Route::get('dashboard', 'DashboardController@index');
     //settings
     Route::resource('bloodTypes', 'BloodTypeController');
     Route::resource('postCategories', 'PostCategoryController');
@@ -49,6 +52,12 @@ Route::group(['middleware' => ['auth']], function () {
 
     //branches route
     Route::resource('branches', 'BranchController');
+
+    //courses route
+    Route::resource('courses', 'CourseController');
+
+    //blood donation route
+    Route::resource('bloodDonationRecords', 'BloodDonationRecordController');
 });
 
 Auth::routes();

@@ -28,12 +28,10 @@ class EventResource extends JsonResource
         // ];
         return [
             'id' => $this->id,
-            'title' => $this->name,
+            'title' => $this->title,
             'address' => $this->event['address'],
-            'startDate' => $this->event['start'] ? $this->event['start']->format('Y-m-d H:i:s') : null,
-            'endDate' => $this->event['end'] ? $this->event['end']->format('Y-m-d H:i:s') : null,
-            // 'startTime' => $this->event['start'] ? $this->event['start']->format('h:i A') : null,
-            // 'endTime' => $this->event['end'] ? $this->event['end']->format('h:i A') : null,
+            'startDate' => $this->event['start'] ? $this->event['start']->format('Y-m-d H:i') : null,
+            'endDate' => $this->event['end'] ? $this->event['end']->format('Y-m-d H:i') : null,
             'map_lat' => $this->event['map_lat'],
             'map_lng' => $this->event['map_lng'],
             'cover_img' => $this->cover_img,

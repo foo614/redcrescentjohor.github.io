@@ -12,4 +12,7 @@ class Event extends Model
     {
         return $this->belongsTo('App\Post');
     }
+    public function blood_donation_records(){
+        return $this->hasMany(BloodDonationRecord::class);
+    }
 }

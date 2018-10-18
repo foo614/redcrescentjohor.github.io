@@ -21,6 +21,8 @@ class CreateHospitalsTable extends Migration
             $table->string('contact');
             $table->string('map_lat');
             $table->string('map_lng');
+            $table->string('place_id');
+            $table->string('formatted_address');
             $table->timestamps();
         });
     }

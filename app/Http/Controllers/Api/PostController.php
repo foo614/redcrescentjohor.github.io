@@ -20,7 +20,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('postCategory','event')->latest('id')->get();
+        $posts = Post::with('postCategory','event')->latest('id')->paginate();
         return PostResource::collection($posts);
     }
 
@@ -54,7 +54,7 @@ class PostController extends Controller
             \Image::make($request->get('cover_img'))->save(public_path('img/').$image_name);
         }
 
-        $post->name = $request->name;
+        $post->title = $request->title;
         $post->body = $request->body ? $request->body : '';
         $post->post_type_id = $request->post_type_id;
         $post->status = $request->status;
@@ -66,8 +66,10 @@ class PostController extends Controller
             $event->address = $request->address;
             $event->map_lat = $request->map_lat;
             $event->map_lng = $request->map_lng;
-            $event->start = $request->start === "Invalid date" ? null : $request->start;
-            $event->end = $request->end === "Invalid date" ? null : $request->end;
+            $event->start = !$request->start ? null : $request->start;
+            $event->end = !$request->end ? null : $request->end;
+            $event->place_id = $request->place_id;
+            $event->formatted_address = $request->formatted_address;
             $event->post_id = $post->id;
             $event->save();
         }

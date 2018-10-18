@@ -16,14 +16,16 @@ class PostResource extends Resource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
+            'title' => $this->title,
             'cover_img' => $this->cover_img,
             'body' => $this->body,
             'status' => $this->status,
             'post_type_id' => $this->post_type_id,
             'post_category' => $this->postCategory,
             'event' => $this->event,
-            'created_at' => $this->created_at->format('F d, Y h:ia')
+            // 'event_date' => $this->event['start'],
+            'created_at' => $this->created_at->format('F d, Y h:ia'),
+            'from_now' => $this->created_at->diffForHumans()
         ];
         // return parent::toArray($request);
     }

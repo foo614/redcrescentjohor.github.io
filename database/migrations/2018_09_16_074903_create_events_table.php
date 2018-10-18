@@ -18,6 +18,8 @@ class CreateEventsTable extends Migration
             $table->string('address')->nullable();
             $table->string('map_lat')->nullable();
             $table->string('map_lng')->nullable();
+            $table->string('place_id');
+            $table->string('formatted_address');
             $table->timestamp('start')->nullable();
             $table->timestamp('end')->nullable();
             $table->integer('post_id')->nullable()->unsigned();

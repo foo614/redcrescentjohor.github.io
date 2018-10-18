@@ -10,12 +10,19 @@
         ></v-divider>
         <router-link :to="{name:'createDonor'}">	<v-btn small color="indigo" dark class="mb-2">New Donor</v-btn></router-link>
         <v-btn small color="red" v-show="selected.length > 0"  @click="deleteItem(selected)" dark class="mb-2">Delete</v-btn>
+        <v-select
+          label="Blood Type"
+          :items="blood_types"
+          v-model="blood_type"
+          item-text="name"
+          multiple
+          chips
+          deletable-chips=""
+        ></v-select>
         <v-spacer></v-spacer>
         <v-text-field
           append-icon="search"
           label="Search"
-          single-line
-          hide-details
           v-model="search"
         ></v-text-field>
     </v-toolbar>
@@ -23,7 +30,7 @@
       :rows-per-page-items="rowsDefaultItem"
       v-model="selected"
       :headers="headers"
-      :items="donors"
+      :items="filteredItems"
       :search="search"
       select-all
       class="elevation-1"
@@ -84,6 +91,7 @@ export default {
   data(){
     return{
     rowsDefaultItem: [10],
+    blood_types:[],
     search: '',
     selected: [],
     donors: [],
@@ -98,8 +106,16 @@ export default {
       { text: "Contact", value: "contact" },
       { text: "Blood Type", value: "blood_type" },
       { text: "Actions", value: "action", sortable: false }
-    ]
+    ],
+    blood_type: []
     };
+  },
+  computed: {
+    filteredItems() {
+      return this.donors.filter((donor) =>{
+          return (this.blood_type.length < 1) || (this.blood_type.includes(donor.blood_type['name']))
+      })
+    }
   },
   created() {
     this.fetchDonors()
@@ -108,6 +124,9 @@ export default {
     fetchDonors() {
       axios.get("api/donors").then(res => {
         this.donors = res.data;
+      });
+      axios.get("api/bloodTypes").then(res => {
+        this.blood_types = res.data;
       });
     },
     toggleAll() {

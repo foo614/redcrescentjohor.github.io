@@ -9,6 +9,14 @@
       v-if="authCheck==1"
     >
       <v-list dense>
+        <v-list-tile href="/">
+          <v-icon>laptop</v-icon>
+          <v-list-tile-content>
+            <v-list-tile-title style="margin-left: 35px;">
+              Website
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
         <template v-for="item in items">
           <v-list-group
             v-if="item.children"
@@ -58,10 +66,9 @@
       :clipped-left="$vuetify.breakpoint.mdAndUp"
       fixed
     >
-      <v-toolbar-title style="width: 300px" class="ml-0 pl-3">
+        <img src="/img/64x64.png" height="38px" width="38px">
+        <router-link to="dashboard" style="text-decoration:none; color:black"><span class="hidden-xs-and-down" style="font-weight: 500; font-size: 18px;">Red Crescent Johor</span></router-link>
         <v-toolbar-side-icon @click.stop="drawer = !drawer" v-if="authCheck==1"></v-toolbar-side-icon>
-        <span class="hidden-sm-and-down">Red Crescent Johor</span>
-      </v-toolbar-title>
       <v-spacer></v-spacer>
         <v-menu offset-y v-model="showMenu" v-if="authCheck==1">
             <v-avatar size="36" v-if="mutableAuth.avatar" slot="activator">
@@ -111,13 +118,12 @@ export default {
     drawer: null,
     menu: false,
     items: [
-      { icon: "laptop", text: "Website", name:"website" },
       {
         icon: "people",
         text: "Member",
         children: [
-          { text: "Add member", link: "/users/create", name:"createUser" },
-          { text: "Manage member", link: "/users", name:"listUsers"}
+          { text: "Add member", link: "/users/create" },
+          { text: "Manage member", link: "/users" }
         ]
       },
       {
@@ -154,6 +160,14 @@ export default {
         ]
       },
       {
+        icon: "event_note",
+        text: "Blood Donation",
+        children: [
+          { text: "Add record", link: "/bloodDonationRecords/create" },
+          { text: "Manage record", link: "/bloodDonationRecords" }
+        ]
+      },
+      {
         icon: "home",
         text: "Branch",
         children: [
@@ -166,7 +180,7 @@ export default {
         text: "Setting",
         model: false,
         children: [
-          { text: "Role", link: "/settings/roles", },
+          { text: "Role", link: "/settings/roles", name:'roles' },
           { text: "Membership type", link: "/settings/membershipTypes", name:"membershipTypes" },
           { text: "Blood type", link: "/settings/bloodTypes", name:"bloodTypes" },
           { text: "Post category type", link: "/settings/postCategories", name:"postCategories" }

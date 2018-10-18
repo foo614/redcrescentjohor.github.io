@@ -99,7 +99,7 @@
         
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" :disabled="searchResults.length < 1" @click="sendNotificationBySelected(this, selected , item.hospital.id, searchResults)">Send</v-btn>
+                    <v-btn color="primary" :disabled="searchResults.length < 1 || selected.length === 0" @click="sendNotificationBySelected(this, selected , item.hospital.id, searchResults)">Send</v-btn>
                 </v-card-actions>
             </v-card>
         </v-flex>
@@ -109,8 +109,6 @@
 <script>
 const CircularJSON = require('circular-json');
 export default {
-    name: 'google-map',
-    props: ['name'],
     data: function () {
         return {
         csrf_token: window.csrf_token,
@@ -124,7 +122,7 @@ export default {
             search_radius:'',
             icon:true
         },
-        mapName: this.name + "-map",
+        mapName: "google-map",
         originMarker: [{latitude:51.501527, longitude:-0.1921837}],
         markerCoordinates:[{
         latitude: 51.505874,

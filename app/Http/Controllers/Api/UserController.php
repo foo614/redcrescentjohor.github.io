@@ -64,7 +64,7 @@ class UserController extends Controller
         if(!file_exists(public_path('img/').$request->get('avatar')))
         {
             $image = $request->get('avatar');
-        $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
+            $name = time().'.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
             \Image::make($request->get('avatar'))->save(public_path('img/').$name);
         }
 
@@ -81,6 +81,8 @@ class UserController extends Controller
                 $user->avatar = $name;
             $user->map_lat = $request->map_lat;
             $user->map_lng = $request->map_lng;
+            $user->place_id = $request->place_id;
+            $user->formatted_address = $request->formatted_address;
             // $user->health_issues = $request->health_issues;
 
             $user->membership_type_id = $request->membership_type_id;

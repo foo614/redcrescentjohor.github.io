@@ -145,6 +145,7 @@
                             label="Roles"
                             prepend-icon="people"
                             multiple
+                            deletable-chips
                             hint="Pick the roles"
                             chips
                             persistent-hint
@@ -193,10 +194,12 @@ export default {
             let place = this.autocomplete.getPlace()
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
+            let place_id = place.place_id
 
             this.item.address = place.name
             this.item.map_lat = lat
             this.item.map_lng = lng
+            this.item.place_id = place_id
         });
         if(this.$route.name === "editUser"){
             let app = this
@@ -236,7 +239,8 @@ export default {
                 blood_type_id: "",
                 address: "",
                 avatar: "",
-                roles:null
+                roles:null,
+                place_id:null
             },
         };
     },

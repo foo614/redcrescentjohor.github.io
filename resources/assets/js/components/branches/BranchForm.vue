@@ -79,10 +79,14 @@ export default {
             let place = this.autocomplete.getPlace()
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
+            let place_id = place.place_id
+            let formatted_address = place.formatted_address
 
             this.item.address = place.name
             this.item.map_lat = lat
             this.item.map_lng = lng
+            this.item.place_id = place_id
+            this.item.formatted_address = formatted_address
         });
         if(this.$route.name === "editBranch"){
             let app = this
@@ -109,6 +113,8 @@ export default {
                 email: "",
                 contact: "",
                 address: "",
+                place_id: null,
+                formatted_address: null
             },
         };
     },

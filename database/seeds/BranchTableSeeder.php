@@ -20,6 +20,8 @@ class BranchTableSeeder extends Seeder
         $branch->fax = '2384892';
         $branch->map_lat = '1.493780';
         $branch->map_lng = '103.702731';
+        $branch->place_id = 'ChIJFf_DAMFy2jERwcoh3qZ3LTo';
+        $branch->formatted_address = 'TAMPOI';
         $branch->save();
     }
 }

@@ -16,7 +16,7 @@ Good day {{ $invitation_content->receiver }},
 
 @endcomponent
 
-@component('mail::button', ['url' => "https://www.google.co.in/maps?saddr=$invitation_content->donor_map_lat,$invitation_content->donor_map_lng&daddr=$invitation_content->hospital_map_lat,$invitation_content->hospital_map_lng"])
+@component('mail::button', ['url' => "https://www.google.com/maps?saddr=$invitation_content->donor_map_lat,$invitation_content->donor_map_lng&daddr=$invitation_content->hospital_map_lat,$invitation_content->hospital_map_lng"])
 Show Directions
 @endcomponent
 

@@ -9,7 +9,7 @@ class User extends Authenticatable
 {
     use SoftDeletes;
     use Notifiable;
-
+    
     /**
      * The attributes that are mass assignable.
      *
@@ -29,7 +29,7 @@ class User extends Authenticatable
     ];
     
     /**
-     * state the relationship btw role model
+     * state the relationship btw  model
      */
     public function roles()
     {
@@ -47,11 +47,19 @@ class User extends Authenticatable
     }
 
     public function posts(){
-        return $this->hasMany('App\Post');
+        return $this->hasMany(Post::class);
+    }
+
+    public function blood_donation_records(){
+        return $this->hasMany(BloodDonationRecord::class);
     }
 
     public function branch(){
-        return $this->belongsTo('App\Branch');
+        return $this->belongsTo(Branch::class);
+    }
+
+    public function courses(){
+        return $this->belongsToMany(Course::class);
     }
 
     /**

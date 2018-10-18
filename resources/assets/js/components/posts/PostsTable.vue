@@ -26,7 +26,7 @@
       :items="posts"
       :search="search"
       select-all
-      item-key="name"
+      item-key="id"
       class="elevation-1"
     >
       <template slot="items" slot-scope="props">
@@ -37,7 +37,7 @@
             hide-details
           ></v-checkbox>
         </td>
-        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.name }}</td>
+        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.title }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.post_category.name }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.created_at }}</td>
         <td>
@@ -105,8 +105,8 @@ export default {
   },
   methods: {
     fetchPosts() {
-      axios.get("../api/posts").then(res => {
-        this.posts = res.data;
+      axios.get("/api/posts").then(res => {
+        this.posts = res.data.data;
       });
     },
     deleteItem(selectedItem) {

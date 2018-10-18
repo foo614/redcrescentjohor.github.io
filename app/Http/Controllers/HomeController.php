@@ -13,7 +13,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('guest');
     }
 
     /**
@@ -23,13 +23,19 @@ class HomeController extends Controller
      */
     public function index(Request $request)
     {
-        $request->user()->authorizeRoles(['administrator', 'member']);
-        return view('home');
+        // $request->user()->authorizeRoles(['administrator', 'member']);
+        return view('home.home');
     }
 
     public function posts(Request $request)
     {
-        $request->user()->authorizeRoles(['administrator']);
-        return view('posts');
+        // $request->user()->authorizeRoles(['administrator']);
+        return view('home.posts');
+    }
+
+    public function showPost($id)
+    {
+        // $request->user()->authorizeRoles(['administrator']);
+        return view('home.post');
     }
 }

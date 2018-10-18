@@ -9,7 +9,7 @@
                 <v-layout row wrap>
                     <v-flex xs12 sm6>
                         <v-text-field
-                            v-model="item.name"
+                            v-model="item.title"
                             label="Title"
                             prepend-icon="event_note"
                             :rules="[v => !!v || 'Title is required']"
@@ -29,7 +29,7 @@
                     </v-flex>
                     <v-flex xs12 sm2>
                         <v-switch
-                            :label="`Active Post? ${item.status === true ? 'On' : 'Off'}`"
+                            :label="`Active Post? ${item.status === 1 || item.status === true ? 'On' : 'Off'}`"
                             v-model="item.status"
                         ></v-switch>
                     </v-flex>
@@ -73,10 +73,11 @@
                                 v-model="item.start_date"
                                 label="Start Date"
                                 prepend-icon="event"
+                                :rules="[v => !!v || 'Date is required']"
                                 readonly
                                 ></v-text-field>
                                 <v-date-picker 
-                                    v-model="item.start_date" 
+                                    v-model="item.start_date"
                                     no-title 
                                     scrollable 
                                     @input="$refs.date_menu1.save(item.start_date)"
@@ -105,18 +106,21 @@
                                 v-model="item.start_time"
                                 label="Start time"
                                 prepend-icon="access_time"
+                                hint="24 hrs format"
+                                persistent-hint
                                 readonly
                                 ></v-text-field>
                                 <v-time-picker
                                 v-if="time_menu1"
                                 v-model="item.start_time"
+                                format="24hr"
                                 @change="$refs.menu1.save(item.start_time)"
                                 ></v-time-picker>
                             </v-menu>
                         </v-flex>
-                        <v-flex xs12 sm6><v-btn @click="optionalEnd = !optionalEnd" v-show="!item.end_date || !item.end_time">{{ optionalEnd ? 'REMOVE ' : 'ADD ' }}End DateTime</v-btn></v-flex>
+                        <v-flex xs12 sm6><v-btn @click="optionalEnd = !optionalEnd">{{ optionalEnd ? 'REMOVE ' : 'ADD ' }}End DateTime</v-btn></v-flex>
                         <!-- end date picker -->
-                        <v-flex xs12 sm3 v-show="optionalEnd || item.end_date">
+                        <v-flex xs12 sm3 v-show="optionalEnd">
                             <v-menu
                                 ref="date_menu2"
                                 :close-on-content-click="false"
@@ -147,7 +151,7 @@
                             </v-menu>
                         </v-flex>
                         <!-- end time picker -->
-                        <v-flex xs12 sm3 v-show="optionalEnd || item.end_time">
+                        <v-flex xs12 sm3 v-show="optionalEnd">
                             <v-menu
                                 ref="menu"
                                 :close-on-content-click="false"
@@ -166,20 +170,47 @@
                                 v-model="item.end_time"
                                 label="End time"
                                 prepend-icon="access_time"
+                                hint="24 hrs format"
+                                persistent-hint
                                 readonly
                                 ></v-text-field>
                                 <v-time-picker
                                 v-if="time_menu2"
                                 v-model="item.end_time"
+                                format="24hr"
                                 @change="$refs.menu.save(item.end_time)"
                                 ></v-time-picker>
                             </v-menu>
                         </v-flex>
                     </v-layout>
-                    <v-text-field v-model="item.start" style="display:none">{{start}}</v-text-field>
-                    <v-text-field v-model="item.end" style="display:none">{{end}}</v-text-field>
+                    <v-text-field v-model="item.start" v-show="false">{{start}}</v-text-field>
+                    <v-text-field v-model="item.end" v-show="false">{{end}}</v-text-field>
                     <v-flex xs12 sm12>
-                        <vue-ckeditor v-model="item.body"/>
+                        <div class="mb-1" style="display: flex; width:100%">
+                            <v-tooltip bottom>
+                                <v-icon slot="activator">description</v-icon>
+                                <span>Content</span>
+                            </v-tooltip>
+                            <vue-ckeditor style="width:100%" class="ml-2" v-model="item.body"/>
+                        </div>
+                    </v-flex>
+                    <v-flex xs12 sm12>
+                        <v-icon>image</v-icon>
+                        <v-badge overlap>
+                            <span slot="badge" v-if="(preview || item.cover_img)" @click="item.cover_img = null; preview= null">x</span>
+                            <v-avatar tile class="elevation-7 v-avatar-custom--size">
+                                <v-img lazy-src aspect-ratio="2" v-if="item.cover_img || preview" 
+                                :src="item.cover_img && !preview ? '/img/'+item.cover_img : preview ? preview : null"
+                                    alt="profile_image"></v-img>
+                                <v-tooltip bottom v-if="!preview && !item.cover_img">
+                                    <input type="file" ref="cover_img" v-on:change="handleFile" style="display:none">
+                                    <v-icon large @click="pickFile" slot="activator">
+                                        image
+                                    </v-icon>
+                                    <span>Upload Event Cover Photo</span>
+                                </v-tooltip>
+                            </v-avatar>
+                        </v-badge>
                     </v-flex>
                 </v-layout>
             </v-container>
@@ -207,10 +238,14 @@ export default {
             let place = this.autocomplete.getPlace()
             let lat = place.geometry.location.lat()
             let lng = place.geometry.location.lng()
+            let place_id = place.place_id
+            let formatted_address = place.formatted_address
 
             this.item.address = place.name
             this.item.map_lat = lat
             this.item.map_lng = lng
+            this.item.place_id = place_id
+            this.item.formatted_address = formatted_address
         })
         if(this.$route.name === "editPost"){
             let app = this;
@@ -221,10 +256,10 @@ export default {
                 app.item.post_id = res.data.id;
                 if(app.item.event){
                     app.item.address = res.data.event.address;
-                    app.item.start_date = moment(res.data.event.start).format("YYYY-MM-DD");
-                    app.item.end_date = moment(res.data.event.end).format("YYYY-MM-DD");
-                    app.item.start_time = moment(res.data.event.start).format("HH:mm");
-                    app.item.end_time = moment(res.data.event.end).format("HH:mm");
+                    app.item.start_date = res.data.event.start ? moment(res.data.event.start).format("YYYY-MM-DD") : null
+                    app.item.end_date = res.data.event.end ? moment(res.data.event.end).format("YYYY-MM-DD") : null
+                    app.item.start_time = res.data.event.start ? moment(res.data.event.start).format("HH:mm") : null
+                    app.item.end_time = res.data.event.end ? moment(res.data.event.end).format("HH:mm") : null
                 }
             })
             .catch(function () {
@@ -240,7 +275,7 @@ export default {
         item: {
             post_id:'',
             id: "",
-            name: "",
+            title: "",
             post_type_id: "",
             status: true,
             body: "",
@@ -249,11 +284,15 @@ export default {
             map_lat:"",
             start:null,
             end:null,
-            start_date:null,
-            end_date:null,
-            start_time:null,
-            end_time:null,
+            start_date: moment().format("YYYY-MM-DD"),
+            end_date: this.optionalEnd ? moment().add(1, 'days').format("YYYY-MM-DD") : null,
+            start_time: moment().format("HH:mm"),
+            end_time: this.optionalEnd ? moment().add(3, 'hours').format("HH:mm") : null,
+            cover_img:null,
+            place_id: null,
+            formatted_address: null
         },
+        preview: '',
         currentDate:"",
         optionalEnd:false,
         date_menu1:false,
@@ -263,14 +302,18 @@ export default {
     };
     },
     computed: {
-        start:{
-            get: function(){
-                return this.item.start = moment.utc((this.item.start_date + " " + this.item.start_time)).format("YYYY-MM-DD HH:mm:ss");
+        start: function(){
+            var startDate = moment(this.item.start_date, "YYYY-MM-DD")
+            var startTime = moment(this.item.start_time, "HH:mm")
+            if(startDate.isValid() && startTime.isValid()){
+                return this.item.start = moment(startDate._i + ' ' + startTime._i+":00")._i
             }
         },
-        end:{
-            get: function(){
-                return this.item.end = moment.utc((this.item.end_date + " " + this.item.end_time)).format("YYYY-MM-DD HH:mm:ss");
+        end: function(){
+            var endDate = moment(this.item.end_date, "YYYY-MM-DD")
+            var endTime = moment(this.item.end_time, "HH:mm")
+            if(endDate.isValid() && endTime.isValid()){
+                return this.item.end = moment(endDate._i + ' ' + endTime._i+":00")._i
             }
         }
     },
@@ -283,9 +326,29 @@ export default {
                 this.items = res.data
             })
         },
+        pickFile() {
+            this.$refs.cover_img.click()
+        },
+        handleFile(e) {
+            let files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return;
+            this.createImage(files[0]);
+        },
+        createImage(file) {
+            let reader = new FileReader();
+            let vm = this;
+            reader.onload = e => {
+                vm.preview = e.target.result;
+                vm.item.cover_img = e.target.result;
+            };
+            reader.readAsDataURL(file);
+            console.log(file);
+        },
         saveItem(){
             if (this.$refs.form.validate()){
                 this.sending = true;
+                CKEDITOR.removeAllListeners();
                 setTimeout(()=> {
                     fetch("/api/post", {
                     method: this.$route.name == 'createPost' ? "post" : "put",
@@ -296,7 +359,7 @@ export default {
                         this.sending = false
                         let currentPage = this.$route.name
                         this.$router.push({ path: '/posts' }, ()=> {
-                            this.$toasted.success(this.item.name + (currentPage === 'createPost' ? ' added' : ' updated') , {icon:"check"})
+                            this.$toasted.success(this.item.title + (currentPage === 'createPost' ? ' added' : ' updated') , {icon:"check"})
                         })
                     })
                     .catch(err => console.log(err))
@@ -308,5 +371,8 @@ export default {
 </script>
 
 <style>
-
+.v-avatar-custom--size {
+    height: 120px !important;
+    width: 500px !important;
+}
 </style>
