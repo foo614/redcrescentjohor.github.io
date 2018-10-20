@@ -1,4 +1,4 @@
-<template>
+ <template>
     <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="saveItem">
         <v-card>
             <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
@@ -109,8 +109,7 @@
                                 prepend-icon="opacity"
                                 item-text="name"
                                 item-value="id"
-                                label="Blood Type"
-                                :rules="[v => !!v || 'Blood Type is required']"
+                                label="Blood Type (optional)"
                             ></v-select>
                         </v-flex>
                     </v-layout>

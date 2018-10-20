@@ -348,7 +348,7 @@ export default {
         saveItem(){
             if (this.$refs.form.validate()){
                 this.sending = true;
-                CKEDITOR.removeAllListeners();
+                // CKEDITOR.removeAllListeners();
                 setTimeout(()=> {
                     fetch("/api/post", {
                     method: this.$route.name == 'createPost' ? "post" : "put",

@@ -11,7 +11,7 @@
         <router-link :to="{name:'createDonor'}">	<v-btn small color="indigo" dark class="mb-2">New Donor</v-btn></router-link>
         <v-btn small color="red" v-show="selected.length > 0"  @click="deleteItem(selected)" dark class="mb-2">Delete</v-btn>
         <v-select
-          label="Blood Type"
+          placeholder="Blood Type"
           :items="blood_types"
           v-model="blood_type"
           item-text="name"

@@ -2,7 +2,8 @@
     <div>
         <v-parallax src="http://www.who.int/images/default-source/big-stories/outbreaks/learning-about-ebola.tmb-1920v.jpg?sfvrsn=2106692a_2">
             <v-layout column align-center justify-center class="white--text">
-                <h1 class="display-2 white--text text-xs-center">Building a Culture of {{bannerText}}</h1>
+                <h1 class="display-2 white--text">Building a Culture of <transition name="fade" v-if="show"><label>{{bannerText}}</label></transition></h1>
+
                 <div class="subheading white--text text-xs-center">
                    Works around the globe to save lives, defeat poverty and achieve social justice.</div>
             </v-layout>
@@ -102,8 +103,6 @@
                                 </v-flex>
                             </v-layout>
                         </v-container>
-                        <!-- <h1 class="display-2 font-weight-thin mb-3">Vuetify.js</h1>
-                        <h4 class="subheading">Build your application today!</h4> -->
                     </v-layout>
                 </v-parallax>
             </div>
@@ -114,9 +113,10 @@
 <script>
     export default {
         data: () => ({
-            myText:["HOPE", "KINDNESS", "LOVE", "RESPECT", "FAMILY"],
-            bannerText: null,
-            bannerTextColor: '#000000'
+            myText:["","HOPE","", "LOVE","", "RESPECT","", "KINDNESS"],
+            bannerText: "FAMILY",
+            bannerTextColor: '#000000',
+            show: true
         }),
         mounted(){
             this.startInterval()
@@ -127,106 +127,22 @@
                 let vm = this
                 setInterval(() => {
                     vm.bannerText = vm.myText[x++]
+                    vm.show = !vm.show
                     this.bannerTextColor = '#'+(Math.random()*0xFFFFFF<<0).toString(16)
                     if(x == vm.myText.length){
                         x=0
                     }
-                }, 3000);
+                }, 2000);
             }
         }
     }
 </script>
 
 <style>
-.v-parallax__content{
-    background: linear-gradient(0deg,rgba(13, 3, 29, 0.34),rgba(25,25,38,.85))
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
 }
-.parallax-banner .v-parallax__content{
-    background: linear-gradient(0deg,rgba(13,3,29,.85),rgba(25,25,38,.85))
-}
-.alpha-footer{
-    background: #303c42;
-    color: #fff;
-    display: block;
-    padding: 0 !important;
-    height: auto;
-}
-.alpha-footer .container, .alpha-footer ul{
-    padding: 0;
-    margin: 0;
-}
-.alpha-footer ul{
-    list-style-type: none;
-}
-.alpha-footer ul li{
-    margin-bottom: 10px;
-}
-.alpha-footer ul a{
-    color: #fff;
-    text-decoration: none;
-    transition: .2s ease-in;
-}
-.alpha-footer ul a:hover{
-    opacity: .5
-}
-.alpha-testimonial__content {
-    -ms-flex-align: start;
-    align-items: flex-start;
-    display: -ms-flexbox;
-    display: flex;
-    -ms-flex-pack: justify;
-    justify-content: space-between
-}
-.primary-home--text  {
-  color: #ff8040 !important;
-}
-.primary-home--line {
-    background-color: #ff8040 !important;
-}
-.headline {
-    font-size: 24px!important;
-    font-weight: 400;
-    line-height: 32px!important;
-    letter-spacing: normal!important;
-}
-.alpha-testimonial__footer-bar {
-    height: 4px;
-    margin: 20px 0 20px auto;
-    width: 100px
-}
-
-.alpha-testimonial .icon {
-    -ms-flex-pack: end;
-    justify-content: flex-end;
-    -ms-flex: 0 1 10%;
-    flex: 0 1 10%;
-    margin-top: -8px;
-    transform: rotate(180deg)
-}
-
-.alpha-testimonial p {
-    -ms-flex: 1 1 85%;
-    flex: 1 1 85%;
-    line-height: 2
-}
-
-.alpha-testimonial footer {
-    -ms-flex: 1 0 auto;
-    flex: 1 0 auto;
-    text-align: right
-}
-
-.alpha-testimonial footer .title {
-    font-weight: 300
-}
-
-.alpha-testimonial--dark {
-    color: #fff
-}
-.v-btn--active:before, .v-btn:focus:before, .v-btn:hover:before {
-    background-color: currentColor;
-}
-.v-btn__content:hover {
-    color: rgb(255, 0, 0);
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

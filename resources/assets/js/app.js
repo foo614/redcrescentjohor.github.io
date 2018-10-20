@@ -44,17 +44,12 @@ Vue.component('fld-navbar', require('./components/includes/Navbar.vue'));
 // Vue.component('fld-login', require('./components/includes/LoginPage.vue'));
 Vue.component('password-field', require('./components/Password.vue'));
 
-//homepage
-// Vue.component('posts', require('./components/Posts.vue'));
-Vue.component('post-list', require('./components/PostList.vue'));
-
 //upload components
 Vue.component('upload-files', require('./components/imageUploads/UploadFiles.vue'));
 Vue.component('upload-file', require('./components/imageUploads/UploadFile.vue'));
 
 Vue.component('home-footer', require('./components/home/Footer.vue'));
 Vue.component('home-header', require('./components/home/Navbar.vue'));
-Vue.component('home-content', require('./components/home/content/Index.vue'));
 
 
 new Vue({

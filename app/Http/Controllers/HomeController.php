@@ -38,4 +38,10 @@ class HomeController extends Controller
         // $request->user()->authorizeRoles(['administrator']);
         return view('home.post');
     }
+
+    public function courses(Request $request)
+    {
+        // $request->user()->authorizeRoles(['administrator']);
+        return view('home.courses');
+    }
 }

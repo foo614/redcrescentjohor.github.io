@@ -63,8 +63,8 @@
                         <v-checkbox ripple v-model="selectAll" :indeterminate="selected.length > 0 && selected.length < searchResults.length" :input-value="selected.length === searchResults.length ? true : false"></v-checkbox>
                     </v-list-tile-action>
                     <v-list-tile-title>Name</v-list-tile-title>
-                    <v-list-tile-title>Distance Between</v-list-tile-title>
-                    <v-list-tile-action>Action</v-list-tile-action>
+                    <v-list-tile-title>Distance</v-list-tile-title>
+                    <v-list-tile-action>Status</v-list-tile-action>
                     </v-list-tile>
                 </v-list>
                 <v-list>
@@ -79,20 +79,14 @@
                     <v-list-tile-title @click="onClickDonor(result.donorMarker)" style="cursor: pointer">{{result.donor['name']}}</v-list-tile-title>
                     <v-list-tile-title>{{result.verifyDistanceBetweenLocation | formatDistance}}</v-list-tile-title>
                     <v-list-tile-action>
-                        <v-icon
-                        v-if="result.search == true"
-                        color="green lighten-1"
-                        >
-                        check
-                        </v-icon>
-
-                        <v-icon
-                        v-else
-                        color="blue darken-2"
-                        @click="sendNotificationBySelected(this, result.donor['id'], item.hospital.id, result)"
-                        >
-                        send
-                        </v-icon>
+                        <v-scroll-x-transition>
+                            <v-icon
+                                color="green lighten-1"
+                                v-if="result.search == true"
+                                >
+                                check
+                            </v-icon>
+                        </v-scroll-x-transition>
                 </v-list-tile-action>
                     </v-list-tile>
                 </v-list>
@@ -100,6 +94,14 @@
                 <v-card-actions>
                     <v-spacer></v-spacer>
                     <v-btn color="primary" :disabled="searchResults.length < 1 || selected.length === 0" @click="sendNotificationBySelected(this, selected , item.hospital.id, searchResults)">Send</v-btn>
+                    <v-btn :loading="loadingState"
+                        :disabled="searchResults.length < 1 || selected.length === 0 || loadingState"
+                        color="primary"
+                        @click.native="sendNotificationBySelected(this, selected , item.hospital.id, searchResults)"
+                        >
+                        Send
+                        <v-icon right dark>send</v-icon>
+                    </v-btn>
                 </v-card-actions>
             </v-card>
         </v-flex>
@@ -116,6 +118,8 @@ export default {
         bloodTypes:[],
         hospitals:[],
         hospitalMarker:null,
+        loader: null,
+        loadingState: false,
         item:{
             blood_type:'',
             hospital:'',
@@ -297,31 +301,22 @@ export default {
         },
         sendNotificationBySelected(elm, donorId, hospitalId, status){
             if(donorId){
+                this.loader = 'loadingState'
                 if(donorId.length > 0){
-                donorId.forEach(function(v){
-                    var donor_id = status[v].donor['id']
-                    status[v].search = true
-                    setTimeout(() => {$.ajax('/mail/send', {
-                        method: 'GET',
-                        data: {
-                            _token: csrf_token,
-                            donor_id: donor_id,
-                            hospital_id: hospitalId
-                        },
-                    })} , 1500)
-                })
-                }else{
-                    status.search = true
-                    setTimeout(() => { $.ajax('/mail/send', {
-                        method: 'GET',
-                        data: {
-                            _token: csrf_token,
-                            donor_id: donorId,
-                            hospital_id: hospitalId
-                        },
-                    })} , 1500)
+                    donorId.forEach(function(v){
+                        var donor_id = status[v].donor['id']
+                        setTimeout(() => {$.ajax('/mail/send', {
+                            method: 'GET',
+                            data: {
+                                _token: csrf_token,
+                                donor_id: donor_id,
+                                hospital_id: hospitalId
+                            },
+                        })} , 1500)
+                        setTimeout(() =>status[v].search = true, 3000)
+                    })
                 }
-                this.$toasted.success('Notification Sent' , {icon:"check"})
+                setTimeout(() => this.$toasted.success('Notification Sent' , {icon:"check"}), 3000)
                 this.selected = [];
             }
         },
@@ -352,6 +347,16 @@ export default {
             let val = (v/1000).toFixed(1) + ' km'
             return val
         }
+    },
+    watch:{
+        loader () {
+            const l = this.loader
+            this[l] = !this[l]
+
+            setTimeout(() => (this[l] = false), 3000)
+
+            this.loader = null
+        }
     }
 };
 </script>
@@ -368,4 +373,36 @@ export default {
     -webkit-user-select: none; 
     background-color: white; 
 }
+  @-moz-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-webkit-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @-o-keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  @keyframes loader {
+    from {
+      transform: rotate(0);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
 </style>

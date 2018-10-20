@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import VueRouter from 'vue-router';
+import VueRouter from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 import BloodDonationIndex from './components/bloodDonationRecords/BloodDonationRecordsTable.vue';
 import BloodDonationForm from './components/bloodDonationRecords/BloodDonationRecordsForm.vue';
@@ -20,7 +20,6 @@ import DonorForm from './components/donors/DonorForm.vue';
 import DonorSearch from './components/donors/DonorSearch.vue';
 
 import BranchesIndex from './components/branches/BranchesTable.vue';
-
 import BranchForm from './components/branches/BranchForm.vue';
 
 import HospitalsIndex from './components/hospitals/HospitalsTable.vue';
@@ -37,16 +36,14 @@ import BloodTypeSetting from './components/settings/BloodType.vue';
 import MemberRoleTypeSetting from './components/settings/MemberRoleType.vue';
 import PostCategoryTypeSetting from './components/settings/PostCategoryType.vue';
 
-import Home from './components/home/Layout.vue';
+import Home from './components/home/MainPageContent.vue';
 import Posts from './components/home/Posts.vue';
 import ShowPost from './components/home/Post.vue';
+import Courses from './components/home/Courses.vue';
 
 const empty = {
     template: `
-      <div>
-        <h2>Post Selected: {{ $route.params.id }}</h2>
         <router-view></router-view>
-      </div>
     `
   }
 const routes = [
@@ -60,14 +57,21 @@ const routes = [
           name: 'posts'
         },
         {
-          // UserProfile will be rendered inside User's <router-view>
-          // when /user/:id/profile is matched
           path: ':id',
           component: ShowPost,
-          name:'showPost'
+          name:'showPost',
         }
-      ]},
-    // {path:'/news-stories/:id', component: ShowPost, name:'showPost' },
+      ]
+    },
+    {path:'/course_registration', component: empty, 
+      children:[
+        {
+          path: '', 
+          component: Courses,
+          name: 'courses'
+        },
+      ]
+    },
 
     //admin Panel
     //login
@@ -111,6 +115,7 @@ const routes = [
     {path: '/courses', component: CoursesIndex, name:'listCourses'},
     {path: '/courses/:id/edit', component: CourseForm, name: 'editCourse'},
     {path: '/courses/create', component: CourseForm, name: 'createCourse'},
-]
+];
+
 const router = new VueRouter({mode: 'history', routes })
 export default router

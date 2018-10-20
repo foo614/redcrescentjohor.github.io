@@ -2,6 +2,19 @@
   <v-card>
     <v-container fill-height>
       <v-layout wrap>
+        <v-flex xs12 sm12>
+            <v-tabs fixed-tabs v-model="active">
+            <v-tab>All</v-tab>
+            <v-tab
+              v-for="postCategory in postCategories" :key="postCategory.id"
+            >
+            <v-badge color="red">
+              <span slot="badge">99</span>
+              {{postCategory.name}}
+            </v-badge>
+            </v-tab>
+          </v-tabs>
+        </v-flex>
         <!-- <v-flex xs12 sm3>
           <v-container grid-list-xl pa-0>
             <v-flex xs12 class="mb-3">
@@ -11,7 +24,7 @@
               <v-flex mr-2>
                 <v-card v-for="postCategory in postCategories" :key="postCategory.id">
                   <v-list>
-                    <v-list-tile @click="customFilter(postCategory.name)">
+                    <v-list-tile>
                       <v-list-tile-content>
                         <v-list-tile-title>{{postCategory.name}}</v-list-tile-title>
                       </v-list-tile-content>
@@ -25,15 +38,7 @@
             </v-layout>
           </v-container>
         </v-flex> -->
-        <v-flex xs12 sm12>
-          <v-tabs fixed-tabs v-model="active">
-            <v-tab>All</v-tab>
-            <v-tab
-              v-for="postCategory in postCategories" :key="postCategory.id"
-            >
-              {{postCategory.name}}
-            </v-tab>
-          </v-tabs>
+        <v-flex xs12 sm10 offset-sm1>
           <v-container grid-list-xl pa-0>
             <v-flex xs12 class="mb-3">
               <h2><label style="border-bottom:3px solid #f44336">Posts</label></h2>
@@ -42,12 +47,8 @@
               <transition-group name="fade-transition" tag="v-layout" class="wrap child-flex" style="min-height: 450px;">
                 <v-flex xs12 sm6 v-for="post in customFilter" :key="post.id" class="posts-card">
                   <v-card>
-                    <v-img v-show="post.cover_img" style="border-bottom: 6px solid #B30909;" :src="`https://picsum.photos/500/300?image=${post.id * 5 + 10}`"
-                      :lazy-src="`https://picsum.photos/10/6?image=${post.id * 5 + 10}`" aspect-ratio="1" max-height="200"></v-img>
-                    <!-- <v-card-title primary-title>
-                      <div style="display:inline-grid; text-align:center; margin-right:10px;"><span>OCT</span> <span>20</span></div>
-                      <div class="headline text--red">{{post.title}} {{post.post_category['name']}}</div>
-                    </v-card-title> -->
+                    <v-img v-if="post.cover_img" style="border-bottom: 6px solid #B30909;" :src="'/img/'+post.cover_img"
+                      :lazy-src="'/img/'+post.cover_img" aspect-ratio="1" max-height="200"></v-img>
                     <v-list two-line>
                       <v-list-tile>
                         <v-list-tile-avatar v-if="post.event"> 
@@ -60,10 +61,10 @@
                       </v-list-tile>
                     </v-list>
                     <v-card-actions>
-                      <v-btn @click="share">Share</v-btn>
                       <v-icon color="red darken-2" v-if="!post.event">calendar_today</v-icon> <label class="ml-1" v-if="!post.event">{{post.created_at}}</label>
                       <v-spacer></v-spacer>
-                      <v-btn flat color="red" :to="{name:'showPost', params:{id: post.id}}">Read More <v-icon small>arrow_forward</v-icon></v-btn>
+                      <!-- <v-btn flat color="red" :to="{name:'showPost', params:{id: post.id}}">Read More <v-icon small>arrow_forward</v-icon></v-btn> -->
+                      <v-btn flat color="red" :href="`/news-stories/${post.id}`">Read More <v-icon small>arrow_forward</v-icon></v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-flex>
@@ -129,22 +130,6 @@
         axios.get("/api/postCategories").then(res => {
           this.postCategories = res.data;
         });
-      },
-      share(){
-          FB.ui(
-            {
-              method: 'share',
-              href: 'http://rcj-dev.com/',
-            },
-            // callback
-            function(response) {
-              if (response && !response.error_message) {
-                alert('Posting completed.');
-              } else {
-                alert('Error while posting.');
-              }
-            }
-          );
       },
       infiniteHandler($state) {
         axios.get('api/posts')

@@ -1,4 +1,4 @@
 @extends('layouts.home')
 @section('content')
-    <router-view name="posts"></router-view>
+    <router-view name="courses"></router-view>
 @endsection
