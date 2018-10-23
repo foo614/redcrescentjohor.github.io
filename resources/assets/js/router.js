@@ -40,6 +40,7 @@ import Home from './components/home/MainPageContent.vue';
 import Posts from './components/home/Posts.vue';
 import ShowPost from './components/home/Post.vue';
 import Courses from './components/home/Courses.vue';
+import RegisterCourse from './components/home/RegisterCourse.vue';
 
 const empty = {
     template: `
@@ -70,6 +71,11 @@ const routes = [
           component: Courses,
           name: 'courses'
         },
+        {
+          path: ':id/register',
+          component: RegisterCourse,
+          name: 'registerCourse'
+        }
       ]
     },
 

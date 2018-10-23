@@ -101,6 +101,7 @@ export default {
     },
     methods:{
         share(overrideLink, overrideTitle, overrideDescription){
+            let app = this;
             FB.ui({
             method: 'share_open_graph',
             action_type: 'og.likes',
@@ -116,9 +117,9 @@ export default {
             // Action after response
             if (response && !response.error_message) {
                 // alert('Posting completed.');
-                this.$toasted.success('Posting completed.' , {icon:"check"})
+                app.$toasted.success('Posting completed.' , {icon:"check"})
             } else {
-                this.$toasted.error("Something wrong...", {icon:"error"})
+                app.$toasted.error("Something wrong...", {icon:"error"})
             }
         });
       }

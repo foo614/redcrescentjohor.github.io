@@ -44,4 +44,8 @@ class HomeController extends Controller
         // $request->user()->authorizeRoles(['administrator']);
         return view('home.courses');
     }
+
+    public function registerCourse(){
+        return view('home.registerCourse');
+    }
 }

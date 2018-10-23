@@ -232,7 +232,6 @@ export default {
                 contact: "",
                 password: "",
                 detachment: "VAD ",
-                password: "",
                 membership_type_id: "",
                 branch_id: "",
                 blood_type_id: "",

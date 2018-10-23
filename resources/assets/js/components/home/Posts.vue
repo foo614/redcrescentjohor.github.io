@@ -84,7 +84,6 @@
 <script>
   import moment from 'moment'
   import InfiniteLoading from 'vue-infinite-loading';
-  import axios from 'axios';
   export default {
     data() {
       return {

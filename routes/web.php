@@ -15,6 +15,7 @@ Route::get('news-stories', 'HomeController@posts');
 Route::get('news-stories/{id}', 'HomeController@showPost');
 Route::resource('donors', 'DonorController');
 Route::get('/course_registration', 'HomeController@courses');
+Route::get('/course_registration/{id}/register', 'HomeController@registerCourse');
 
 Route::group(['middleware' => ['auth']], function () {
     //blank template
