@@ -11,6 +11,8 @@ use App\Http\Resources\EventResource;
 use App\Event;
 use App\PostCategory;
 use Illuminate\Support\Facades\Storage;
+use Analytics;
+use Spatie\Analytics\Period;
 class PostController extends Controller
 {
      /**
@@ -20,8 +22,29 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::with('postCategory','event')->latest('id')->paginate();
-        return PostResource::collection($posts);
+        $collection = collect(Post::with('postCategory','event')->latest('id')->get())->map(function($post, $key){
+            $visitorsData = Analytics::performQuery(Period::years(3), 'ga:pageviews', ['dimensions' => 'ga:pagePathLevel2', 'filters' => 'ga:pagePath=~/news-stories/;ga:pagePath!~fbclid']);
+            $visitorsData = collect($visitorsData['rows'] ?? [])->map(function(array $dateRow){
+                return [
+                    'id' =>(int)trim($dateRow[0], "/"),
+                    'total_view' => (int) $dateRow[1],
+                ];
+            });
+            return[
+                'id' =>     $post->id,
+                'title' =>  $post->title,
+                'cover_img' => $post->cover_img,
+                'body' => $post->body,
+                'status' => $post->status,
+                'post_type_id' => $post->post_type_id,
+                'post_category' => $post->postCategory,
+                'event' => $post->event ? $post->event : null,
+                'created_at' => $post->created_at->format('F d, Y'),
+                'from_now' => $post->created_at->diffForHumans(),
+                'page_view' =>  $visitorsData->firstWhere('id', $post->id),
+            ];
+        });
+        return PostResource::collection($collection);
     }
 
     /**
@@ -73,7 +96,7 @@ class PostController extends Controller
             $event->post_id = $post->id;
             $event->save();
         }
-        return new PostResource([$post, $event]);
+        return new PostResource($post);
         
     }
 

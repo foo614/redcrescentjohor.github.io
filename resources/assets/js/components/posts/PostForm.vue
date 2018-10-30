@@ -73,7 +73,6 @@
                                 v-model="item.start_date"
                                 label="Start Date"
                                 prepend-icon="event"
-                                :rules="[v => !!v || 'Date is required']"
                                 readonly
                                 ></v-text-field>
                                 <v-date-picker 
@@ -185,13 +184,13 @@
                     </v-layout>
                     <v-text-field v-model="item.start" v-show="false">{{start}}</v-text-field>
                     <v-text-field v-model="item.end" v-show="false">{{end}}</v-text-field>
-                    <v-flex xs12 sm12>
-                        <div class="mb-1" style="display: flex; width:100%">
+                    <v-flex xs12 sm12 class="mt-2">
+                        <div style="display: flex;">
                             <v-tooltip bottom>
                                 <v-icon slot="activator">description</v-icon>
                                 <span>Content</span>
                             </v-tooltip>
-                            <vue-ckeditor style="width:100%" class="ml-2" v-model="item.body"/>
+                            <ckeditor style="width:100%" height="180px" class="ml-2" v-model="item.body" language="zh" extraplugins="divarea"/>
                         </div>
                     </v-flex>
                     <v-flex xs12 sm12>
@@ -224,9 +223,7 @@
 
 <script>
 import moment from 'moment';
-import VueCkeditor from 'vue-ckeditor2';
 export default {
-    components: { VueCkeditor},
     mounted() {
         this.currentDate = moment().format('YYYY-MM-DD');
         this.autocomplete = new google.maps.places.Autocomplete(

@@ -93,7 +93,7 @@
         
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="primary" :disabled="searchResults.length < 1 || selected.length === 0" @click="sendNotificationBySelected(this, selected , item.hospital.id, searchResults)">Send</v-btn>
+                    <!-- <v-btn color="primary" :disabled="searchResults.length < 1 || selected.length === 0" @click="sendNotificationBySelected(this, selected , item.hospital.id, searchResults)">Send</v-btn> -->
                     <v-btn :loading="loadingState"
                         :disabled="searchResults.length < 1 || selected.length === 0 || loadingState"
                         color="primary"

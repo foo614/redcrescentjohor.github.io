@@ -42,7 +42,7 @@
             </v-list-tile>
             <v-list-tile>
               <v-list-tile-content>Available Seat(s)</v-list-tile-content>
-              <v-list-tile-content class="align-end">{{ props.item.available_seat }}</v-list-tile-content>
+              <v-list-tile-content class="align-end">{{ props.item.available_seat - props.item.computed.total }}</v-list-tile-content>
             </v-list-tile>
             <v-list-tile>
               <v-list-tile-content>Venue</v-list-tile-content>

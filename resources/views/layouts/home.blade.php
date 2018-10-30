@@ -19,6 +19,7 @@
     {{-- <meta name="theme-color" content="#fff"/> --}}
     <title>Red Crescent Johor</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" href="{!! asset('/img/64x64.png') !!}"/>
     {{-- icons for IOS devices --}}
     <link rel="apple-touch-icon" sizes="36x36" href="/icons/png/36x36.png">
     <link rel="apple-touch-icon" sizes="64x64" href="/icons/png/64x64.png">
@@ -123,8 +124,8 @@
             color: #fff
         }
     </style>
+    <script src="https://js.stripe.com/v3/"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="{{asset('ckeditor/ckeditor.js')}}"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}"
@@ -133,7 +134,7 @@
 <body>
     <div id="app">
         <v-app id="inspire">
-            <home-header></home-header>
+            <home-header auth="{{ Auth::user() ? Auth::user()->toJson() : '' }}"></home-header>
             <v-content>
                 @yield('content')
                 <router-view></router-view>
@@ -141,9 +142,6 @@
             <home-footer></home-footer>
         </v-app>
     </div>
-    <div id="embed-api-auth-container"></div>
-    <div id="chart-container"></div>
-    <div id="view-selector-container"></div>
     <script src="{{ asset('js/app.js') }}"></script>
 </body>
 <script>

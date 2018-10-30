@@ -194,13 +194,13 @@
                         </v-flex>
                     </v-layout>
                     <v-layout>
-                        <v-flex xs12 sm12>
-                            <div class="mb-1" style="display: flex; width:100%">
+                        <v-flex xs12 sm12 class="mt-2">
+                            <div style="display: flex;">
                                 <v-tooltip bottom>
                                     <v-icon slot="activator">description</v-icon>
                                     <span>Description</span>
                                 </v-tooltip>
-                                <vue-ckeditor style="width:100%" class="ml-2" v-model="item.description"/>
+                                <ckeditor style="width:100%" height="180px" class="ml-2" v-model="item.description" language="zh" extraplugins="divarea"/>
                             </div>
                         </v-flex>
                     </v-layout>

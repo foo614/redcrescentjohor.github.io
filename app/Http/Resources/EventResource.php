@@ -14,18 +14,6 @@ class EventResource extends JsonResource
      */
     public function toArray($request)
     {
-        //mapping
-        // return [
-        //     'data'=>[
-        //     'id' => $this->id,
-        //     'title' => $this->name,
-        //     'location' => $this->event['address'],
-        //     ],
-        //     'schedule'=>[
-        //         "month" => [8],
-        //         "dayOfMonth" => [2]
-        //     ]
-        // ];
         return [
             'id' => $this->id,
             'title' => $this->title,
@@ -34,9 +22,7 @@ class EventResource extends JsonResource
             'endDate' => $this->event['end'] ? $this->event['end']->format('Y-m-d H:i') : null,
             'map_lat' => $this->event['map_lat'],
             'map_lng' => $this->event['map_lng'],
-            'cover_img' => $this->cover_img,
-            
+            'cover_img' => $this->cover_img,        
         ];
-        // return parent::toArray($request);
     }
 }

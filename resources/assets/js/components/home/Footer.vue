@@ -16,7 +16,7 @@
                 <div class="flex pa-5 xs12 sm12 md4">
                     <h5 class="title pb-3">Get connected with us! <i class="fab fa-facebook-square"></i></h5>
                     <div id="fb-root"></div>
-                    <div class="fb-page" style="width:auto;" data-href="https://www.facebook.com/redcrescentjb/" data-tabs=""
+                    <div class="fb-page" style="width:100%;" data-href="https://www.facebook.com/redcrescentjb/" data-tabs=""
                         data-height="auto" data-small-header="false" data-adapt-container-width="true"
                         data-hide-cover="false" data-show-facepile="false">
                         <blockquote cite="https://www.facebook.com/redcrescentjb/" class="fb-xfbml-parse-ignore"><a

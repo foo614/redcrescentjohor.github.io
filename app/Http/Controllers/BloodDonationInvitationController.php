@@ -33,8 +33,4 @@ class BloodDonationInvitationController extends Controller
         Mail::to($donor_info->email)->send(new Invitation($invitation_content));
 
     }
-
-    public function sendAll(Request $request){
-        
-    }
 }

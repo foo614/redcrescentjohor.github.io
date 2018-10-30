@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-navigation-drawer :clipped="$vuetify.breakpoint.mdAndUp" app right v-model="drawer" temporary width=250>
+        <v-navigation-drawer :clipped="$vuetify.breakpoint.smAndUp" absolute right v-model="drawer" temporary>
             <v-list dense>
                 <template v-for="item in items">
                     <v-list-group
@@ -45,12 +45,64 @@
                 </template>
             </v-list>
         </v-navigation-drawer>
-        <v-toolbar :clipped-right="$vuetify.breakpoint.mdAndUp" app fixed color="white" height="78">
-            <router-link to="/"><img src="/img/64x64.png" height="38px" width="38px"></router-link>
+        <v-toolbar tabs>
+            <router-link to="/"><v-img src="/img/64x64.png" height="38px" width="38px"></v-img></router-link>
             <router-link to="/" style="font-weight: 500; font-size: 18px; text-decoration:none; color:black"><v-toolbar-title>Red Crescent Johor</v-toolbar-title></router-link>
             <v-spacer></v-spacer>
-            <v-toolbar-items class="hidden-sm-and-down">
-                <v-btn flat to="/">Home</v-btn>
+            <v-menu offset-y v-model="showMenu" v-if="mutableAuth">
+                <v-avatar size="36" v-if="mutableAuth.avatar" slot="activator">
+                <img :src="'/img/'+mutableAuth.avatar" alt="mutableAuth.avatar">
+                </v-avatar>
+                <v-avatar color="#757575" slot="activator" v-else>
+                <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>              
+                </v-avatar> 
+            <v-list style="min-width: 250px;">
+                <v-list-tile :to="{ name: 'profile', params: { id: mutableAuth.id}}">
+                <v-list-tile-avatar color="#757575">
+                    <img :src="/img/+mutableAuth.avatar" :alt="mutableAuth.avatar" v-if="mutableAuth.avatar">
+                    <span class="white--text headline" v-else>{{mutableAuth.name | getFirstLetter}}</span>
+                </v-list-tile-avatar>
+                <v-list-tile-content>
+                    <v-list-tile-title>{{mutableAuth.name}}</v-list-tile-title>
+                    <v-list-tile-sub-title>{{mutableAuth.email}}</v-list-tile-sub-title>
+                </v-list-tile-content>
+                </v-list-tile>
+                <v-divider inset></v-divider>
+                <v-list-tile @click="logout">
+                <v-list-tile-action>
+                    <v-icon style="transform: rotate(270deg);">save_alt</v-icon>
+                </v-list-tile-action>
+                <v-list-tile-content>
+                    <v-list-tile-title>Logout</v-list-tile-title>
+                </v-list-tile-content>
+                <form style="display: hidden" action="/logout" method="POST" id="logout">
+                    <input type="hidden" name="_token" :value="csrf_token"/>
+                </form>
+                </v-list-tile>
+            </v-list>
+            </v-menu>
+            <v-btn v-show="!mutableAuth" flat href="/social/login" >Sign In</v-btn>
+            <v-btn icon>
+                <v-icon>search</v-icon>
+            </v-btn>
+            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
+            <v-toolbar-items slot="extension">
+                <v-tabs color="transparent" show-arrows>
+                    <v-tabs-slider color="#ca0000"></v-tabs-slider>
+                    <v-tab to="/">
+                    Home
+                    </v-tab>
+                    <v-tab to="/news-stories">
+                    Posts
+                    </v-tab>
+                    <v-tab to="/course_registration">
+                    Get Trained
+                    </v-tab>
+                    <v-tab href="#tab-1">
+                    Fundraise
+                    </v-tab>
+                </v-tabs>   
+                <!-- <v-btn flat to="/" class="test">Home</v-btn>
                 <v-menu open-on-hover offset-y>
                     <v-btn flat to="/news-stories" slot="activator">Posts</v-btn>
                     <v-list>
@@ -67,17 +119,21 @@
                 </v-menu>
                 <v-btn flat to="/course_registration">Get Trained</v-btn>
                 <v-btn flat>Donate</v-btn>
-                <v-btn flat>Fundraise</v-btn>
+                <v-btn flat>Fundraise</v-btn> -->
             </v-toolbar-items>
-            <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
         </v-toolbar>
     </div>
 </template>
 
 <script>
 export default {
+    props: 
+        ['auth']
+    ,
     data: () => ({
+        csrf_token: window.csrf_token,
         drawer: null,
+        showMenu: false,
         items: [{
                     icon: "home",
                     text: "Home",
@@ -104,6 +160,30 @@ export default {
                     link: "#"
                 },
             ],
+            mutableAuth:{}
         }),
+        created() {
+            this.mutableAuth = this.auth ? JSON.parse(this.auth) : "";
+        },
+        methods:{
+            logout() {
+                document.getElementById("logout").submit();
+            }
+        },
+        filters: {
+            getFirstLetter: function(value) {
+            if (!value) return "";
+            return value
+                .split(" ")
+                .map(function(item) {
+                return item[0];
+                })
+                .join("");
+            }
+        }
+        
     }
 </script>
+<style>
+
+</style>

@@ -33,7 +33,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class)->withTimestamps();;
+        return $this->belongsToMany(Role::class)->withTimestamps();
     }
 
     public function membership_type()
@@ -59,7 +59,12 @@ class User extends Authenticatable
     }
 
     public function courses(){
-        return $this->belongsToMany(Course::class);
+        return $this->belongsToMany(Course::class)->withTimestamps();
+    }
+
+    public function profile()
+    {
+        return $this->hasOne(SocialAuth::class);
     }
 
     /**

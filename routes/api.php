@@ -88,9 +88,13 @@ Route::post('course', 'Api\CourseController@store');
 Route::delete('course/{id}', 'Api\CourseController@destroy');
 Route::put('course', 'Api\CourseController@store');
 
-//course api route
+//blood donation api route
 Route::get('bloodDonationRecords', 'Api\BloodDonationRecordController@index');
 Route::get('bloodDonationRecord/{id}', 'Api\BloodDonationRecordController@show');
 Route::post('bloodDonationRecord', 'Api\BloodDonationRecordController@store');
 Route::delete('bloodDonationRecord/{id}', 'Api\BloodDonationRecordController@destroy');
 Route::put('bloodDonationRecord', 'Api\BloodDonationRecordController@store');
+
+//register course api route
+Route::post('registerCourse', 'Api\RegisterCourseController@store');
+Route::get('registerCourses', 'Api\RegisterCourseController@index');

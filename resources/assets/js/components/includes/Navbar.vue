@@ -67,7 +67,7 @@
       fixed
     >
         <img src="/img/64x64.png" height="38px" width="38px">
-        <router-link to="dashboard" style="text-decoration:none; color:black"><span class="hidden-xs-and-down" style="font-weight: 500; font-size: 18px;">Red Crescent Johor</span></router-link>
+        <router-link to="/" style="text-decoration:none; color:black"><span class="hidden-xs-and-down" style="font-weight: 500; font-size: 18px;">Red Crescent Johor</span></router-link>
         <v-toolbar-side-icon @click.stop="drawer = !drawer" v-if="authCheck==1"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
         <v-menu offset-y v-model="showMenu" v-if="authCheck==1">

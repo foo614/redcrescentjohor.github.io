@@ -51,4 +51,9 @@ return [
         'wechat_app_id' => 'YOUR-WECHAT-APP-ID',
         'wechat_app_key' => 'YOUR-WECHAT-APP-KEY',
     ],
+    'facebook' => [ 
+        'client_id' => env ( 'FB_CLIENT_ID' ),
+        'client_secret' => env ( 'FB_CLIENT_SECRET' ),
+        'redirect' => env ( 'FB_REDIRECT' ) 
+    ],
 ];

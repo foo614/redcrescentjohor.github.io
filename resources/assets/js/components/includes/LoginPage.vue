@@ -60,7 +60,7 @@
                 let vm = this
                 axios.post('/login', vm.loginDetails)
                 .then(function (response) {
-                    vm.$router.push({name:'dashboard'}, ()=> {
+                    vm.$router.push({name:'home'}, ()=> {
                         vm.$toasted.success("Welcome." , {icon:"check"})
                     })
                 })

@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class CourseResource extends JsonResource
+class RegisterCourseResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,19 +18,16 @@ class CourseResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'course_fee' => $this->course_fee,
-            'start_date' => $this->start_date->format('Y-m-d'),
-            'end_date' => $this->end_date->format('Y-m-d'),
+            'start_date' => $this->start_date,
+            'end_date' => $this->end_date,
+            'users' => $this->users->pluck('email'),
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
+            'available_seat' => $this->available_seat,
             'venue' => $this->venue,
             'description' => $this->description,
             'info' => $this->info,
-            'available_seat' => $this->available_seat,
             'created_at' => $this->created_at->format('F d, Y'),
-            'computed' => [
-                'member_registered_id' => $this->users->pluck('id'),
-                'total' => $this->users->pluck('id')->count(),
-            ],
         ];
     }
 }

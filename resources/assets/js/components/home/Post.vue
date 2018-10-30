@@ -119,7 +119,7 @@ export default {
                 // alert('Posting completed.');
                 app.$toasted.success('Posting completed.' , {icon:"check"})
             } else {
-                app.$toasted.error("Something wrong...", {icon:"error"})
+                app.$toasted.error("Posting cancelled...", {icon:"error"})
             }
         });
       }

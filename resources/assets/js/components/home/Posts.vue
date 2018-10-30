@@ -1,21 +1,18 @@
 <template>
-  <v-card>
-    <v-container fill-height>
+
+    <v-container>
       <v-layout wrap>
         <v-flex xs12 sm12>
-            <v-tabs fixed-tabs v-model="active">
+          <v-tabs fixed-tabs v-model="active" color="#ca0000" dark class="mb-4" centered max slider-color="white" height="64px" show-arrows>
             <v-tab>All</v-tab>
             <v-tab
               v-for="postCategory in postCategories" :key="postCategory.id"
             >
-            <v-badge color="red">
-              <span slot="badge">99</span>
               {{postCategory.name}}
-            </v-badge>
             </v-tab>
           </v-tabs>
         </v-flex>
-        <!-- <v-flex xs12 sm3>
+        <!-- <v-flex xs12 sm2>
           <v-container grid-list-xl pa-0>
             <v-flex xs12 class="mb-3">
               <h2><label style="border-bottom:3px solid #f44336">Categories</label></h2>
@@ -24,12 +21,12 @@
               <v-flex mr-2>
                 <v-card v-for="postCategory in postCategories" :key="postCategory.id">
                   <v-list>
-                    <v-list-tile>
+                    <v-list-tile @click="filterList(postCategory.name)">
                       <v-list-tile-content>
                         <v-list-tile-title>{{postCategory.name}}</v-list-tile-title>
                       </v-list-tile-content>
                       <v-list-tile-action>
-                        4
+                        {{postCategory.total}}
                       </v-list-tile-action>
                     </v-list-tile>
                   </v-list>
@@ -38,7 +35,7 @@
             </v-layout>
           </v-container>
         </v-flex> -->
-        <v-flex xs12 sm10 offset-sm1>
+        <v-flex xs12 sm10 offset-xs0 offset-sm1>
           <v-container grid-list-xl pa-0>
             <v-flex xs12 class="mb-3">
               <h2><label style="border-bottom:3px solid #f44336">Posts</label></h2>
@@ -61,7 +58,8 @@
                       </v-list-tile>
                     </v-list>
                     <v-card-actions>
-                      <v-icon color="red darken-2" v-if="!post.event">calendar_today</v-icon> <label class="ml-1" v-if="!post.event">{{post.created_at}}</label>
+                      <v-icon color="red darken-2" v-if="!post.event">calendar_today</v-icon> <label class="ml-1" v-if="!post.event">{{post.created_at }}</label>
+                      <v-icon color="red darken-2" v-if="!post.event" class="ml-5 mr-1">remove_red_eye</v-icon> <label v-if="!post.event">{{post.page_view ? post.page_view.total_view : 0}} </label>
                       <v-spacer></v-spacer>
                       <!-- <v-btn flat color="red" :to="{name:'showPost', params:{id: post.id}}">Read More <v-icon small>arrow_forward</v-icon></v-btn> -->
                       <v-btn flat color="red" :href="`/news-stories/${post.id}`">Read More <v-icon small>arrow_forward</v-icon></v-btn>
@@ -79,7 +77,7 @@
         </v-flex>
       </v-layout>
     </v-container>
-  </v-card>
+
 </template>
 <script>
   import moment from 'moment'
@@ -89,7 +87,8 @@
       return {
         posts: [],
         postCategories:[],
-        active:null
+        active:null,
+        viewCount:[]
       };
     },
     created(){
@@ -125,6 +124,11 @@
       }
     },
     methods: {
+      filterList(name){
+        return this.posts.filter((elm) => {
+          return elm.post_category['name'] === name
+        })
+      },
       fetchPostCategories() {
         axios.get("/api/postCategories").then(res => {
           this.postCategories = res.data;
@@ -133,11 +137,11 @@
       infiniteHandler($state) {
         axios.get('api/posts')
           .then(({data}) => {
-            if (data.data.length) {
+            if (data.length) {
               setTimeout(() => {
                 const temp = [];
-                for (let i = this.posts.length; i <= this.posts.length + 6; i++) {
-                  temp.push(data.data[i])
+                for (let i = this.posts.length; i <= this.posts.length + 12; i++) {
+                  temp.push(data[i])
                 }
                 temp.find(function (elm, index) {
                   if (elm === undefined) {
@@ -148,7 +152,7 @@
                 $state.loaded();
               }, 1000)
 
-              if (this.posts.length === data.meta.total) {
+              if (this.posts.length === data.length) {
                 $state.complete();
               }
             } else {

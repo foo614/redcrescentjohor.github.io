@@ -41,6 +41,7 @@ import Posts from './components/home/Posts.vue';
 import ShowPost from './components/home/Post.vue';
 import Courses from './components/home/Courses.vue';
 import RegisterCourse from './components/home/RegisterCourse.vue';
+import SocialLogin from './components/home/SocialLogin.vue'
 
 const empty = {
     template: `
@@ -78,7 +79,7 @@ const routes = [
         }
       ]
     },
-
+    {path:'/social/login', component: SocialLogin, name:'socialLogin'},
     //admin Panel
     //login
     {path: '/login',components: {login: Login}},

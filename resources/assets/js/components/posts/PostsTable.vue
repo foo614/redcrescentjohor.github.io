@@ -92,7 +92,7 @@ export default {
         text: "Title",
         align: "left",
         sortable: false,
-        value: "name"
+        value: "title"
       },
       { text: "Post Type", value: "type", sortable: true },
       { text: "Created at", value: "created_at", sortable: true },
@@ -106,7 +106,7 @@ export default {
   methods: {
     fetchPosts() {
       axios.get("/api/posts").then(res => {
-        this.posts = res.data.data;
+        this.posts = res.data;
       });
     },
     deleteItem(selectedItem) {
@@ -124,7 +124,7 @@ export default {
         })
         .catch(err => console.log(err));
       })
-      self.$toasted.success(this.selected.length === 1 ? this.selected[0].name+' deleted' : this.selected.length+' user(s) deleted' , {icon:"check"})
+      self.$toasted.success(this.selected.length === 1 ? this.selected[0].title+' deleted' : this.selected.length+' user(s) deleted' , {icon:"check"})
       self.selected = []
     }
   }
