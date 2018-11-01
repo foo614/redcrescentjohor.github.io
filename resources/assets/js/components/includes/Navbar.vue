@@ -96,7 +96,7 @@
               <v-list-tile-content>
                 <v-list-tile-title>Logout</v-list-tile-title>
               </v-list-tile-content>
-              <form style="display: hidden" action="/logout" method="POST" id="logout">
+              <form style="display: hidden" action="/logout" method="POST" id="logout-form">
                 <input type="hidden" name="_token" :value="csrf_token"/>
               </form>
             </v-list-tile>
@@ -119,6 +119,7 @@ export default {
     menu: false,
     items: [
       {
+        accessBy: "master_admin",
         icon: "people",
         text: "Member",
         children: [
@@ -127,6 +128,7 @@ export default {
         ]
       },
       {
+        accessBy: "administrator",
         icon: "supervised_user_circle",
         text: "Donor",
         children: [
@@ -136,6 +138,7 @@ export default {
         ]
       },
       {
+        accessBy: "administrator",
         icon: "local_hospital",
         text: "Hospital",
         children: [
@@ -144,6 +147,7 @@ export default {
         ]
       },
       {
+        accessBy: "administrator",
         icon: "bookmarks",
         text: "Course",
         children: [
@@ -152,14 +156,17 @@ export default {
         ]
       },
       {
+        accessBy: "administrator",
         icon: "event_note",
         text: "Post",
         children: [
           { text: "Add post", link: "/posts/create" },
-          { text: "Manage post", link: "/posts" }
+          { text: "Manage post", link: "/posts" },
+          { text: "View event", link: "/posts/calendar" },
         ]
       },
       {
+        accessBy: "administrator",
         icon: "event_note",
         text: "Blood Donation",
         children: [
@@ -168,6 +175,7 @@ export default {
         ]
       },
       {
+        accessBy: "administrator",
         icon: "home",
         text: "Branch",
         children: [
@@ -176,6 +184,7 @@ export default {
         ]
       },
       {
+        accessBy: "master_admin",
         icon: "settings",
         text: "Setting",
         model: false,
@@ -194,7 +203,7 @@ export default {
   },
   methods: {
     logout() {
-      document.getElementById("logout").submit();
+      document.getElementById("logout-form").submit();
     }
   },
   filters: {

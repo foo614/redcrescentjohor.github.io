@@ -31,6 +31,8 @@
             </fld-navbar>
             @endif
             <v-content>
+                    {{-- @component('components.who') 
+                    @endcomponent --}}
                 @if (Route::currentRouteName() != 'home' && Route::currentRouteName() != 'login')
                     <v-container>
                         @yield('content')

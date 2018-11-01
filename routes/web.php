@@ -14,11 +14,8 @@
 Route::get('/', 'HomeController@index');
 
 //posts
-Route::get('news-stories', 'HomeController@posts');
-Route::get('news-stories/{id}', 'HomeController@showPost');
-
-//donor
-Route::resource('donors', 'DonorController');
+Route::get('/news-stories', 'HomeController@posts');
+Route::get('/news-stories/{id}', 'HomeController@showPost');
 
 //course register
 Route::get('/course_registration', 'HomeController@courses');
@@ -30,54 +27,59 @@ Route::view('/social/login', 'home.social_login');
 Route::get ( '/redirect/{service}', 'SocialAuthController@redirect' );
 Route::get ( '/callback/{service}', 'SocialAuthController@callback' );
 
-Route::group(['middleware' => ['auth']], function () {
-//blank template
-Route::get('dashboard', 'DashboardController@index');
-//settings
-Route::resource('bloodTypes', 'BloodTypeController');
-Route::resource('postCategories', 'PostCategoryController');
-Route::resource('roles', 'RoleController');
-Route::resource('membershipTypes', 'MembershipTypeController');
 
-//post route
-Route::get('posts/calendar', 'PostController@viewCalendar')->name('posts.calendar');
-Route::resource('posts', 'PostController');
+Route::group(['middleware' => ['auth']], function(){
+    //donor
+    Route::resource('donors', 'DonorController');
 
-//user
-Route::resource('users', 'UserController');
+    //settings
+    Route::resource('bloodTypes', 'BloodTypeController');
+    Route::resource('postCategories', 'PostCategoryController');
+    Route::resource('roles', 'RoleController');
+    Route::resource('membershipTypes', 'MembershipTypeController');
 
-//donor 
-Route::get('user', 'DonorController@user');
+    //post route
+    Route::get('posts/calendar', 'PostController@viewCalendar')->name('posts.calendar');
+    Route::resource('posts', 'PostController');
 
-Route::get('search', [
-    'as' => 'donors.search',
-    'uses' => 'DonorController@search'
-]);
-Route::get('donor', [
-    'uses' => 'DonorController@donor'
-]);
+    //user
+    Route::resource('users', 'UserController');
 
-// send mail
-Route::get('mail/send', 'BloodDonationInvitationController@send');
-Route::get('mail/register', 'DonorController@mail');
-Route::get('mail/send/course_registered', 'Api\RegisterCourseController@sendMail');
+    //donor 
+    Route::get('user', 'DonorController@user');
 
-//hospital route
-Route::resource('hospitals', 'HospitalController');
+    Route::get('search', [
+        'as' => 'donors.search',
+        'uses' => 'DonorController@search'
+    ]);
+    Route::get('donor', [
+        'uses' => 'DonorController@donor'
+    ]);
 
-//branches route
-Route::resource('branches', 'BranchController');
+    // send mail
+    Route::get('mail/send', 'BloodDonationInvitationController@send');
+    Route::get('mail/register', 'DonorController@mail');
+    Route::get('mail/send/course_registered', 'Api\RegisterCourseController@sendMail');
 
-//courses route
-Route::resource('courses', 'CourseController');
+    //hospital route
+    Route::resource('hospitals', 'HospitalController');
 
-//blood donation route
-Route::resource('bloodDonationRecords', 'BloodDonationRecordController');
+    //branches route
+    Route::resource('branches', 'BranchController');
+
+    //courses route
+    Route::resource('courses', 'CourseController');
+
+    //blood donation route
+    Route::resource('bloodDonationRecords', 'BloodDonationRecordController');
+
+    Route::get('/logout', 'Auth\LoginController@userLogout')->name('user.logout');
 });
 Auth::routes();
-
 Route::prefix('admin')->group(function(){
     Route::get('/', 'AdminController@index')->name('admin.dashboard');
     Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
     Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
+
+    Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
 });

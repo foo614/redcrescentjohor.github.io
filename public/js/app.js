@@ -30562,8 +30562,6 @@ var routes = [
 //admin Panel
 //login
 { path: '/login', components: { login: __WEBPACK_IMPORTED_MODULE_20__components_includes_LoginPage_vue___default.a } },
-//dashboard
-{ path: '/dashboard', component: __WEBPACK_IMPORTED_MODULE_19__components_includes_Dashboard_vue___default.a, name: 'dashboard' },
 //settings
 { path: '/settings/roles', component: __WEBPACK_IMPORTED_MODULE_23__components_settings_MemberRoleType_vue___default.a, name: 'roles' }, { path: '/settings/membershipTypes', component: __WEBPACK_IMPORTED_MODULE_21__components_settings_MembershipType_vue___default.a, name: 'membershipTypes' }, { path: '/settings/bloodTypes', component: __WEBPACK_IMPORTED_MODULE_22__components_settings_BloodType_vue___default.a, name: 'bloodTypes' }, { path: '/settings/postCategories', component: __WEBPACK_IMPORTED_MODULE_24__components_settings_PostCategoryType_vue___default.a, name: 'postCategories' },
 //bloodDonationRecords
@@ -37784,7 +37782,7 @@ __webpack_require__(196);
             preview: '',
             item: {
                 cover_img: '',
-                name: "",
+                title: "",
                 body: null,
                 status: 1,
                 start: null,
@@ -37795,7 +37793,9 @@ __webpack_require__(196);
                 end_time: null,
                 address: "",
                 post_type_id: 1,
-                post_id: ''
+                post_id: '',
+                place_id: null,
+                formatted_address: null
             },
             useDefaultTheme: true,
             useHolidayTheme: false,
@@ -37857,10 +37857,14 @@ __webpack_require__(196);
             var place = _this.autocomplete.getPlace();
             var lat = place.geometry.location.lat();
             var lng = place.geometry.location.lng();
+            var place_id = place.place_id;
+            var formatted_address = place.formatted_address;
 
             _this.item.address = place.name;
             _this.item.map_lat = lat;
             _this.item.map_lng = lng;
+            _this.item.place_id = place_id;
+            _this.item.formatted_address = formatted_address;
         });
         this.fetchUpcomingEvents();
 
@@ -37886,7 +37890,7 @@ __webpack_require__(196);
             this.item.post_id = data.id;
             this.addDialog = true;
             action == 'read' ? this.readEvent = true : this.editEvent = true;
-            this.item.name = data.title;
+            this.item.title = data.title;
             this.item.address = data.address;
             this.item.cover_img = data.cover_img;
             this.item.start_date = data.startDate ? __WEBPACK_IMPORTED_MODULE_1_moment___default()(data.startDate).format("YYYY-MM-DD") : null;
@@ -37945,7 +37949,7 @@ __webpack_require__(196);
                 if (this.$refs.form.validate()) {
                     this.sending = true;
                     setTimeout(function () {
-                        fetch("../api/post", {
+                        fetch("/api/post", {
                             method: "post",
                             body: JSON.stringify(_this4.item),
                             headers: {
@@ -37956,7 +37960,7 @@ __webpack_require__(196);
                         }).then(function (data) {
                             _this4.sending = false;
                             _this4.addDialog = false;
-                            _this4.$toasted.success(_this4.item.name + ' added', { icon: "check" });
+                            _this4.$toasted.success(_this4.item.title + ' added', { icon: "check" });
                             _this4.$refs.form.reset();
                             _this4.item.address = null;
                             _this4.item.cover_img = null;
@@ -37972,7 +37976,7 @@ __webpack_require__(196);
                 if (this.$refs.form.validate()) {
                     this.sending = true;
                     setTimeout(function () {
-                        fetch("../api/post", {
+                        fetch("/api/post", {
                             method: "put",
                             body: JSON.stringify(_this4.item),
                             headers: {
@@ -37983,8 +37987,9 @@ __webpack_require__(196);
                         }).then(function (data) {
                             _this4.sending = false;
                             _this4.addDialog = false;
-                            _this4.$toasted.success(_this4.item.name + ' updated', { icon: "check" });
-                            _this4.editEvent = null;
+                            _this4.$toasted.success(_this4.item.title + ' updated', { icon: "check" });
+                            _this4.editEvent = false;
+                            _this4.preview = null;
                             _this4.$refs.form.reset();
                             _this4.item.address = null;
                             _this4.item.cover_img = null;
@@ -38010,7 +38015,7 @@ __webpack_require__(196);
         deleteEvent: function deleteEvent(event) {
             var _this5 = this;
 
-            fetch("../api/post/" + event.id, {
+            fetch("/api/post/" + event.id, {
                 method: "delete"
             }).then(function (res) {
                 return _this5.$router.push('/posts/calendar');
@@ -41962,7 +41967,7 @@ var render = function() {
                                 [_vm._v("event")]
                               ),
                               _vm._v(" "),
-                              _c("div", [_vm._v("Create your first event.")])
+                              _c("div", [_vm._v("Create an event.")])
                             ],
                             1
                           )
@@ -42160,11 +42165,7 @@ var render = function() {
                 [
                   _vm.sending
                     ? _c("v-progress-linear", {
-                        attrs: {
-                          height: "3",
-                          color: "red",
-                          indeterminate: true
-                        }
+                        attrs: { height: "3", indeterminate: true }
                       })
                     : _vm._e(),
                   _vm._v(" "),
@@ -42205,11 +42206,11 @@ var render = function() {
                                   readonly: !_vm.readEvent ? false : true
                                 },
                                 model: {
-                                  value: _vm.item.name,
+                                  value: _vm.item.title,
                                   callback: function($$v) {
-                                    _vm.$set(_vm.item, "name", $$v)
+                                    _vm.$set(_vm.item, "title", $$v)
                                   },
-                                  expression: "item.name"
+                                  expression: "item.title"
                                 }
                               })
                             ],
@@ -49874,7 +49875,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
           return console.log(err);
         });
       });
-      self.$toasted.success(this.selected.length === 1 ? this.selected[0].name + ' deleted' : this.selected.length + ' branch(es) deleted', { icon: "check" });
+      self.$toasted.success(this.selected.length === 1 ? this.selected[0].name + ' deleted' : this.selected.length + ' course(s) deleted', { icon: "check" });
       self.selected = [];
     }
   }
@@ -54819,7 +54820,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (x == vm.myText.length) {
                     x = 0;
                 }
-            }, 2000);
+            }, 5000);
         }
     }
 });
@@ -82307,7 +82308,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -82438,34 +82439,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
       drawer: null,
       menu: false,
       items: [{
+        accessBy: "master_admin",
         icon: "people",
         text: "Member",
         children: [{ text: "Add member", link: "/users/create" }, { text: "Manage member", link: "/users" }]
       }, {
+        accessBy: "administrator",
         icon: "supervised_user_circle",
         text: "Donor",
         children: [{ text: "Add donor", link: "/donors/create" }, { text: "Manage donor", link: "/donors" }, { text: "Search donor", link: "/search" }]
       }, {
+        accessBy: "administrator",
         icon: "local_hospital",
         text: "Hospital",
         children: [{ text: "Add hospital", link: "/hospitals/create" }, { text: "Manage hospital", link: "/hospitals" }]
       }, {
+        accessBy: "administrator",
         icon: "bookmarks",
         text: "Course",
         children: [{ text: "Add course", link: "/courses/create" }, { text: "Manage course", link: "/courses" }]
       }, {
+        accessBy: "administrator",
         icon: "event_note",
         text: "Post",
-        children: [{ text: "Add post", link: "/posts/create" }, { text: "Manage post", link: "/posts" }]
+        children: [{ text: "Add post", link: "/posts/create" }, { text: "Manage post", link: "/posts" }, { text: "View event", link: "/posts/calendar" }]
       }, {
+        accessBy: "administrator",
         icon: "event_note",
         text: "Blood Donation",
         children: [{ text: "Add record", link: "/bloodDonationRecords/create" }, { text: "Manage record", link: "/bloodDonationRecords" }]
       }, {
+        accessBy: "administrator",
         icon: "home",
         text: "Branch",
         children: [{ text: "Add branch", link: "/branches/create" }, { text: "Manage branch", link: "/branches" }]
       }, {
+        accessBy: "master_admin",
         icon: "settings",
         text: "Setting",
         model: false,
@@ -82480,7 +82489,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
   methods: {
     logout: function logout() {
-      document.getElementById("logout").submit();
+      document.getElementById("logout-form").submit();
     }
   },
   filters: {
@@ -82854,7 +82863,7 @@ var render = function() {
                               attrs: {
                                 action: "/logout",
                                 method: "POST",
-                                id: "logout"
+                                id: "logout-form"
                               }
                             },
                             [
@@ -83971,7 +83980,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -84077,47 +84086,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['auth'],
-
     data: function data() {
         return {
-            csrf_token: window.csrf_token,
             drawer: null,
-            showMenu: false,
             items: [{
                 icon: "home",
                 text: "Home",
@@ -84138,28 +84111,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 icon: "local_library",
                 text: "Fundraise",
                 link: "#"
-            }],
-            mutableAuth: {}
+            }]
         };
-    },
-    created: function created() {
-        this.mutableAuth = this.auth ? JSON.parse(this.auth) : "";
-    },
-
-    methods: {
-        logout: function logout() {
-            document.getElementById("logout").submit();
-        }
-    },
-    filters: {
-        getFirstLetter: function getFirstLetter(value) {
-            if (!value) return "";
-            return value.split(" ").map(function (item) {
-                return item[0];
-            }).join("");
-        }
     }
-
 });
 
 /***/ }),
@@ -84336,166 +84290,6 @@ var render = function() {
           ),
           _vm._v(" "),
           _c("v-spacer"),
-          _vm._v(" "),
-          _vm.mutableAuth
-            ? _c(
-                "v-menu",
-                {
-                  attrs: { "offset-y": "" },
-                  model: {
-                    value: _vm.showMenu,
-                    callback: function($$v) {
-                      _vm.showMenu = $$v
-                    },
-                    expression: "showMenu"
-                  }
-                },
-                [
-                  _vm.mutableAuth.avatar
-                    ? _c(
-                        "v-avatar",
-                        {
-                          attrs: { slot: "activator", size: "36" },
-                          slot: "activator"
-                        },
-                        [
-                          _c("img", {
-                            attrs: {
-                              src: "/img/" + _vm.mutableAuth.avatar,
-                              alt: "mutableAuth.avatar"
-                            }
-                          })
-                        ]
-                      )
-                    : _c(
-                        "v-avatar",
-                        {
-                          attrs: { slot: "activator", color: "#757575" },
-                          slot: "activator"
-                        },
-                        [
-                          _c("span", { staticClass: "white--text headline" }, [
-                            _vm._v(
-                              _vm._s(
-                                _vm._f("getFirstLetter")(_vm.mutableAuth.name)
-                              )
-                            )
-                          ])
-                        ]
-                      ),
-                  _vm._v(" "),
-                  _c(
-                    "v-list",
-                    { staticStyle: { "min-width": "250px" } },
-                    [
-                      _c(
-                        "v-list-tile",
-                        {
-                          attrs: {
-                            to: {
-                              name: "profile",
-                              params: { id: _vm.mutableAuth.id }
-                            }
-                          }
-                        },
-                        [
-                          _c(
-                            "v-list-tile-avatar",
-                            { attrs: { color: "#757575" } },
-                            [
-                              _vm.mutableAuth.avatar
-                                ? _c("img", {
-                                    attrs: {
-                                      src: /img/ + _vm.mutableAuth.avatar,
-                                      alt: _vm.mutableAuth.avatar
-                                    }
-                                  })
-                                : _c(
-                                    "span",
-                                    { staticClass: "white--text headline" },
-                                    [
-                                      _vm._v(
-                                        _vm._s(
-                                          _vm._f("getFirstLetter")(
-                                            _vm.mutableAuth.name
-                                          )
-                                        )
-                                      )
-                                    ]
-                                  )
-                            ]
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-tile-content",
-                            [
-                              _c("v-list-tile-title", [
-                                _vm._v(_vm._s(_vm.mutableAuth.name))
-                              ]),
-                              _vm._v(" "),
-                              _c("v-list-tile-sub-title", [
-                                _vm._v(_vm._s(_vm.mutableAuth.email))
-                              ])
-                            ],
-                            1
-                          )
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c("v-divider", { attrs: { inset: "" } }),
-                      _vm._v(" "),
-                      _c(
-                        "v-list-tile",
-                        { on: { click: _vm.logout } },
-                        [
-                          _c(
-                            "v-list-tile-action",
-                            [
-                              _c(
-                                "v-icon",
-                                {
-                                  staticStyle: { transform: "rotate(270deg)" }
-                                },
-                                [_vm._v("save_alt")]
-                              )
-                            ],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "v-list-tile-content",
-                            [_c("v-list-tile-title", [_vm._v("Logout")])],
-                            1
-                          ),
-                          _vm._v(" "),
-                          _c(
-                            "form",
-                            {
-                              staticStyle: { display: "hidden" },
-                              attrs: {
-                                action: "/logout",
-                                method: "POST",
-                                id: "logout"
-                              }
-                            },
-                            [
-                              _c("input", {
-                                attrs: { type: "hidden", name: "_token" },
-                                domProps: { value: _vm.csrf_token }
-                              })
-                            ]
-                          )
-                        ],
-                        1
-                      )
-                    ],
-                    1
-                  )
-                ],
-                1
-              )
-            : _vm._e(),
           _vm._v(" "),
           _c(
             "v-btn",

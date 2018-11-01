@@ -44,7 +44,7 @@ class PostController extends Controller
                 'page_view' =>  $visitorsData->firstWhere('id', $post->id),
             ];
         });
-        return PostResource::collection($collection);
+        return $collection;
     }
 
     /**
@@ -89,8 +89,8 @@ class PostController extends Controller
             $event->address = $request->address;
             $event->map_lat = $request->map_lat;
             $event->map_lng = $request->map_lng;
-            $event->start = !$request->start ? null : $request->start;
-            $event->end = !$request->end ? null : $request->end;
+            $event->start = !$request->start ? null : $request->start.= ':00';
+            $event->end = !$request->end ? null : $request->end.= ':00';
             $event->place_id = $request->place_id;
             $event->formatted_address = $request->formatted_address;
             $event->post_id = $post->id;

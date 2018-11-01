@@ -39,9 +39,9 @@
           ></v-checkbox>
         </td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.name }}</td>
-        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.course_fee === 0 ? "FREE" : props.item.course_fee  }}</td>
-        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.start_date + ' - ' +  props.item.end_date}}</td>
-        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.start_time + ' - ' +  props.item.end_time}}</td>
+        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.course_fee === 0 ? "FREE" : props.item.course_fee }}</td>
+        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.start_date + ' - '  +  props.item.end_date }}</td>
+        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.start_time + ' - ' +  props.item.end_time }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.available_seat }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.created_at }}</td>
         <td>
@@ -124,7 +124,7 @@ import moment from 'moment';
           })
           .catch(err => console.log(err));
         })
-        self.$toasted.success(this.selected.length === 1 ? this.selected[0].name+' deleted' : this.selected.length+' branch(es) deleted' , {icon:"check"})
+        self.$toasted.success(this.selected.length === 1 ? this.selected[0].name+' deleted' : this.selected.length+' course(s) deleted' , {icon:"check"})
         self.selected = [];
       }
     }

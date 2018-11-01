@@ -130,7 +130,7 @@
                                     <v-icon 
                                         size="60px"
                                         color="rgba(0,0,0,.26)">event</v-icon>
-                                    <div>Create your first event.</div>
+                                    <div>Create an event.</div>
                                 </div>
                             </v-card-title>
                             <v-card-actions style="justify-content: center;">
@@ -170,7 +170,7 @@
         <v-dialog v-model="addDialog" max-width="600px" persistent>
             <v-form v-model="valid" ref="form" @submit.prevent="addEvent">
                 <v-card>
-                    <v-progress-linear height=3 color="red" :indeterminate="true" v-if="sending"></v-progress-linear>
+                    <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
                     <v-card-title>
                        {{readEvent ? 'View ' : editEvent ? 'Edit ' : 'Add '}} Event
                     </v-card-title>
@@ -178,7 +178,7 @@
                         <!-- title -->
                         <v-layout>
                             <v-flex xs12 sm12>
-                                <v-text-field v-model="item.name" label="Title" prepend-icon="event_note" :rules="[v => !!v || 'Title is required']"
+                                <v-text-field v-model="item.title" label="Title" prepend-icon="event_note" :rules="[v => !!v || 'Title is required']"
                                     required :readonly="!readEvent ? false : true" ></v-text-field>
                             </v-flex>
                         </v-layout>
@@ -343,7 +343,7 @@
                 preview: '',
                 item: {
                     cover_img: '',
-                    name: "",
+                    title: "",
                     body: null,
                     status: 1,
                     start: null,
@@ -354,7 +354,9 @@
                     end_time: null,
                     address: "",
                     post_type_id: 1,
-                    post_id: ''
+                    post_id: '',
+                    place_id: null,
+                    formatted_address: null
                 },
                 useDefaultTheme: true,
                 useHolidayTheme: false,
@@ -415,10 +417,14 @@
                 let place = this.autocomplete.getPlace();
                 let lat = place.geometry.location.lat();
                 let lng = place.geometry.location.lng();
+                let place_id = place.place_id
+                let formatted_address = place.formatted_address
 
                 this.item.address = place.name;
                 this.item.map_lat = lat;
                 this.item.map_lng = lng;
+                this.item.place_id = place_id
+                this.item.formatted_address = formatted_address
             });
             this.fetchUpcomingEvents();
 
@@ -439,7 +445,7 @@
                 this.item.post_id = data.id;
                 this.addDialog = true
                 action == 'read' ? this.readEvent = true : this.editEvent = true;
-                this.item.name = data.title
+                this.item.title = data.title
                 this.item.address = data.address
                 this.item.cover_img = data.cover_img
                 this.item.start_date = data.startDate ? moment(data.startDate).format("YYYY-MM-DD") : null
@@ -497,7 +503,7 @@
                     if (this.$refs.form.validate()) {
                         this.sending = true;
                         setTimeout(() => {
-                            fetch("../api/post", {
+                            fetch("/api/post", {
                                     method: "post",
                                     body: JSON.stringify(this.item),
                                     headers: {
@@ -510,7 +516,7 @@
                                 .then(data => {
                                     this.sending = false
                                     this.addDialog = false
-                                    this.$toasted.success(this.item.name +' added', {icon:"check"})
+                                    this.$toasted.success(this.item.title +' added', {icon:"check"})
                                     this.$refs.form.reset()
                                     this.item.address = null
                                     this.item.cover_img = null
@@ -525,7 +531,7 @@
                     if (this.$refs.form.validate()) {
                         this.sending = true;
                         setTimeout(() => {
-                            fetch("../api/post", {
+                            fetch("/api/post", {
                                     method: "put",
                                     body: JSON.stringify(this.item),
                                     headers: {
@@ -538,8 +544,9 @@
                                 .then(data => {
                                     this.sending = false
                                     this.addDialog = false
-                                    this.$toasted.success(this.item.name +' updated', {icon:"check"})
-                                    this.editEvent = null
+                                    this.$toasted.success(this.item.title +' updated', {icon:"check"})
+                                    this.editEvent = false
+                                    this.preview = null
                                     this.$refs.form.reset()
                                     this.item.address = null
                                     this.item.cover_img = null
@@ -563,7 +570,7 @@
                 this.item.cover_img = null
             },
             deleteEvent(event){
-                fetch(`../api/post/${event.id}`,{
+                fetch(`/api/post/${event.id}`,{
                     method: "delete"
                 })
                 .then(res => this.$router.push('/posts/calendar'))

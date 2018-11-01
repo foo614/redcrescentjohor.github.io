@@ -83,8 +83,6 @@ const routes = [
     //admin Panel
     //login
     {path: '/login',components: {login: Login}},
-    //dashboard
-    {path: '/dashboard', component: Dashboard, name:'dashboard'},
     //settings
     {path: '/settings/roles', component: MemberRoleTypeSetting, name: 'roles'},
     {path: '/settings/membershipTypes', component: MembershipTypeSetting, name: 'membershipTypes'},
