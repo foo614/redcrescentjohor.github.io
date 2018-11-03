@@ -98,3 +98,6 @@ Route::put('bloodDonationRecord', 'Api\BloodDonationRecordController@store');
 //register course api route
 Route::post('registerCourse', 'Api\RegisterCourseController@store');
 Route::get('registerCourses', 'Api\RegisterCourseController@index');
+
+
+Route::post('payment', 'Api\PaymentController@store');

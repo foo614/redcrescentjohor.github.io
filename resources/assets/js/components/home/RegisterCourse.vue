@@ -176,6 +176,15 @@
                             <v-flex xs12 sm6>
                                 <v-text-field box disabled label="Transaction Date" prepend-icon="date_range" :value="currentDate"></v-text-field>
                             </v-flex>
+                            <v-flex xs12 v-if="selectedCourse.course_fee != 0">
+                                <card class='stripe-card'
+                                :class='{ complete }'
+                                stripe='pk_test_LDbEuqCXwf92FjUHk4C9Spyc'
+                                :options='stripeOptions'
+                                @change='complete = $event.complete'
+                                />
+                                <div ref="card"></div>
+                            </v-flex>
                         </v-layout>
                         <v-layout row wrap>
                             <v-flex xs12>
@@ -187,129 +196,40 @@
                                 :value="true"
                                 type="info"
                                 >
-                                Note: Registration is only completed when the Register Button is clicked. For the company that needs to register for more than 1 participant, you may click on Add New Participant. When registration steps are completed, there will be an acknowledgment email sent.
+                                Note: Registration is only completed when the Register Button is clicked. 
+                                When registration steps are completed, there will be an acknowledgment email sent.
                                 </v-alert>
                             </v-flex>
                         </v-layout>
                     </v-container>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn flat color="primary" v-model="addParticipant">Add New Participant</v-btn>
-                        <v-btn flat color="primary" type="submit">Register</v-btn>
+                        <!-- <v-btn flat color="primary" v-model="addParticipant">Add New Participant</v-btn> -->
+                        <v-btn flat color="primary" type="submit" :disabled="!tnc">Register</v-btn>
                     </v-card-actions>
                 </v-card>
             </v-form>
-            <v-card>
-                <v-card-title primary-title>
-                    <div class="headline">Payment Information</div>
-                </v-card-title>
-                <v-container fluid grid-list-lg>
-                    <v-form id="payment-form">
-                        <v-flex xs12>
-                            <div class="uk-margin uk-text-center">
-                            <p class="stripeError" v-if="stripeError">
-                                {{stripeError}}
-                            </p>
-                            </div>
-                            <div class="uk-margin uk-text-left">
-                            <label class="uk-form-label" for="Card Number">
-                                Card Number
-                            </label>
-                            <div class="uk-form-controls">
-                                <div id="card-number" class="uk-input" :class="{ 'uk-form-danger': cardNumberError }"></div>
-                                <span class="help-block" v-if="cardNumberError">
-                                    {{cardNumberError}}
-                                </span>
-                            </div>
-                            </div>
-                            <div class="uk-grid-small uk-text-left" uk-grid>
-                            <div class="uk-width-1-2@s">
-                                <label class="uk-form-label" for="Card CVC">
-                                    Card CVC
-                                </label>
-                                <div class="uk-form-controls">
-                                    <div id="card-cvc" class="uk-input" :class="{ 'uk-form-danger': cardCvcError }"></div>
-                                    <span class="help-block" v-if="cardCvcError">
-                                        {{cardCvcError}}
-                                    </span>
-                                </div>
-                            </div>
-                            <div class="uk-width-1-2@s">
-                                <label class="uk-form-label" for="Expiry Month">
-                                    Expiry
-                                </label>
-                                <div class="uk-form-controls">
-                                    <div id="card-expiry" class="uk-input" :class="{ 'uk-form-danger': cardExpiryError }"></div>
-                                    <span class="help-block" v-if="cardExpiryError">
-                                        {{cardExpiryError}}
-                                    </span>
-                                </div>
-                            </div>
-                            </div>
-                            <div class="uk-margin uk-margin-remove-bottom uk-text-right">
-                            <button class="uk-button uk-button-small uk-button-default" @click.prevent="reset()">
-                                Reset
-                            </button>
-                            <button class="uk-button uk-button-small uk-button-primary" @click.prevent="submitFormToCreateToken()">
-                                <span v-if="loading">processing...</span>
-                                <span v-if="!loading">Donate $1200</span>
-                            </button>
-                            </div>
-                            <div class="form-row">
-    <label for="card-element">
-      Credit or debit card
-    </label>
-    <div id="card-element">
-      <!-- A Stripe Element will be inserted here. -->
-    </div>
-
-    <!-- Used to display form errors. -->
-    <div id="card-errors" role="alert"></div>
-  </div>
-                        </v-flex>
-                    </v-form>
-                </v-container>
-            </v-card>
         </v-container>
         <v-container fluid grid-list-md v-if="submitCompleted">
-            <v-card>
             <v-alert
-                :value="true"
-                color="success"
-                icon="check"
-                >
-                Form has been successfully submitted. Thank you.
+            :value="true"
+            type="success"
+            >
+                The registration is completed. Kindly refer information in your mailbox.
             </v-alert>
-            </v-card>
         </v-container>
     </div>
 </template>
 
 <script>
+import { Card, createToken } from 'vue-stripe-elements-plus'
 import moment from 'moment'
     export default {
         data() {
             return {
-                card: {
-                    cvc: '',
-                    number: '',
-                    expiry: ''
-                },
-
-                //elements
-                cardNumber: '',
-                cardExpiry: '',
-                cardCvc: '',
-                stripe: null,
-
-                // errors
-                stripeError: '',
-                cardCvcError: '',
-                cardExpiryError: '',
-                cardNumberError: '',
-
                 loading: null,
-
+                stripeOptions:{},
+                complete: false,
                 submitCompleted: false,
                 tnc: null,
                 result: null,
@@ -337,6 +257,7 @@ import moment from 'moment'
                 registeredEmail: [],
             };
         },
+        components: { Card },
         created(){
             let app = this
             fetch("/api/registerCourses")
@@ -348,8 +269,6 @@ import moment from 'moment'
                 })
         },
         mounted() {
-            this.setUpStripe();
-
             this.autocomplete = new google.maps.places.Autocomplete(
                 this.$refs.autocomplete
             );
@@ -401,17 +320,14 @@ import moment from 'moment'
                     this.sending = true
                     setTimeout(()=> {
                         fetch("/api/registerCourse", {
-                        method: this.$route.name == 'registerCourse' ? "post" : "put",
+                        method: "post",
                         body: JSON.stringify(this.item),
                         headers:{"content-type": "application/json"}
-                        })
-                        .then(res => {
-                            this.sending = false
-                            this.submitCompleted = true
                         })
                         .catch(err => console.log(err))
                     }, 1500)
                 }
+                this.pay();
             },
             checkRegisteredEmail () {
                 let app = this
@@ -424,155 +340,29 @@ import moment from 'moment'
 
                 return true
             },
-            setUpStripe() {
-                var style = {
-  base: {
-    color: '#32325d',
-    lineHeight: '18px',
-    fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-    fontSmoothing: 'antialiased',
-    fontSize: '16px',
-    '::placeholder': {
-      color: '#aab7c4'
-    }
-  },
-  invalid: {
-    color: '#fa755a',
-    iconColor: '#fa755a'
-  }
-};
-                if (window.Stripe === undefined) {
-                alert('Stripe V3 library not loaded!');
-                } else {
-                const stripe = window.Stripe('pk_test_LDbEuqCXwf92FjUHk4C9Spyc');
-                this.stripe = stripe;
-
-                const elements = stripe.elements();
-                this.cardCvc = elements.create('cardCvc');
-                this.cardExpiry = elements.create('cardExpiry');
-                this.cardNumber = elements.create('cardNumber');
-
-                this.cardCvc.mount('#card-cvc');
-                this.cardExpiry.mount('#card-expiry');
-                this.cardNumber.mount('#card-number', {style: style});
-
-                this.listenForErrors();
-                }
+            pay: function () {
+                createToken()
+                    .then(data => fetch("/api/payment", {
+                    method: "post",
+                    body: JSON.stringify([data.token, this.item]),
+                    headers:{"content-type": "application/json"}
+                    })                        
+                    .then(res => {
+                        this.sending = false
+                        this.submitCompleted = true
+                    }));
             },
-
-            listenForErrors() {
-                const vm = this;
-
-                this.cardNumber.addEventListener('change', (event) => {
-                vm.toggleError(event);
-                vm.cardNumberError = ''
-                vm.card.number = event.complete ? true : false
-                });
-                        
-                this.cardExpiry.addEventListener('change', (event) => {
-                vm.toggleError(event);
-                vm.cardExpiryError = ''
-                vm.card.expiry = event.complete ? true : false
-                });
-                
-                this.cardCvc.addEventListener('change', (event) => {
-                vm.toggleError(event);
-                vm.cardCvcError = ''
-                vm.card.cvc = event.complete ? true : false
-                });
-            },
-
-            toggleError (event) {
-                if (event.error) {
-                this.stripeError = event.error.message;
-                } else {
-                this.stripeError = '';
-                }
-            },
-
-            submitFormToCreateToken() {
-                this.clearCardErrors();
-                let valid = true;
-
-                if (!this.card.number) {
-                valid = false;
-                this.cardNumberError = "Card Number is Required";
-                }
-                if (!this.card.cvc) {
-                valid = false;
-                this.cardCvcError = "CVC is Required";
-                }
-                if (!this.card.expiry) {
-                valid = false;
-                this.cardExpiryError = "Month is Required";
-                }
-                if (this.stripeError) {
-                valid = false;
-                }
-                if (valid) {
-                this.createToken()
-                }
-            },
-
-            createToken() {
-                this.stripe.createToken(this.cardNumber).then((result) => {
-                    if (result.error) {
-                    this.stripeError = result.error.message;
-                    } else {
-                    const token = result.token.id
-                    alert('Thanks for donating.')
-                        //send the token to your server
-                        //clear the inputs
-                    }
-                })
-            },
-
-            clearElementsInputs() {
-                this.cardCvc.clear()
-                this.cardExpiry.clear()
-                this.cardNumber.clear()
-            },
-
-            clearCardErrors() {
-                this.stripeError = ''
-                this.cardCvcError = ''
-                this.cardExpiryError = ''
-                this.cardNumberError = ''
-            },
-			
-			reset() {
-				this.clearElementsInputs()
-				this.clearCardErrors()
-			}
         }
     };
 </script>
 
 <style>
-/**
- * The CSS shown here will not be introduced in the Quickstart guide, but shows
- * how you can use CSS to style your Element's container.
- */
-.StripeElement {
-  background-color: white;
-  height: 40px;
-  padding: 10px 12px;
-  border-radius: 4px;
-  border: 1px solid transparent;
-  box-shadow: 0 1px 3px 0 #e6ebf1;
-  -webkit-transition: box-shadow 150ms ease;
-  transition: box-shadow 150ms ease;
+.stripe-card {
+  /* width: 300px; */
+  border: 2px solid rgba(0,0,0,0.54);
+  padding: 10px;
 }
-
-.StripeElement--focus {
-  box-shadow: 0 1px 3px 0 #cfd7df;
-}
-
-.StripeElement--invalid {
-  border-color: #fa755a;
-}
-
-.StripeElement--webkit-autofill {
-  background-color: #fefde5 !important;
+.stripe-card.complete {
+  border-color: green;
 }
 </style>

@@ -31,7 +31,7 @@ class PostController extends Controller
                 ];
             });
             return[
-                'id' =>     $post->id,
+                'id' => $post->id,
                 'title' =>  $post->title,
                 'cover_img' => $post->cover_img,
                 'body' => $post->body,

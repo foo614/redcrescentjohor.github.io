@@ -67,7 +67,9 @@
       fixed
     >
         <img src="/img/64x64.png" height="38px" width="38px">
-        <router-link to="/" style="text-decoration:none; color:black"><span class="hidden-xs-and-down" style="font-weight: 500; font-size: 18px;">Red Crescent Johor</span></router-link>
+        <a href="/" style="text-decoration:none; color:black">
+        <span class="hidden-xs-and-down" style="font-weight: 500; font-size: 18px;">Red Crescent Johor</span>
+        </a>
         <v-toolbar-side-icon @click.stop="drawer = !drawer" v-if="authCheck==1"></v-toolbar-side-icon>
       <v-spacer></v-spacer>
         <v-menu offset-y v-model="showMenu" v-if="authCheck==1">
@@ -80,7 +82,7 @@
           <v-list style="min-width: 250px;">
             <v-list-tile :to="{ name: 'profile', params: { id: mutableAuth.id}}">
               <v-list-tile-avatar color="#757575">
-                <img :src="/img/+mutableAuth.avatar" :alt="mutableAuth.avatar" v-if="mutableAuth.avatar">
+                <img :src="/img/+mutableAuth.avatar || mutableAuth.avatar" :alt="mutableAuth.avatar" v-if="mutableAuth.avatar">
                 <span class="white--text headline" v-else>{{mutableAuth.name | getFirstLetter}}</span>
               </v-list-tile-avatar>
               <v-list-tile-content>

@@ -1,22 +1,14 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
+use App\Http\Controllers\Controller;
+use Auth;
+use App\Transaction;
 use App\User;
-use App\Role;
-use App\MembershipType;
-use App\Branch;
-use App\BloodType;
-use Illuminate\Support\Facades\Storage;
-
-class UserController extends Controller
+class PaymentController extends Controller
 {
-    public function __construct(){
-        $this->middleware(['auth'])->except('show');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -24,14 +16,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // get all users
-        $users = User::with('roles')->whereHas(
-            'roles', function($q){
-                $q->where('roles.id', '!=', 1);
-            }
-        )->get();
-        return view('users.index')->with('users', $users);
-        // return response()->json($users);
+        //
     }
 
     /**
@@ -41,7 +26,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        //
     }
 
     /**
@@ -52,7 +37,31 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $find_user = User::where('email',  $request[1]['email'])->firstOrFail();
+        if($find_user){
+            $transaction = new Transaction;
+            $transaction->user_id = $find_user->id ?? null;
+            $transaction->course_id = $request[1]['course_id'] ?? null;
+            $transaction->fundraiser_id = $request[1]['fundraiser_id'] ?? null;
+            $transaction->amount = $request[1]['amount'] ?? null;
+            $transaction->currency = "MYR";
+            $transaction->save();
+        }
+        \Stripe\Stripe::setApiKey("sk_test_MxvgJA9hh1fjV3ZrDe6hZ4ih");
+
+        // Token is created using Checkout or Elements!
+        // Get the payment token ID submitted by the form:
+        $token = $request[0]['id'];
+        $amount = $request[1]['amount']*100;
+        $description = $request[1]['selectedCourse']['name'];
+        $customer_email = $request[1]['email'];
+        $charge = \Stripe\Charge::create([
+            'amount' => $amount,
+            'currency' => 'myr',
+            'description' => $description,
+            'source' => $token,
+            'receipt_email' => $customer_email,
+        ]);
     }
 
     /**
@@ -63,7 +72,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return view('profile.index');
+        //
     }
 
     /**
@@ -74,7 +83,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('users.edit');
+        //
     }
 
     /**
@@ -86,7 +95,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-       //
+        //
     }
 
     /**

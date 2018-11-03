@@ -32,7 +32,8 @@ class SocialAuthService
                 $user = User::create([
                     'email' => $providerUser->getEmail(),
                     'name' => $providerUser->getName(),
-                    'username' => strtolower(preg_replace('/\s+/', '_', $providerUser->name) . mt_rand(10, 100))
+                    // 'avatar' =>$providerUser->getAvatar(),
+                    // 'username' => strtolower(preg_replace('/\s+/', '_', $providerUser->name) . mt_rand(10, 100))
                 ]);
             }
 

@@ -20,7 +20,7 @@ class RegisterCourseController extends Controller
      */
     public function index()
     {
-        $users = Course::orderBy('created_at','DESC')->where('start_date', '<', Carbon::now())->get();
+        $users = Course::orderBy('created_at','DESC')->where('start_date', '>', Carbon::now())->get();
         return RegisterCourseResource::collection($users);
     }
 

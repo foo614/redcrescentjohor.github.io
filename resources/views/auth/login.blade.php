@@ -10,7 +10,7 @@
                     <v-toolbar-title>Login</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text>
-                    <v-text-field prepend-icon="email" name="email" label="Email" type="email"></v-text-field>
+                    <v-text-field prepend-icon="email" name="email" label="Email" type="email" color="black"></v-text-field>
                     @if ($errors->has('email'))
                     <div class="v-text-field__details">
                         <div class="v-messages theme--light error--text">
@@ -20,7 +20,7 @@
                         </div>
                     </div>
                     @endif
-                    <v-text-field prepend-icon="lock" name="password" label="Password" id="password" type="password"></v-text-field>
+                    <v-text-field prepend-icon="lock" name="password" label="Password" id="password" type="password" color="black"></v-text-field>
                     @if ($errors->has('password'))
                     <div class="v-text-field__details">
                         <div class="v-messages theme--light error--text">

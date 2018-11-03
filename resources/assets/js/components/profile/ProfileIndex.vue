@@ -7,8 +7,7 @@
                         <v-avatar size="125px" color="#757575" class="material-icons elevation-7 mb-1">
                             <span class="white--text headline" v-if="!show && !item.avatar">{{item.name | getFirstLetter}}</span>
                             <img
-                                v-if="item.avatar != null"
-                                class="img-circle"
+                                v-show="item.avatar"
                                 :src= "!preview ? (!show ? (!item.avatar ? null : '/img/'+item.avatar ): item.avatar = null) : preview"
                                 alt="profile_image"
                             >

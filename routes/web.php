@@ -14,21 +14,25 @@
 Route::get('/', 'HomeController@index');
 
 //posts
-Route::get('/news-stories', 'HomeController@posts');
-Route::get('/news-stories/{id}', 'HomeController@showPost');
+Route::get('news-stories', 'HomeController@posts');
+Route::get('news-stories/{id}', 'HomeController@showPost');
 
 //course register
-Route::get('/course_registration', 'HomeController@courses');
-Route::get('/course_registration/{id}/register', 'HomeController@registerCourse');
+Route::get('course_registration', 'HomeController@courses');
+Route::get('course_registration/{id}/register', 'HomeController@registerCourse');
 
-Route::view('/social/login', 'home.social_login');
+//fundraise
+Route::get('fundraiser', 'HomeController@fundraiser');
+Route::get('fundraiser/{id}', 'HomeController@fundraiser');
+
+Route::view('social/login', 'home.social_login');
 
 //socialite login
-Route::get ( '/redirect/{service}', 'SocialAuthController@redirect' );
-Route::get ( '/callback/{service}', 'SocialAuthController@callback' );
+Route::get ( 'redirect/{service}', 'SocialAuthController@redirect' );
+Route::get ( 'callback/{service}', 'SocialAuthController@callback' );
 
-
-Route::group(['middleware' => ['auth']], function(){
+// Route::group(['middleware' => ['role:administrator']], function(){
+Route::group(['middleware' => ['role:administrator']], function(){
     //donor
     Route::resource('donors', 'DonorController');
 
@@ -53,6 +57,7 @@ Route::group(['middleware' => ['auth']], function(){
         'uses' => 'DonorController@search'
     ]);
     Route::get('donor', [
+
         'uses' => 'DonorController@donor'
     ]);
 
@@ -73,13 +78,6 @@ Route::group(['middleware' => ['auth']], function(){
     //blood donation route
     Route::resource('bloodDonationRecords', 'BloodDonationRecordController');
 
-    Route::get('/logout', 'Auth\LoginController@userLogout')->name('user.logout');
+    Route::get('logout', 'LoginController@logout');
 });
 Auth::routes();
-Route::prefix('admin')->group(function(){
-    Route::get('/', 'AdminController@index')->name('admin.dashboard');
-    Route::get('/login', 'Auth\AdminLoginController@showLoginForm')->name('admin.login');
-    Route::post('/login', 'Auth\AdminLoginController@login')->name('admin.login.submit');
-
-    Route::get('/logout', 'Auth\AdminLoginController@logout')->name('admin.logout');
-});

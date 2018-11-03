@@ -67,6 +67,18 @@ class User extends Authenticatable
         return $this->hasOne(SocialAuth::class);
     }
 
+    public function isAdmin()
+    {
+        foreach ($this->roles()->get() as $role)
+        {
+            if ($role->name == 'administrator')
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
     /**
      * @param string|array $roles
      */

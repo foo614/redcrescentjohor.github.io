@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Auth;
-
 class LoginController extends Controller
 {
     /*
@@ -27,7 +26,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/dashboard';
+    protected $redirectTo = '/users';
 
     /**
      * Create a new controller instance.
@@ -36,12 +35,11 @@ class LoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest')->except(['logout', 'userLogout']);
+        $this->middleware('guest')->except('logout');
     }
 
-    public function userLogout()
-    {
-        Auth::guard('web')->logout();
+    public function logout(Request $request) {
+        Auth::logout();
         return redirect('/');
     }
 }

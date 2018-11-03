@@ -20,7 +20,7 @@ class RegisterCourseResource extends JsonResource
             'course_fee' => $this->course_fee,
             'start_date' => $this->start_date,
             'end_date' => $this->end_date,
-            'users' => $this->users->pluck('email'),
+            'users' => $this->users ?  $this->users->pluck('email') : null,
             'start_time' => $this->start_time,
             'end_time' => $this->end_time,
             'available_seat' => $this->available_seat,

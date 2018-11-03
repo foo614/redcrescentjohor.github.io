@@ -9,7 +9,7 @@ use App\Service\SocialAuthService;
 class SocialAuthController extends Controller
 {
     public function redirect($social) {
-        return Socialite::driver ( $social )->redirect ();
+        return Socialite::driver($social)->asPopup()->redirect();
     }
 
     public function callback(SocialAuthService $service, $social) {

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <!-- Google Analytics -->
-<script>
+{{-- <script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -9,7 +9,7 @@
         
         ga('create', 'UA-86542784-2', 'auto');
         ga('send', 'pageview');
-</script>
+</script> --}}
 <!-- End Google Analytics -->
 <head>
     <meta charset="utf-8">
@@ -134,7 +134,7 @@
 <body>
     <div id="app">
         <v-app id="inspire">
-            <home-header auth="{{ Auth::user() ? Auth::user()->toJson() : '' }}"></home-header>
+            <home-header auth="{{ Auth::user() ? Auth::user()->toJson() : '' }} " auth-check="{{Auth::check()}}"></home-header>
             <v-content>
                 @yield('content')
                 <router-view></router-view>
@@ -150,8 +150,9 @@
         appId            : '1068803136585486',
         autoLogAppEvents : true,
         xfbml            : true,
-        version          : 'v3.1'
+        version          : 'v3.0'
         });
+        FB.AppEvents.logPageView();
     };
     
     (function(d, s, id){
