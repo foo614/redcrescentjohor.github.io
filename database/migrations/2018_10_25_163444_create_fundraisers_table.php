@@ -16,8 +16,10 @@ class CreateFundraisersTable extends Migration
         Schema::create('fundraisers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title');
-            $table->string('body');
+            $table->text('body');
             $table->integer('target_amount');
+            $table->text('cover_img')->nullable();
+            $table->boolean('status')->default(true);
             $table->integer('user_id')->nullable()->unsigned(); //fundraiser id
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->timestamps();

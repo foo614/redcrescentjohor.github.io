@@ -48,4 +48,21 @@ class HomeController extends Controller
     public function registerCourse(){
         return view('home.registerCourse');
     }
+
+    public function fundraisers(){
+        return view('home.fundraisers');
+    }
+
+    public function donate($id){
+        return view('home.donate');
+    }
+
+    public function profile($id){
+        return view('home.profile');
+    }
+
+    public function fundraiserCreate()
+    {
+        return view('home.fundraiserCreate');
+    }
 }

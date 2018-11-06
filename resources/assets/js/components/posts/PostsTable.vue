@@ -38,7 +38,7 @@
           ></v-checkbox>
         </td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.title }}</td>
-        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.post_category.name }}</td>
+        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.post_category ? props.item.post_category.name : '' }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.created_at }}</td>
         <td>
           <router-link :to="{name:'editPost', params:{id: props.item.id}}">
@@ -84,7 +84,6 @@ export default {
     return{
     rowsDefaultItem: [10],
     search: '',
-    saveSnackbar: {},
     selected: [],
     posts: [],
     headers: [
@@ -96,7 +95,7 @@ export default {
       },
       { text: "Post Type", value: "type", sortable: true },
       { text: "Created at", value: "created_at", sortable: true },
-      { text: "Actions", value: "name", sortable: false }
+      { text: "Actions", sortable: false }
     ]
     };
   },

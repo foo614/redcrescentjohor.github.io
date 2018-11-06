@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use App\Http\Controllers\Controller;
 use Auth;
 use App\Transaction;
 use App\User;
 class PaymentController extends Controller
 {
+    // global variable
+    private $stripeKey = 'sk_test_MxvgJA9hh1fjV3ZrDe6hZ4ih';
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +19,9 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        \Stripe\Stripe::setApiKey($this->stripeKey);
+        $list = \Stripe\Charge::all(["limit" => 100]);
+        return $list['data'];
     }
 
     /**
@@ -47,20 +52,26 @@ class PaymentController extends Controller
             $transaction->currency = "MYR";
             $transaction->save();
         }
-        \Stripe\Stripe::setApiKey("sk_test_MxvgJA9hh1fjV3ZrDe6hZ4ih");
-
+        \Stripe\Stripe::setApiKey($this->stripeKey);
         // Token is created using Checkout or Elements!
         // Get the payment token ID submitted by the form:
         $token = $request[0]['id'];
         $amount = $request[1]['amount']*100;
-        $description = $request[1]['selectedCourse']['name'];
+        $description = $request[1]['selectedCourse']['name'] ?? $request[1]['fundraiser_title'];
         $customer_email = $request[1]['email'];
+
+        $customer = \Stripe\Customer::create(array(
+            "email" => $customer_email,
+            "source" => $token
+        ));
+
         $charge = \Stripe\Charge::create([
             'amount' => $amount,
             'currency' => 'myr',
             'description' => $description,
-            'source' => $token,
+            // 'source' => $token,
             'receipt_email' => $customer_email,
+            "customer" => $customer->id
         ]);
     }
 
@@ -107,5 +118,11 @@ class PaymentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function totalDonation($id)
+    {
+        $transaction = Transaction::where('fundraiser_id', $id)->sum('amount');
+        return $transaction;
     }
 }

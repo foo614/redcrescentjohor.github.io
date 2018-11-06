@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class);
     }
 
+    public function fundraisers(){
+        return $this->hasMany(Fundraiser::class);
+    }
+
+
     public function blood_donation_records(){
         return $this->hasMany(BloodDonationRecord::class);
     }

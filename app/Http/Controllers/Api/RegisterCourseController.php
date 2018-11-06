@@ -8,8 +8,8 @@ use App\Http\Controllers\Controller;
 use Mail;
 use App\User;
 use App\Course;
-use App\Mail\CourseRegistered;
-use Carbon\Carbon;;
+use App\Mail\CourseRegistration;
+use Carbon\Carbon;
 
 class RegisterCourseController extends Controller
 {
@@ -67,7 +67,7 @@ class RegisterCourseController extends Controller
         $content->course_name = $course_name;
 
 
-        Mail::to($email)->send(new CourseRegistered( $content ));
+        Mail::to($email)->send(new CourseRegistration( $content ));
     }
 
     /**

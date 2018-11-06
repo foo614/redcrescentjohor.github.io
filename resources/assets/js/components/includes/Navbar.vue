@@ -169,7 +169,16 @@ export default {
       },
       {
         accessBy: "administrator",
-        icon: "event_note",
+        icon: "loyalty",
+        text: "Fundraiser",
+        children: [
+          { text: "Add fundraiser", link: "/fundraisers/create" },
+          { text: "Manage fundraiser", link: "/fundraisers" },
+        ]
+      },
+      {
+        accessBy: "administrator",
+        icon: "opacity",
         text: "Blood Donation",
         children: [
           { text: "Add record", link: "/bloodDonationRecords/create" },
@@ -183,6 +192,14 @@ export default {
         children: [
           { text: "Add branch", link: "/branches/create" },
           { text: "Manage branch", link: "/branches" }
+        ]
+      },
+      {
+        accessBy: "administrator",
+        icon: "attach_money",
+        text: "Payment",
+        children: [
+          { text: "View Transaction", link: "/transactions" },
         ]
       },
       {
@@ -209,15 +226,15 @@ export default {
     }
   },
   filters: {
-    getFirstLetter: function(value) {
+      getFirstLetter: function(value) {
       if (!value) return "";
       return value
-        .split(" ")
-        .map(function(item) {
+          .split(" ")
+          .map(function(item) {
           return item[0];
-        })
-        .join("");
-    }
+          })
+          .join("").slice(0,2);
+      }
   }
 };
 </script>

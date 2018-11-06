@@ -3,20 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Input;
-use App\User;
-use App\Role;
-use App\MembershipType;
-use App\Branch;
-use App\BloodType;
-use Illuminate\Support\Facades\Storage;
 
-class UserController extends Controller
+class PaymentController extends Controller
 {
-    public function __construct(){
-        $this->middleware(['auth.basic.once'])->except('show');
-    }
     /**
      * Display a listing of the resource.
      *
@@ -24,14 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        // get all users
-        $users = User::with('roles')->whereHas(
-            'roles', function($q){
-                $q->where('roles.id', '!=', 1);
-            }
-        )->get();
-        return view('users.index')->with('users', $users);
-        // return response()->json($users);
+        return view('payment.transaction');
     }
 
     /**
@@ -41,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('users.create');
+        //
     }
 
     /**
@@ -63,7 +45,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return view('profile.index');
+        //
     }
 
     /**
@@ -74,7 +56,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        return view('users.edit');
+        //
     }
 
     /**
@@ -86,7 +68,7 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-       //
+        //
     }
 
     /**

@@ -13,7 +13,7 @@
     <link href="{{asset('css/vuetify.min.css')}}" rel="stylesheet">
     <link rel="icon" href="{!! asset('/img/64x64.png') !!}"/>
     <!-- Scripts -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
     <script src="//cdn.ckeditor.com/4.10.1/full-all/ckeditor.js"></script>
     <script src="https://cdn.ckeditor.com/4.5.11/full-all/plugins/divarea/plugin.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>

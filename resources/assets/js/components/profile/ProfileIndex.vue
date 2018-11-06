@@ -183,7 +183,7 @@ export default {
             .map(function(item) {
             return item[0];
             })
-            .join("").toUpperCase()
+            .join("");
         }
     }
 }

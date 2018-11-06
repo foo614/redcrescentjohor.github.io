@@ -18,12 +18,13 @@ Route::get('news-stories', 'HomeController@posts');
 Route::get('news-stories/{id}', 'HomeController@showPost');
 
 //course register
-Route::get('course_registration', 'HomeController@courses');
-Route::get('course_registration/{id}/register', 'HomeController@registerCourse');
+Route::get('course-registration', 'HomeController@courses');
+Route::get('course-registration/{id}/register', 'HomeController@registerCourse');
 
 //fundraise
-Route::get('fundraiser', 'HomeController@fundraiser');
-Route::get('fundraiser/{id}', 'HomeController@fundraiser');
+Route::get('fundraisers-campaign', 'HomeController@fundraisers');
+Route::get('fundraisers-campaign/create', 'HomeController@fundraiserCreate');
+Route::get('fundraisers-campaign/donate/{id}', 'HomeController@donate');
 
 Route::view('social/login', 'home.social_login');
 
@@ -32,7 +33,7 @@ Route::get ( 'redirect/{service}', 'SocialAuthController@redirect' );
 Route::get ( 'callback/{service}', 'SocialAuthController@callback' );
 
 // Route::group(['middleware' => ['role:administrator']], function(){
-Route::group(['middleware' => ['role:administrator']], function(){
+Route::group(['middleware' => ['auth', 'role:administrator']], function(){
     //donor
     Route::resource('donors', 'DonorController');
 
@@ -46,8 +47,13 @@ Route::group(['middleware' => ['role:administrator']], function(){
     Route::get('posts/calendar', 'PostController@viewCalendar')->name('posts.calendar');
     Route::resource('posts', 'PostController');
 
+    //fundraise route
+    Route::resource('fundraisers', 'FundraiserController');
+
     //user
     Route::resource('users', 'UserController');
+    //user profile home
+    Route::get('profile/{id}', 'HomeController@profile');
 
     //donor 
     Route::get('user', 'DonorController@user');
@@ -79,5 +85,8 @@ Route::group(['middleware' => ['role:administrator']], function(){
     Route::resource('bloodDonationRecords', 'BloodDonationRecordController');
 
     Route::get('logout', 'LoginController@logout');
+
+    //payment = transaction
+    Route::get('transactions', 'PaymentController@index');
 });
 Auth::routes();

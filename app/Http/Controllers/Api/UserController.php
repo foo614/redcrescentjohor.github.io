@@ -96,7 +96,7 @@ class UserController extends Controller
                 $user->roles()->detach(); // detach the role related
             }
         }
-        if(!$user->membership_type_id){
+        if(!$user->membership_type_id && $request->isMethod('post') ){
             app('App\Http\Controllers\DonorController')->sendMail($user->name, $user->email);
         }
         return new UserResource($user);

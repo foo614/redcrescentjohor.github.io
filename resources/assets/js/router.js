@@ -8,8 +8,12 @@ import BloodDonationForm from './components/bloodDonationRecords/BloodDonationRe
 
 import PostsIndex from './components/posts/PostsTable.vue';
 import PostForm from './components/posts/PostForm.vue';
-// import PostEdit from './components/posts/PostEdit.vue';
 import PostCalendar from './components/posts/PostCalendar.vue';
+
+import FundraisersIndex from './components/fundraisers/FundraisersTable.vue';
+import FundraiserForm from './components/fundraisers/FundraiserForm.vue';
+
+import TransactionsIndex from './components/payment/TransactionsTable.vue'
 
 import ProfileIndex from './components/profile/ProfileIndex.vue';
 import UserIndex from './components/users/UsersTable.vue';
@@ -36,12 +40,17 @@ import BloodTypeSetting from './components/settings/BloodType.vue';
 import MemberRoleTypeSetting from './components/settings/MemberRoleType.vue';
 import PostCategoryTypeSetting from './components/settings/PostCategoryType.vue';
 
-import Home from './components/home/MainPageContent.vue';
+import Home from './components/home/Home.vue';
 import Posts from './components/home/Posts.vue';
 import ShowPost from './components/home/Post.vue';
 import Courses from './components/home/Courses.vue';
 import RegisterCourse from './components/home/RegisterCourse.vue';
-import SocialLogin from './components/home/SocialLogin.vue'
+import SocialLogin from './components/home/SocialLogin.vue';
+import ProfileHome from './components/home/ProfileHome.vue';
+import FundraisersList from './components/home/Fundraisers.vue';
+import FundraiserCreate from './components/home/FundraiserCreate.vue';
+import Donate from './components/home/Donate.vue';
+
 
 const empty = {
     template: `
@@ -65,7 +74,7 @@ const routes = [
         }
       ]
     },
-    {path:'/course_registration', component: empty, 
+    {path:'/course-registration', component: empty, 
       children:[
         {
           path: '', 
@@ -79,6 +88,26 @@ const routes = [
         }
       ]
     },
+    {path:'/fundraisers-campaign', component: empty,
+      children: [
+        {
+          path:'', 
+          component: FundraisersList, 
+          name:'fundraisersList'
+        },
+        {
+          path:'create', 
+          component: FundraiserCreate, 
+          name:'FundraiserCreate'
+        },
+        {
+          path:'donate/:id', 
+          component: Donate,
+          name:'donate',
+        },
+      ]
+    },
+    {path:'/transactions', component: TransactionsIndex, name:'transaction'},
     {path:'/social/login', component: SocialLogin, name:'socialLogin'},
     //admin Panel
     //login
@@ -97,12 +126,17 @@ const routes = [
     {path: '/posts/create', component: PostForm, name: 'createPost'},
     {path: '/posts/:id/edit', component: PostForm, name: 'editPost'},
     {path: '/posts/calendar', component: PostCalendar, name: 'viewPost'},
+    //fundraisers
+    {path: '/fundraisers',component: FundraisersIndex, name:'listFundraisers'},
+    {path: '/fundraisers/create', component: FundraiserForm, name: 'createFundraiser'},
+    {path: '/fundraisers/:id/edit', component: FundraiserForm, name: 'editFundraiser'},
     //users
     {path: '/users', component:UserIndex, name:'listUsers'},
     {path: '/users/:id/edit', component: UserForm, name: 'editUser'},
     {path: '/users/create', component: UserForm, name: 'createUser'},
     //user profile
     {path:'/users/:id', component: ProfileIndex, name: 'profile'},
+    {path:'/profile/:id', component: ProfileHome, name: 'profileHome'},
     //donors
     {path: '/donors', component: DonorsIndex, name:'listDonors'},
     {path: '/donors/create', component: DonorForm, name: 'createDonor'},

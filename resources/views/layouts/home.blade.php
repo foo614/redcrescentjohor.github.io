@@ -125,7 +125,9 @@
         }
     </style>
     <script src="https://js.stripe.com/v3/"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
+    <script src="//cdn.ckeditor.com/4.10.1/full-all/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/4.5.11/full-all/plugins/divarea/plugin.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIO4lZGXUhTkuxgNUgda6_JeMXBKgegok&libraries=places,geometry"></script>
     <script type="text/javascript">
         window.csrf_token = "{{ csrf_token() }}"
@@ -134,7 +136,7 @@
 <body>
     <div id="app">
         <v-app id="inspire">
-            <home-header auth="{{ Auth::user() ? Auth::user()->toJson() : '' }} " auth-check="{{Auth::check()}}"></home-header>
+            <home-header auth="{{ Auth::user() ? Auth::user()->toJson() : '' }}" auth-check="{{Auth::check()}}"></home-header>
             <v-content>
                 @yield('content')
                 <router-view></router-view>

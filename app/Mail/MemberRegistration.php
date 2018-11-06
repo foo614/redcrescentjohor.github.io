@@ -7,7 +7,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 
-class CourseRegistered extends Mailable
+class MemberRegistration extends Mailable
 {
     use Queueable, SerializesModels;
     public $content;
@@ -28,6 +28,6 @@ class CourseRegistered extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.courses.registered');
+        return $this->markdown('emails.donor_register');
     }
 }

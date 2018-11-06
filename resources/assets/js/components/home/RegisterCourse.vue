@@ -171,7 +171,7 @@
                         <v-divider></v-divider>
                         <v-layout row wrap>
                             <v-flex xs12 sm6>
-                                <v-text-field box disabled label="Amount Paid" prepend-icon="attach_money" :value="selectedCourse.course_fee"></v-text-field>
+                                <v-text-field box disabled label="Amount Paid" prepend-icon="attach_money" :value="selectedCourse.course_fee" suffix="MYR"></v-text-field>
                             </v-flex>
                             <v-flex xs12 sm6>
                                 <v-text-field box disabled label="Transaction Date" prepend-icon="date_range" :value="currentDate"></v-text-field>
@@ -183,7 +183,8 @@
                                 :options='stripeOptions'
                                 @change='complete = $event.complete'
                                 />
-                                <div ref="card"></div>
+                                <!-- <div ref="card"></div> -->
+                                <div class="red--text">{{cardError}}</div>
                             </v-flex>
                         </v-layout>
                         <v-layout row wrap>
@@ -228,7 +229,24 @@ import moment from 'moment'
         data() {
             return {
                 loading: null,
-                stripeOptions:{},
+                stripeOptions:{
+                    style : {
+                        base: {
+                            color: "#000",
+                            fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+                            fontSmoothing: 'antialiased',
+                            fontSize: '16px',
+                            '::placeholder': {
+                            color: '#aab7c4'
+                            }
+                        },
+                        invalid: {
+                            color: '#fa755a',
+                            iconColor: '#fa755a'
+                        }
+                    }
+                },
+                cardError: "",
                 complete: false,
                 submitCompleted: false,
                 tnc: null,
@@ -312,24 +330,27 @@ import moment from 'moment'
                 this.item.course_id = this.selectedCourse.id
                 this.item.amount = this.selectedCourse.course_fee
                 this.item.selectedCourse = this.selectedCourse
-            },
+            }
         },
         methods:{
             saveItem(){
                 if (this.$refs.form.validate()){
-                    this.sending = true
-                    setTimeout(()=> {
-                        fetch("/api/registerCourse", {
-                        method: "post",
-                        body: JSON.stringify(this.item),
-                        headers:{"content-type": "application/json"}
-                        })
-                        .catch(err => console.log(err))
-                    }, 1500)
+                    if(this.selectedCourse.course_fee != 0 && this.complete){
+                        this.pay()
+                        this.sending = true
+                        setTimeout(()=> {
+                            fetch("/api/registerCourse", {
+                            method: "post",
+                            body: JSON.stringify(this.item),
+                            headers:{"content-type": "application/json"}
+                            })
+                            .catch(err => console.log(err))
+                        }, 1500)
+                    }else
+                        this.cardError = "Your card information is incomplete"
                 }
-                this.pay();
             },
-            checkRegisteredEmail () {
+            checkRegisteredEmail() {
                 let app = this
                 app.registeredEmail.forEach(function(val){ 
                     app.result = val.includes(app.item.email)
@@ -346,23 +367,46 @@ import moment from 'moment'
                     method: "post",
                     body: JSON.stringify([data.token, this.item]),
                     headers:{"content-type": "application/json"}
-                    })                        
+                    }))                        
                     .then(res => {
                         this.sending = false
                         this.submitCompleted = true
-                    }));
+                    })
+                    .catch(function(err) {
+                        console.log('Error :', err);
+                    });
             },
         }
     };
 </script>
 
 <style>
-.stripe-card {
-  /* width: 300px; */
-  border: 2px solid rgba(0,0,0,0.54);
+/* .stripe-card {
+  border-bottom: 1px solid rgba(0,0,0,0.42);
   padding: 10px;
 }
 .stripe-card.complete {
   border-color: green;
+} */
+.stripe-card {
+  height: 40px;
+  padding: 10px 12px;
+  border-radius: 4px;
+  border: 1px solid #00000026;
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.stripe-card--focus {
+  box-shadow: 0 1px 3px 0 #cfd7df;
+}
+
+.stripe-card--invalid {
+  border-color: #fa755a;
+}
+
+.stripe-card--webkit-autofill {
+  background-color: #fefde5 !important;
 }
 </style>

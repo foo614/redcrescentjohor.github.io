@@ -63,4 +63,9 @@ class BloodDonationRecordController extends Controller
             return new BloodDonationRecordResource($bloodDonationRecord);
         } 
     }
+
+    public function bloodDonationRecordsFromUser($id){
+        $result = BloodDonationRecord::where('user_id', $id)->get();
+        return BloodDonationRecordResource::collection($result);
+    }
 }

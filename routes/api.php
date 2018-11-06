@@ -94,10 +94,21 @@ Route::get('bloodDonationRecord/{id}', 'Api\BloodDonationRecordController@show')
 Route::post('bloodDonationRecord', 'Api\BloodDonationRecordController@store');
 Route::delete('bloodDonationRecord/{id}', 'Api\BloodDonationRecordController@destroy');
 Route::put('bloodDonationRecord', 'Api\BloodDonationRecordController@store');
+Route::get('bloodDonationRecordsFromUser/{id}', 'Api\BloodDonationRecordController@bloodDonationRecordsFromUser');
 
 //register course api route
 Route::post('registerCourse', 'Api\RegisterCourseController@store');
 Route::get('registerCourses', 'Api\RegisterCourseController@index');
 
-
+//payment api route
 Route::post('payment', 'Api\PaymentController@store');
+Route::get('payments', 'Api\PaymentController@index');
+Route::get('totalDonation/{id}', 'Api\PaymentController@totalDonation');
+
+//fundraiser api route
+Route::get('fundraisers', 'Api\FundraiserController@index');
+Route::get('fundraiser/{id}', 'Api\FundraiserController@show');
+Route::post('fundraiser', 'Api\FundraiserController@store');
+Route::put('fundraiser', 'Api\FundraiserController@store');
+Route::delete('fundraiser/{id}', 'Api\FundraiserController@destroy');
+Route::get('fundraisersActive', 'Api\FundraiserController@fundraisersActive');

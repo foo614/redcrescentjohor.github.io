@@ -14,7 +14,10 @@
                         <v-tab-item value="tab-1">
                             <v-card flat>
                                 <v-card-text style="text-align:center" class="px-5 pt-3">
-                                    <v-btn round color="#355a9f" dark href="/redirect/facebook" class="my-4">
+                                    <v-btn round color="#dd4b39" dark href="/redirect/google" class="my-4">
+                                        <v-icon left>fab fa-google-plus-g</v-icon><label>REGISTER WITH GOOGLE</label>
+                                    </v-btn><br/>
+                                    <v-btn round color="#355a9f" dark href="/redirect/facebook" class="mb-2">
                                         <v-icon left>fab fa-facebook-square</v-icon><label>REGISTER WITH FACEBOOK</label>
                                     </v-btn>
                                     <div class="or"></div>
@@ -53,8 +56,11 @@
                         <v-tab-item value="tab-2">
                             <v-card flat>
                                 <v-card-text style="text-align:center" class="px-5 pt-3">
-                                    <v-btn round color="#355a9f" dark href="/redirect/facebook" class="my-4">
-                                        <v-icon left>fab fa-facebook-square</v-icon><label>LOGIN WITH FACEBOOK</label>
+                                    <v-btn round color="#dd4b39" dark href="/redirect/google" class="my-4">
+                                        <v-icon left>fab fa-google-plus-g</v-icon><label>REGISTER WITH GOOGLE</label>
+                                    </v-btn>
+                                    <v-btn round color="#355a9f" dark href="/redirect/facebook" class="mb-2">
+                                        <v-icon left>fab fa-facebook-f</v-icon><label>LOGIN WITH FACEBOOK</label>
                                     </v-btn>
                                     <div class="or"></div>
                                     <v-form ref="form_login" v-model="valid" lazy-validation @submit.prevent="loginUser">

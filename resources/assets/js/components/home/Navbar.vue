@@ -51,7 +51,7 @@
                     <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>
                 </v-avatar>
                 <v-list style="min-width: 250px;">
-                    <v-list-tile :to="{ name: 'profile', params: { id: mutableAuth.id}}">
+                    <v-list-tile :to="{ name: 'profileHome', params: { id: mutableAuth.id}}">
                         <v-list-tile-avatar color="#757575">
                             <img :src="/img/+mutableAuth.avatar" :alt="mutableAuth.avatar" v-if="mutableAuth.avatar">
                             <span class="white--text headline" v-else>{{mutableAuth.name | getFirstLetter}}</span>
@@ -89,11 +89,11 @@
                     <v-tab to="/news-stories">
                         Posts
                     </v-tab>
-                    <v-tab to="/course_registration">
+                    <v-tab to="/course-registration">
                         Get Trained
                     </v-tab>
-                    <v-tab href="/fundraiser">
-                        Fundraiser
+                    <v-tab to="/fundraisers-campaign">
+                        Fundraisers @ Donation
                     </v-tab>
                 </v-tabs>
             </v-toolbar-items>
@@ -135,6 +135,7 @@
         }),
         created() {
             this.mutableAuth = this.auth ? JSON.parse(this.auth) : "";
+            window.user = this.mutableAuth;
         },
         methods: {
             logout() {
