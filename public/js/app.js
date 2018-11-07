@@ -36686,10 +36686,15 @@ var render = function() {
                       _c("v-switch", {
                         attrs: {
                           label:
-                            "Active Post? " +
+                            "Post " +
                             (_vm.item.status === 1 || _vm.item.status === true
-                              ? "On"
-                              : "Off")
+                              ? "Active"
+                              : _vm.item.status === 0 ||
+                                _vm.item.status === false
+                                ? "Inactive"
+                                : _vm.item.status === 2
+                                  ? "Pending"
+                                  : "")
                         },
                         model: {
                           value: _vm.item.status,
@@ -43060,7 +43065,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -43073,6 +43078,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_moment__);
+//
 //
 //
 //
@@ -43283,6 +43289,25 @@ var render = function() {
                                   _vm._v(
                                     _vm._s(
                                       props.item.status === 0 ? "Inactive" : ""
+                                    )
+                                  )
+                                ]
+                              )
+                            : _vm._e(),
+                          _vm._v(" "),
+                          props.item.status === 2
+                            ? _c(
+                                "v-chip",
+                                {
+                                  attrs: {
+                                    color: "orange",
+                                    "text-color": "white"
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      props.item.status === 2 ? "Pending" : ""
                                     )
                                   )
                                 ]
@@ -43551,6 +43576,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             axios.get('/api/fundraiser/' + id).then(function (res) {
                 app.item = res.data;
                 app.item.fundraise_id = res.data.id;
+                if (app.item.status === 2) app.item.status = false;
             }).catch(function () {
                 this.$toasted.error("Something wrong...", { icon: "error" });
             });
@@ -43734,10 +43760,15 @@ var render = function() {
                       _c("v-switch", {
                         attrs: {
                           label:
-                            "Active Post? " +
+                            "Fundraiser " +
                             (_vm.item.status === 1 || _vm.item.status === true
-                              ? "On"
-                              : "Off")
+                              ? "Active"
+                              : _vm.item.status === 0 ||
+                                _vm.item.status === false
+                                ? "Inactive"
+                                : _vm.item.status === 2
+                                  ? "Pending"
+                                  : "")
                         },
                         model: {
                           value: _vm.item.status,
@@ -56537,7 +56568,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 if (x == vm.myText.length) {
                     x = 0;
                 }
-            }, 5000);
+            }, 3500);
         }
     }
 });
@@ -62365,35 +62396,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    mounted: function mounted() {
-        if (this.$route.name === "editFundraiser") {
-            var app = this;
-            var id = this.$route.params.id;
-            axios.get('/api/fundraiser/' + id).then(function (res) {
-                app.item = res.data;
-                app.item.fundraise_id = res.data.id;
-            }).catch(function () {
-                this.$toasted.error("Something wrong...", { icon: "error" });
-            });
-        }
-    },
     data: function data() {
         return {
+            auth: window.user,
             sending: false,
             valid: true,
             item: {
                 fundraise_id: '',
                 id: "",
                 title: "",
-                status: true,
+                status: 2,
                 body: "",
                 cover_img: null,
-                target_amount: null
+                target_amount: null,
+                name: "",
+                email: ""
             },
-            preview: ''
+            preview: '',
+            submitCompleted: false
         };
+    },
+    mounted: function mounted() {
+        var app = this;
+        app.item.name = this.auth[0] != undefined ? this.auth[0] : '';
+        app.item.email = this.auth[1] != undefined ? this.auth[1] : '';
     },
 
     methods: {
@@ -62423,15 +62475,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // CKEDITOR.removeAllListeners();
                 setTimeout(function () {
                     fetch("/api/fundraiser", {
-                        method: _this.$route.name == 'createFundraiser' ? "post" : "put",
+                        method: 'post',
                         body: JSON.stringify(_this.item),
                         headers: { "content-type": "application/json" }
                     }).then(function (res) {
                         _this.sending = false;
-                        var currentPage = _this.$route.name;
-                        _this.$router.push({ path: '/fundraisers' }, function () {
-                            _this.$toasted.success(_this.item.title + (currentPage === 'createFundraiser' ? ' added' : ' updated'), { icon: "check" });
-                        });
+                        _this.submitCompleted = true;
                     }).catch(function (err) {
                         return console.log(err);
                     });
@@ -62450,253 +62499,372 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-container",
-    { attrs: { fluid: "", "grid-list-md": "" } },
+    "div",
     [
-      _c(
-        "v-form",
-        {
-          ref: "form",
-          attrs: { "lazy-validation": "" },
-          on: {
-            submit: function($event) {
-              $event.preventDefault()
-              return _vm.saveItem($event)
-            }
-          },
-          model: {
-            value: _vm.valid,
-            callback: function($$v) {
-              _vm.valid = $$v
-            },
-            expression: "valid"
-          }
-        },
-        [
-          _c(
-            "v-card",
+      !_vm.submitCompleted
+        ? _c(
+            "v-container",
+            { attrs: { fluid: "", "grid-list-md": "" } },
             [
-              _vm.sending
-                ? _c("v-progress-linear", {
-                    attrs: { height: "3", indeterminate: true }
-                  })
-                : _vm._e(),
-              _vm._v(" "),
-              _c("v-card-title", { attrs: { "primary-title": "" } }, [
-                _c("div", { staticClass: "headline" }, [
-                  _vm._v(
-                    _vm._s(
-                      _vm.$route.name == "editFundraiser" ? "Edit" : "Add"
-                    ) + " Fundraiser"
-                  )
-                ])
-              ]),
-              _vm._v(" "),
               _c(
-                "v-container",
-                { attrs: { fluid: "", "grid-list-lg": "" } },
+                "v-form",
+                {
+                  ref: "form",
+                  attrs: { "lazy-validation": "" },
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      return _vm.saveItem($event)
+                    }
+                  },
+                  model: {
+                    value: _vm.valid,
+                    callback: function($$v) {
+                      _vm.valid = $$v
+                    },
+                    expression: "valid"
+                  }
+                },
                 [
                   _c(
-                    "v-layout",
-                    { attrs: { row: "", wrap: "" } },
+                    "v-card",
                     [
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm6: "" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: {
-                              label: "Title",
-                              "prepend-icon": "event_note",
-                              rules: [
-                                function(v) {
-                                  return !!v || "Title is required"
-                                }
-                              ],
-                              required: ""
-                            },
-                            model: {
-                              value: _vm.item.title,
-                              callback: function($$v) {
-                                _vm.$set(_vm.item, "title", $$v)
-                              },
-                              expression: "item.title"
-                            }
+                      _vm.sending
+                        ? _c("v-progress-linear", {
+                            attrs: { height: "3", indeterminate: true }
                           })
-                        ],
-                        1
-                      ),
+                        : _vm._e(),
+                      _vm._v(" "),
+                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+                        _c("div", { staticClass: "headline" }, [
+                          _vm._v("Fundraiser Information")
+                        ])
+                      ]),
                       _vm._v(" "),
                       _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm6: "" } },
-                        [
-                          _c("v-text-field", {
-                            attrs: {
-                              label: "Target Amount",
-                              "prepend-icon": "attach_money",
-                              type: "number",
-                              rules: [
-                                function(v) {
-                                  return !!v || "Target Amount is required"
-                                }
-                              ],
-                              required: ""
-                            },
-                            model: {
-                              value: _vm.item.target_amount,
-                              callback: function($$v) {
-                                _vm.$set(_vm.item, "target_amount", $$v)
-                              },
-                              expression: "item.target_amount"
-                            }
-                          })
-                        ],
-                        1
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { staticClass: "mt-2", attrs: { xs12: "", sm12: "" } },
+                        "v-container",
+                        { attrs: { fluid: "", "grid-list-lg": "" } },
                         [
                           _c(
-                            "div",
-                            { staticStyle: { display: "flex" } },
+                            "v-layout",
+                            { attrs: { row: "", wrap: "" } },
                             [
                               _c(
-                                "v-tooltip",
-                                { attrs: { bottom: "" } },
+                                "v-flex",
+                                { attrs: { xs6: "" } },
                                 [
-                                  _c(
-                                    "v-icon",
-                                    {
-                                      attrs: { slot: "activator" },
-                                      slot: "activator"
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Name",
+                                      "prepend-icon": "person",
+                                      rules: [
+                                        function(v) {
+                                          return !!v || "Name is required"
+                                        }
+                                      ],
+                                      required: ""
                                     },
-                                    [_vm._v("description")]
-                                  ),
-                                  _vm._v(" "),
-                                  _c("span", [_vm._v("Content")])
+                                    model: {
+                                      value: _vm.item.name,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.item, "name", $$v)
+                                      },
+                                      expression: "item.name"
+                                    }
+                                  })
                                 ],
                                 1
                               ),
                               _vm._v(" "),
-                              _c("ckeditor", {
-                                staticClass: "ml-2",
-                                staticStyle: { width: "100%" },
-                                attrs: {
-                                  height: "180px",
-                                  language: "zh",
-                                  extraplugins: "divarea"
-                                },
-                                model: {
-                                  value: _vm.item.body,
-                                  callback: function($$v) {
-                                    _vm.$set(_vm.item, "body", $$v)
-                                  },
-                                  expression: "item.body"
-                                }
-                              })
-                            ],
-                            1
-                          )
-                        ]
-                      ),
-                      _vm._v(" "),
-                      _c(
-                        "v-flex",
-                        { attrs: { xs12: "", sm12: "" } },
-                        [
-                          _c("v-icon", [_vm._v("image")]),
-                          _vm._v(" "),
-                          _c(
-                            "v-badge",
-                            { attrs: { overlap: "" } },
-                            [
-                              _vm.preview || _vm.item.cover_img
-                                ? _c(
-                                    "span",
-                                    {
-                                      attrs: { slot: "badge" },
-                                      on: {
-                                        click: function($event) {
-                                          _vm.item.cover_img = null
-                                          _vm.preview = null
-                                        }
-                                      },
-                                      slot: "badge"
-                                    },
-                                    [_vm._v("x")]
-                                  )
-                                : _vm._e(),
-                              _vm._v(" "),
                               _c(
-                                "v-avatar",
-                                {
-                                  staticClass:
-                                    "elevation-7 v-avatar-custom--size",
-                                  attrs: { tile: "" }
-                                },
+                                "v-flex",
+                                { attrs: { xs6: "" } },
                                 [
-                                  _vm.item.cover_img || _vm.preview
-                                    ? _c("v-img", {
-                                        attrs: {
-                                          "lazy-src": "",
-                                          "aspect-ratio": "2",
-                                          src:
-                                            _vm.item.cover_img && !_vm.preview
-                                              ? "/img/" + _vm.item.cover_img
-                                              : _vm.preview
-                                                ? _vm.preview
-                                                : null,
-                                          alt: "profile_image"
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Email",
+                                      "prepend-icon": "contact_mail",
+                                      rules: [
+                                        function(v) {
+                                          return !!v || "Email is required"
+                                        },
+                                        function(v) {
+                                          return (
+                                            /.+@.+/.test(v) ||
+                                            "Email must be valid"
+                                          )
                                         }
-                                      })
-                                    : _vm._e(),
-                                  _vm._v(" "),
-                                  !_vm.preview && !_vm.item.cover_img
-                                    ? _c(
-                                        "v-tooltip",
-                                        { attrs: { bottom: "" } },
-                                        [
-                                          _c("input", {
-                                            ref: "cover_img",
-                                            staticStyle: { display: "none" },
-                                            attrs: { type: "file" },
-                                            on: { change: _vm.handleFile }
-                                          }),
-                                          _vm._v(" "),
-                                          _c(
-                                            "v-icon",
-                                            {
-                                              attrs: {
-                                                slot: "activator",
-                                                large: ""
-                                              },
-                                              on: { click: _vm.pickFile },
-                                              slot: "activator"
-                                            },
-                                            [
-                                              _vm._v(
-                                                "\n                                        image\n                                    "
-                                              )
-                                            ]
-                                          ),
-                                          _vm._v(" "),
-                                          _c("span", [
-                                            _vm._v(
-                                              "Upload Fundraiser Cover Photo"
-                                            )
-                                          ])
-                                        ],
-                                        1
-                                      )
-                                    : _vm._e()
+                                      ],
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.item.email,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.item, "email", $$v)
+                                      },
+                                      expression: "item.email"
+                                    }
+                                  })
                                 ],
                                 1
                               )
                             ],
                             1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c("v-card-title", { attrs: { "primary-title": "" } }, [
+                        _c("div", { staticClass: "headline" }, [
+                          _vm._v("Create A Fundrasing Campaign")
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-container",
+                        { attrs: { fluid: "", "grid-list-lg": "" } },
+                        [
+                          _c(
+                            "v-layout",
+                            { attrs: { row: "", wrap: "" } },
+                            [
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Title",
+                                      "prepend-icon": "event_note",
+                                      rules: [
+                                        function(v) {
+                                          return !!v || "Title is required"
+                                        }
+                                      ],
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.item.title,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.item, "title", $$v)
+                                      },
+                                      expression: "item.title"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm6: "" } },
+                                [
+                                  _c("v-text-field", {
+                                    attrs: {
+                                      label: "Target Amount",
+                                      "prepend-icon": "attach_money",
+                                      type: "number",
+                                      rules: [
+                                        function(v) {
+                                          return (
+                                            !!v || "Target Amount is required"
+                                          )
+                                        }
+                                      ],
+                                      required: ""
+                                    },
+                                    model: {
+                                      value: _vm.item.target_amount,
+                                      callback: function($$v) {
+                                        _vm.$set(_vm.item, "target_amount", $$v)
+                                      },
+                                      expression: "item.target_amount"
+                                    }
+                                  })
+                                ],
+                                1
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                {
+                                  staticClass: "mt-2",
+                                  attrs: { xs12: "", sm12: "" }
+                                },
+                                [
+                                  _c(
+                                    "div",
+                                    { staticStyle: { display: "flex" } },
+                                    [
+                                      _c(
+                                        "v-tooltip",
+                                        { attrs: { bottom: "" } },
+                                        [
+                                          _c(
+                                            "v-icon",
+                                            {
+                                              attrs: { slot: "activator" },
+                                              slot: "activator"
+                                            },
+                                            [_vm._v("description")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c("span", [_vm._v("Content")])
+                                        ],
+                                        1
+                                      ),
+                                      _vm._v(" "),
+                                      _c("ckeditor", {
+                                        staticClass: "ml-2",
+                                        staticStyle: { width: "100%" },
+                                        attrs: {
+                                          height: "180px",
+                                          language: "zh",
+                                          extraplugins: "divarea"
+                                        },
+                                        model: {
+                                          value: _vm.item.body,
+                                          callback: function($$v) {
+                                            _vm.$set(_vm.item, "body", $$v)
+                                          },
+                                          expression: "item.body"
+                                        }
+                                      })
+                                    ],
+                                    1
+                                  )
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "v-flex",
+                                { attrs: { xs12: "", sm12: "" } },
+                                [
+                                  _c("v-icon", [_vm._v("image")]),
+                                  _vm._v(" "),
+                                  _c(
+                                    "v-badge",
+                                    { attrs: { overlap: "" } },
+                                    [
+                                      _vm.preview || _vm.item.cover_img
+                                        ? _c(
+                                            "span",
+                                            {
+                                              attrs: { slot: "badge" },
+                                              on: {
+                                                click: function($event) {
+                                                  _vm.item.cover_img = null
+                                                  _vm.preview = null
+                                                }
+                                              },
+                                              slot: "badge"
+                                            },
+                                            [_vm._v("x")]
+                                          )
+                                        : _vm._e(),
+                                      _vm._v(" "),
+                                      _c(
+                                        "v-avatar",
+                                        {
+                                          staticClass:
+                                            "elevation-7 v-avatar-custom--size",
+                                          attrs: { tile: "" }
+                                        },
+                                        [
+                                          _vm.item.cover_img || _vm.preview
+                                            ? _c("v-img", {
+                                                attrs: {
+                                                  "lazy-src": "",
+                                                  "aspect-ratio": "2",
+                                                  src:
+                                                    _vm.item.cover_img &&
+                                                    !_vm.preview
+                                                      ? "/img/" +
+                                                        _vm.item.cover_img
+                                                      : _vm.preview
+                                                        ? _vm.preview
+                                                        : null,
+                                                  alt: "profile_image"
+                                                }
+                                              })
+                                            : _vm._e(),
+                                          _vm._v(" "),
+                                          !_vm.preview && !_vm.item.cover_img
+                                            ? _c(
+                                                "v-tooltip",
+                                                { attrs: { bottom: "" } },
+                                                [
+                                                  _c("input", {
+                                                    ref: "cover_img",
+                                                    staticStyle: {
+                                                      display: "none"
+                                                    },
+                                                    attrs: { type: "file" },
+                                                    on: {
+                                                      change: _vm.handleFile
+                                                    }
+                                                  }),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-icon",
+                                                    {
+                                                      attrs: {
+                                                        slot: "activator",
+                                                        large: ""
+                                                      },
+                                                      on: {
+                                                        click: _vm.pickFile
+                                                      },
+                                                      slot: "activator"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                            image\n                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c("span", [
+                                                    _vm._v(
+                                                      "Upload Fundraiser Cover Photo"
+                                                    )
+                                                  ])
+                                                ],
+                                                1
+                                              )
+                                            : _vm._e()
+                                        ],
+                                        1
+                                      )
+                                    ],
+                                    1
+                                  )
+                                ],
+                                1
+                              )
+                            ],
+                            1
+                          )
+                        ],
+                        1
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("v-spacer"),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: {
+                                flat: "",
+                                color: "primary",
+                                type: "submit"
+                              }
+                            },
+                            [_vm._v("Submit")]
                           )
                         ],
                         1
@@ -62706,27 +62874,30 @@ var render = function() {
                   )
                 ],
                 1
-              ),
-              _vm._v(" "),
-              _c(
-                "v-card-actions",
-                [
-                  _c("v-spacer"),
-                  _vm._v(" "),
-                  _c(
-                    "v-btn",
-                    { attrs: { flat: "", color: "primary", type: "submit" } },
-                    [_vm._v("Submit")]
-                  )
-                ],
-                1
               )
             ],
             1
           )
-        ],
-        1
-      )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.submitCompleted
+        ? _c(
+            "v-container",
+            { attrs: { fluid: "", "grid-list-md": "" } },
+            [
+              _c("v-alert", { attrs: { value: true, type: "success" } }, [
+                _vm._v(
+                  "\n            Thank you for create a fundraising campaign. Kindly refer receipt in your mailbox. "
+                ),
+                _c("br"),
+                _vm._v(
+                  "\n            Thanks again for your generosity and support,\n        "
+                )
+              ])
+            ],
+            1
+          )
+        : _vm._e()
     ],
     1
   )
@@ -63033,8 +63204,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var app = this;
             app.item.fundraiser_id = this.selectedFundraiser.id;
             app.item.fundraiser_title = this.selectedFundraiser.title;
-            app.item.name = this.auth.name;
-            app.item.email = this.auth.email;
+            app.item.name = this.auth[0] != undefined ? this.auth[0] : '';
+            app.item.email = this.auth[1] != undefined ? this.auth[1] : '';
             app.donationProgress = app.totalDonation / this.selectedFundraiser.target_amount * 100;
         }
     },
@@ -88435,7 +88606,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     created: function created() {
         this.mutableAuth = this.auth ? JSON.parse(this.auth) : "";
-        window.user = this.mutableAuth;
+        window.user = [this.mutableAuth.name, this.mutableAuth.email];
     },
 
     methods: {

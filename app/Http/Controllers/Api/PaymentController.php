@@ -42,7 +42,14 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        $find_user = User::where('email',  $request[1]['email'])->firstOrFail();
+        if(User::where('email',  $request[1]['email'])->exists()){
+            $find_user = User::where('email',  $request[1]['email'])->firstOrFail();
+        }else{
+            $find_user = new User;
+            $find_user->name = $request[1]['name'];
+            $find_user->email = $request[1]['email'];
+            $find_user->save();
+        }
         if($find_user){
             $transaction = new Transaction;
             $transaction->user_id = $find_user->id ?? null;
@@ -52,6 +59,7 @@ class PaymentController extends Controller
             $transaction->currency = "MYR";
             $transaction->save();
         }
+        
         \Stripe\Stripe::setApiKey($this->stripeKey);
         // Token is created using Checkout or Elements!
         // Get the payment token ID submitted by the form:

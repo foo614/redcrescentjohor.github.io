@@ -29,7 +29,7 @@
                     </v-flex>
                     <v-flex xs12 sm2>
                         <v-switch
-                            :label="`Active Post? ${item.status === 1 || item.status === true ? 'On' : 'Off'}`"
+                            :label="`Post ${item.status === 1 || item.status === true ? 'Active' : (item.status === 0 || item.status === false) ? 'Inactive' : (item.status === 2 ? 'Pending' : '') }`"
                             v-model="item.status"
                         ></v-switch>
                     </v-flex>

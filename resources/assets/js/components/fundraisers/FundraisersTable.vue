@@ -32,6 +32,7 @@
               <td>
                   <v-chip color="green" v-if="props.item.status === 1" text-color="white">{{ props.item.status === 1 ? "Active" : "" }}</v-chip>
                   <v-chip color="red" v-if="props.item.status === 0" text-color="white">{{ props.item.status === 0 ? "Inactive" : "" }}</v-chip>      
+                  <v-chip color="orange" v-if="props.item.status === 2" text-color="white">{{ props.item.status === 2 ? "Pending" : "" }}</v-chip>      
               </td>
               <td>{{ props.item.target_amount}}</td>
               <td>{{ props.item.user}}</td>

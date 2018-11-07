@@ -28,7 +28,7 @@
                     </v-flex>
                     <v-flex xs12 sm2>
                         <v-switch
-                            :label="`Active Post? ${item.status === 1 || item.status === true ? 'On' : 'Off'}`"
+                            :label="`Fundraiser ${item.status === 1 || item.status === true ? 'Active' : (item.status === 0 || item.status === false) ? 'Inactive' : (item.status === 2 ? 'Pending' : '') }`"
                             v-model="item.status"
                         ></v-switch>
                     </v-flex>
@@ -79,6 +79,7 @@ export default {
             .then(function (res) {
                 app.item = res.data;
                 app.item.fundraise_id = res.data.id;
+                if(app.item.status === 2) app.item.status = false
             })
             .catch(function () {
                 this.$toasted.error("Something wrong...", {icon:"error"})

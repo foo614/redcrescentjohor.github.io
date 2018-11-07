@@ -190,8 +190,8 @@ export default {
             let app = this;
             app.item.fundraiser_id = this.selectedFundraiser.id
             app.item.fundraiser_title = this.selectedFundraiser.title
-            app.item.name = this.auth.name
-            app.item.email = this.auth.email
+            app.item.name = this.auth[0] != undefined ? this.auth[0] : ''
+            app.item.email = this.auth[1] != undefined ? this.auth[1] : ''
             app.donationProgress = (app.totalDonation/this.selectedFundraiser.target_amount)*100
         },
     },

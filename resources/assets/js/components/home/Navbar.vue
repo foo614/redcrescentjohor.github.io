@@ -135,7 +135,7 @@
         }),
         created() {
             this.mutableAuth = this.auth ? JSON.parse(this.auth) : "";
-            window.user = this.mutableAuth;
+            window.user = [this.mutableAuth.name, this.mutableAuth.email];
         },
         methods: {
             logout() {
