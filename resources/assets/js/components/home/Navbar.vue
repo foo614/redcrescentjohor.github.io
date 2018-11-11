@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-navigation-drawer :clipped="$vuetify.breakpoint.smAndUp" absolute right v-model="drawer" temporary>
+        <v-navigation-drawer :clipped="$vuetify.breakpoint.smAndUp" app right v-model="drawer" temporary>
             <v-list dense>
                 <template v-for="item in items">
                     <v-list-group v-if="item.children" v-model="item.model" :key="item.text" :prepend-icon="item.icon">
@@ -40,7 +40,7 @@
                 <v-img src="/img/64x64.png" height="38px" width="38px"></v-img>
             </router-link>
             <router-link to="/" style="font-weight: 500; font-size: 18px; text-decoration:none; color:black">
-                <v-toolbar-title>Red Crescent Johor</v-toolbar-title>
+                <v-toolbar-title class="hidden-sm-and-down">Red Crescent Johor</v-toolbar-title>
             </router-link>
             <v-spacer></v-spacer>
             <v-menu offset-y v-model="showMenu" v-if="authCheck==1">
@@ -76,9 +76,6 @@
                 </v-list>
             </v-menu>
             <v-btn flat href="/social/login" v-show="authCheck==0">Sign In</v-btn>
-            <v-btn icon>
-                <v-icon>search</v-icon>
-            </v-btn>
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-items slot="extension">
                 <v-tabs color="transparent" show-arrows>

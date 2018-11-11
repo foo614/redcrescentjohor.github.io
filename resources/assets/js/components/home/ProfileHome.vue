@@ -121,13 +121,14 @@
                     <v-toolbar color="#ca0000" dark>
                         <v-toolbar-title>Blood Donation Records</v-toolbar-title>
                         <v-spacer></v-spacer>
-                        <h4 class="display-1 pl-3" v-if="sum_volume"> Total : {{sum}} {{ sum_volume}} ml</h4>
+                        <h4 class="display-1 pl-3" v-if="sum_volume"> Total : {{ sum_volume}} ml</h4>
                     </v-toolbar>
                     <v-list two-line subheader>
-                    <v-list-tile v-if="!sum_volume">
+                    <v-list-tile v-if="items.length === 0">
                         No donation record(s)
                     </v-list-tile>
                     <v-list-tile
+                        v-else
                         v-for="item in items"
                         :key="item.title"
                         avatar
@@ -251,9 +252,9 @@ export default {
             .join("").slice(0,2);
         }
     },
-    computed:{
-        sum: function () {
-            let app = this;
+    watch:{
+        items: function () {
+            let app = this
             this.items.forEach(function(elm) {
                 return app.sum_volume += elm.volume
             })

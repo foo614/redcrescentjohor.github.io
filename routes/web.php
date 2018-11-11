@@ -32,6 +32,10 @@ Route::view('social/login', 'home.social_login');
 Route::get ( 'redirect/{service}', 'SocialAuthController@redirect' );
 Route::get ( 'callback/{service}', 'SocialAuthController@callback' );
 
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('profile/{id}', 'HomeController@profile');
+});
+
 // Route::group(['middleware' => ['role:administrator']], function(){
 Route::group(['middleware' => ['auth', 'role:administrator']], function(){
     //donor
@@ -53,7 +57,6 @@ Route::group(['middleware' => ['auth', 'role:administrator']], function(){
     //user
     Route::resource('users', 'UserController');
     //user profile home
-    Route::get('profile/{id}', 'HomeController@profile');
 
     //donor 
     Route::get('user', 'DonorController@user');

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-container fluid grid-list-md  v-if="!submitCompleted">
+        <v-container fluid grid-list-md  v-if="!submitCompleted && !sending">
             <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="saveItem">
                 <v-card>
                     <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
@@ -77,7 +77,7 @@
                 </v-card>
             </v-form>
         </v-container>
-        <v-container fluid grid-list-md v-if="submitCompleted">
+        <!-- <v-container fluid grid-list-md v-if="submitCompleted">
             <v-alert
             :value="true"
             type="success"
@@ -85,6 +85,28 @@
                 Thank you for create a fundraising campaign. Kindly refer receipt in your mailbox. <br/>
                 Thanks again for your generosity and support,
             </v-alert>
+        </v-container> -->
+        <v-container align-center justify-center>
+            <v-card>
+                <div class="text-xs-center">
+                    <v-card-text v-if="sending">
+                        <v-progress-circular
+                        :size="138"
+                        :width="7"
+                        color="grey lighten-1"
+                        indeterminate
+                        ></v-progress-circular>
+                    </v-card-text>
+                    <v-card-text v-if="submitCompleted">
+                            <v-icon size="168px" color="grey lighten-1">check_circle_outline</v-icon>
+                            <div>
+                            <h3>Create campaign successful</h3>
+                            Thank you for create a fundraising campaign. Please wait for approving of your campaign.<br/>
+                            Thanks again for your generosity and support,
+                            </div>
+                    </v-card-text>
+                </div>
+            </v-card>
         </v-container>
     </div>
 </template>
@@ -93,6 +115,7 @@
 export default {
     data () {
         return {
+            sending: false,
             auth: window.user,
             sending: false,
             valid: true,

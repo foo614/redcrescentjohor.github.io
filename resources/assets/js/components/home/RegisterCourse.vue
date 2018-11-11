@@ -1,6 +1,6 @@
 <template>
     <div>
-        <v-container fluid grid-list-md v-if="!submitCompleted">
+        <v-container fluid grid-list-md v-if="!submitCompleted && !sending">
             <v-card class="mb-3">
                 <v-layout row wrap>
                     <v-flex xs12 sm6>
@@ -85,7 +85,7 @@
             </v-card>
             <v-form ref="form" v-model="valid" lazy-validation @submit.prevent="saveItem">
                 <v-card class="mb-3">
-                    <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
+                    <!-- <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear> -->
                     <v-card-title primary-title>
                         <div class="headline">Participant Information</div>
                     </v-card-title>
@@ -211,13 +211,41 @@
                 </v-card>
             </v-form>
         </v-container>
-        <v-container fluid grid-list-md v-if="submitCompleted">
+        <!-- <v-container fluid grid-list-md v-if="submitCompleted">
             <v-alert
             :value="true"
             type="success"
             >
                 The registration is completed. Kindly refer information in your mailbox.
             </v-alert>
+        </v-container> -->
+        <v-container align-center justify-center>
+                <v-card>
+                    <div class="text-xs-center">
+                        <v-card-text v-if="sending">
+                            <v-progress-circular
+                            :size="138"
+                            :width="7"
+                            color="grey lighten-1"
+                            indeterminate
+                            ></v-progress-circular>
+                        </v-card-text>
+                        <v-card-text v-if="submitCompleted && item.amount > 0">
+                             <v-icon size="168px" color="grey lighten-1">check_circle_outline</v-icon>
+                             <div>
+                                <h3>Register & Payment successful</h3>
+                                The registration is completed. Kindly refer information in your mailbox.
+                             </div>
+                        </v-card-text>
+                        <v-card-text v-if="submitCompleted && item.amount == 0">
+                             <v-icon size="168px" color="grey lighten-1">check_circle_outline</v-icon>
+                             <div>
+                                <h3>Register successful</h3>
+                                The registration is completed. Kindly refer information in your mailbox.
+                             </div>
+                        </v-card-text>
+                    </div>
+                </v-card>
         </v-container>
     </div>
 </template>
@@ -334,20 +362,25 @@ import moment from 'moment'
         },
         methods:{
             saveItem(){
+                if(this.complete)
+                    this.pay()
+                else
+                    this.cardError = "Your card information is incomplete"
+
                 if (this.$refs.form.validate()){
-                    if(this.selectedCourse.course_fee != 0 && this.complete){
-                        this.pay()
-                        this.sending = true
-                        setTimeout(()=> {
-                            fetch("/api/registerCourse", {
-                            method: "post",
-                            body: JSON.stringify(this.item),
-                            headers:{"content-type": "application/json"}
-                            })
-                            .catch(err => console.log(err))
-                        }, 1500)
-                    }else
-                        this.cardError = "Your card information is incomplete"
+                    this.sending = true 
+                    setTimeout(()=> {
+                        fetch("/api/registerCourse", {
+                        method: "post",
+                        body: JSON.stringify(this.item),
+                        headers:{"content-type": "application/json"}
+                        })
+                        .then(res=>{
+                            this.sending = false
+                            this.submitCompleted = true
+                        })
+                        .catch(err => console.log(err))
+                    }, 3000)
                 }
             },
             checkRegisteredEmail() {
@@ -368,10 +401,6 @@ import moment from 'moment'
                     body: JSON.stringify([data.token, this.item]),
                     headers:{"content-type": "application/json"}
                     }))                        
-                    .then(res => {
-                        this.sending = false
-                        this.submitCompleted = true
-                    })
                     .catch(function(err) {
                         console.log('Error :', err);
                     });

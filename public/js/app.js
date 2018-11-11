@@ -33968,7 +33968,9 @@ var render = function() {
                         [
                           _vm._v(
                             _vm._s(
-                              props.item.post ? props.item.post["title"] : ""
+                              props.item.post
+                                ? props.item.post["title"]
+                                : "Red Crescent Johor"
                             )
                           )
                         ]
@@ -58867,7 +58869,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* .stripe-card {\r\n  border-bottom: 1px solid rgba(0,0,0,0.42);\r\n  padding: 10px;\r\n}\r\n.stripe-card.complete {\r\n  border-color: green;\r\n} */\n.stripe-card {\r\n  height: 40px;\r\n  padding: 10px 12px;\r\n  border-radius: 4px;\r\n  border: 1px solid #00000026;\r\n  box-shadow: 0 1px 3px 0 #e6ebf1;\r\n  -webkit-transition: box-shadow 150ms ease;\r\n  transition: box-shadow 150ms ease;\n}\n.stripe-card--focus {\r\n  box-shadow: 0 1px 3px 0 #cfd7df;\n}\n.stripe-card--invalid {\r\n  border-color: #fa755a;\n}\n.stripe-card--webkit-autofill {\r\n  background-color: #fefde5 !important;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* .stripe-card {\r\n  border-bottom: 1px solid rgba(0,0,0,0.42);\r\n  padding: 10px;\r\n}\r\n.stripe-card.complete {\r\n  border-color: green;\r\n} */\n.stripe-card {\r\n  height: 40px;\r\n  padding: 10px 12px;\r\n  border-radius: 4px;\r\n  border: 1px solid #00000026;\r\n  box-shadow: 0 1px 3px 0 #e6ebf1;\r\n  -webkit-transition: box-shadow 150ms ease;\r\n  transition: box-shadow 150ms ease;\n}\n.stripe-card--focus {\r\n  box-shadow: 0 1px 3px 0 #cfd7df;\n}\n.stripe-card--invalid {\r\n  border-color: #fa755a;\n}\n.stripe-card--webkit-autofill {\r\n  background-color: #fefde5 !important;\n}\r\n", ""]);
 
 // exports
 
@@ -58882,6 +58884,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_stripe_elements_plus___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_stripe_elements_plus__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -59219,20 +59249,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         saveItem: function saveItem() {
             var _this2 = this;
 
+            if (this.complete) this.pay();else this.cardError = "Your card information is incomplete";
+
             if (this.$refs.form.validate()) {
-                if (this.selectedCourse.course_fee != 0 && this.complete) {
-                    this.pay();
-                    this.sending = true;
-                    setTimeout(function () {
-                        fetch("/api/registerCourse", {
-                            method: "post",
-                            body: JSON.stringify(_this2.item),
-                            headers: { "content-type": "application/json" }
-                        }).catch(function (err) {
-                            return console.log(err);
-                        });
-                    }, 1500);
-                } else this.cardError = "Your card information is incomplete";
+                this.sending = true;
+                setTimeout(function () {
+                    fetch("/api/registerCourse", {
+                        method: "post",
+                        body: JSON.stringify(_this2.item),
+                        headers: { "content-type": "application/json" }
+                    }).then(function (res) {
+                        _this2.sending = false;
+                        _this2.submitCompleted = true;
+                    }).catch(function (err) {
+                        return console.log(err);
+                    });
+                }, 3000);
             }
         },
         checkRegisteredEmail: function checkRegisteredEmail() {
@@ -59254,9 +59286,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     body: JSON.stringify([data.token, _this3.item]),
                     headers: { "content-type": "application/json" }
                 });
-            }).then(function (res) {
-                _this3.sending = false;
-                _this3.submitCompleted = true;
             }).catch(function (err) {
                 console.log('Error :', err);
             });
@@ -59275,7 +59304,7 @@ var render = function() {
   return _c(
     "div",
     [
-      !_vm.submitCompleted
+      !_vm.submitCompleted && !_vm.sending
         ? _c(
             "v-container",
             { attrs: { fluid: "", "grid-list-md": "" } },
@@ -59626,12 +59655,6 @@ var render = function() {
                     "v-card",
                     { staticClass: "mb-3" },
                     [
-                      _vm.sending
-                        ? _c("v-progress-linear", {
-                            attrs: { height: "3", indeterminate: true }
-                          })
-                        : _vm._e(),
-                      _vm._v(" "),
                       _c("v-card-title", { attrs: { "primary-title": "" } }, [
                         _c("div", { staticClass: "headline" }, [
                           _vm._v("Participant Information")
@@ -60038,20 +60061,80 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm.submitCompleted
-        ? _c(
-            "v-container",
-            { attrs: { fluid: "", "grid-list-md": "" } },
-            [
-              _c("v-alert", { attrs: { value: true, type: "success" } }, [
-                _vm._v(
-                  "\n            The registration is completed. Kindly refer information in your mailbox.\n        "
-                )
-              ])
-            ],
-            1
-          )
-        : _vm._e()
+      _c(
+        "v-container",
+        { attrs: { "align-center": "", "justify-center": "" } },
+        [
+          _c("v-card", [
+            _c(
+              "div",
+              { staticClass: "text-xs-center" },
+              [
+                _vm.sending
+                  ? _c(
+                      "v-card-text",
+                      [
+                        _c("v-progress-circular", {
+                          attrs: {
+                            size: 138,
+                            width: 7,
+                            color: "grey lighten-1",
+                            indeterminate: ""
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.submitCompleted && _vm.item.amount > 0
+                  ? _c(
+                      "v-card-text",
+                      [
+                        _c(
+                          "v-icon",
+                          { attrs: { size: "168px", color: "grey lighten-1" } },
+                          [_vm._v("check_circle_outline")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c("h3", [_vm._v("Register & Payment successful")]),
+                          _vm._v(
+                            "\n                            The registration is completed. Kindly refer information in your mailbox.\n                         "
+                          )
+                        ])
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.submitCompleted && _vm.item.amount == 0
+                  ? _c(
+                      "v-card-text",
+                      [
+                        _c(
+                          "v-icon",
+                          { attrs: { size: "168px", color: "grey lighten-1" } },
+                          [_vm._v("check_circle_outline")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c("h3", [_vm._v("Register successful")]),
+                          _vm._v(
+                            "\n                            The registration is completed. Kindly refer information in your mailbox.\n                         "
+                          )
+                        ])
+                      ],
+                      1
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ])
+        ],
+        1
+      )
     ],
     1
   )
@@ -60866,7 +60949,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -60877,6 +60960,7 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
 //
 //
 //
@@ -61129,8 +61213,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).join("").slice(0, 2);
         }
     },
-    computed: {
-        sum: function sum() {
+    watch: {
+        items: function items() {
             var app = this;
             this.items.forEach(function (elm) {
                 return app.sum_volume += elm.volume;
@@ -61676,13 +61760,7 @@ var render = function() {
                       _vm._v(" "),
                       _vm.sum_volume
                         ? _c("h4", { staticClass: "display-1 pl-3" }, [
-                            _vm._v(
-                              " Total : " +
-                                _vm._s(_vm.sum) +
-                                " " +
-                                _vm._s(_vm.sum_volume) +
-                                " ml"
-                            )
+                            _vm._v(" Total : " + _vm._s(_vm.sum_volume) + " ml")
                           ])
                         : _vm._e()
                     ],
@@ -61693,46 +61771,46 @@ var render = function() {
                     "v-list",
                     { attrs: { "two-line": "", subheader: "" } },
                     [
-                      !_vm.sum_volume
+                      _vm.items.length === 0
                         ? _c("v-list-tile", [
                             _vm._v(
                               "\n                    No donation record(s)\n                "
                             )
                           ])
-                        : _vm._e(),
-                      _vm._v(" "),
-                      _vm._l(_vm.items, function(item) {
-                        return _c(
-                          "v-list-tile",
-                          { key: item.title, attrs: { avatar: "" } },
-                          [
-                            _c(
-                              "v-list-tile-content",
+                        : _vm._l(_vm.items, function(item) {
+                            return _c(
+                              "v-list-tile",
+                              { key: item.title, attrs: { avatar: "" } },
                               [
-                                _c("v-list-tile-title", [
-                                  _vm._v(
-                                    _vm._s(item.post ? item.post.title : "RCJ")
-                                  )
-                                ]),
+                                _c(
+                                  "v-list-tile-content",
+                                  [
+                                    _c("v-list-tile-title", [
+                                      _vm._v(
+                                        _vm._s(
+                                          item.post ? item.post.title : "RCJ"
+                                        )
+                                      )
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("v-list-tile-sub-title", [
+                                      _vm._v(_vm._s(item.donate_date))
+                                    ])
+                                  ],
+                                  1
+                                ),
                                 _vm._v(" "),
-                                _c("v-list-tile-sub-title", [
-                                  _vm._v(_vm._s(item.donate_date))
+                                _c("v-list-tile-action", [
+                                  _vm._v(
+                                    "\n                        " +
+                                      _vm._s(item.volume) +
+                                      "  ml\n                    "
+                                  )
                                 ])
                               ],
                               1
-                            ),
-                            _vm._v(" "),
-                            _c("v-list-tile-action", [
-                              _vm._v(
-                                "\n                        " +
-                                  _vm._s(item.volume) +
-                                  "  ml\n                    "
-                              )
-                            ])
-                          ],
-                          1
-                        )
-                      })
+                            )
+                          })
                     ],
                     2
                   )
@@ -62329,6 +62407,30 @@ exports.push([module.i, "\n.v-avatar-custom--size {\r\n    height: 120px !import
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -62423,24 +62525,22 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
-        return {
-            auth: window.user,
+        var _ref;
+
+        return _ref = {
             sending: false,
-            valid: true,
-            item: {
-                fundraise_id: '',
-                id: "",
-                title: "",
-                status: 2,
-                body: "",
-                cover_img: null,
-                target_amount: null,
-                name: "",
-                email: ""
-            },
-            preview: '',
-            submitCompleted: false
-        };
+            auth: window.user
+        }, _defineProperty(_ref, "sending", false), _defineProperty(_ref, "valid", true), _defineProperty(_ref, "item", {
+            fundraise_id: '',
+            id: "",
+            title: "",
+            status: 2,
+            body: "",
+            cover_img: null,
+            target_amount: null,
+            name: "",
+            email: ""
+        }), _defineProperty(_ref, "preview", ''), _defineProperty(_ref, "submitCompleted", false), _ref;
     },
     mounted: function mounted() {
         var app = this;
@@ -62501,7 +62601,7 @@ var render = function() {
   return _c(
     "div",
     [
-      !_vm.submitCompleted
+      !_vm.submitCompleted && !_vm.sending
         ? _c(
             "v-container",
             { attrs: { fluid: "", "grid-list-md": "" } },
@@ -62880,24 +62980,63 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm.submitCompleted
-        ? _c(
-            "v-container",
-            { attrs: { fluid: "", "grid-list-md": "" } },
-            [
-              _c("v-alert", { attrs: { value: true, type: "success" } }, [
-                _vm._v(
-                  "\n            Thank you for create a fundraising campaign. Kindly refer receipt in your mailbox. "
-                ),
-                _c("br"),
-                _vm._v(
-                  "\n            Thanks again for your generosity and support,\n        "
-                )
-              ])
-            ],
-            1
-          )
-        : _vm._e()
+      _c(
+        "v-container",
+        { attrs: { "align-center": "", "justify-center": "" } },
+        [
+          _c("v-card", [
+            _c(
+              "div",
+              { staticClass: "text-xs-center" },
+              [
+                _vm.sending
+                  ? _c(
+                      "v-card-text",
+                      [
+                        _c("v-progress-circular", {
+                          attrs: {
+                            size: 138,
+                            width: 7,
+                            color: "grey lighten-1",
+                            indeterminate: ""
+                          }
+                        })
+                      ],
+                      1
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.submitCompleted
+                  ? _c(
+                      "v-card-text",
+                      [
+                        _c(
+                          "v-icon",
+                          { attrs: { size: "168px", color: "grey lighten-1" } },
+                          [_vm._v("check_circle_outline")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c("h3", [_vm._v("Create campaign successful")]),
+                          _vm._v(
+                            "\n                        Thank you for create a fundraising campaign. Please wait for approving of your campaign."
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n                        Thanks again for your generosity and support,\n                        "
+                          )
+                        ])
+                      ],
+                      1
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ])
+        ],
+        1
+      )
     ],
     1
   )
@@ -62998,7 +63137,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* .stripe-card {\r\n  border-bottom: 1px solid rgba(0,0,0,0.42);\r\n  padding: 10px;\r\n}\r\n.stripe-card.complete {\r\n  border-color: green;\r\n} */\n.stripe-card {\r\n  height: 40px;\r\n  padding: 10px 12px;\r\n  border-radius: 4px;\r\n  border: 1px solid #00000026;\r\n  box-shadow: 0 1px 3px 0 #e6ebf1;\r\n  -webkit-transition: box-shadow 150ms ease;\r\n  transition: box-shadow 150ms ease;\n}\n.stripe-card--focus {\r\n  box-shadow: 0 1px 3px 0 #cfd7df;\n}\n.stripe-card--invalid {\r\n  border-color: #fa755a;\n}\n.stripe-card--webkit-autofill {\r\n  background-color: #fefde5 !important;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* .stripe-card {\r\n  border-bottom: 1px solid rgba(0,0,0,0.42);\r\n  padding: 10px;\r\n}\r\n.stripe-card.complete {\r\n  border-color: green;\r\n} */\n.stripe-card {\r\n  height: 40px;\r\n  padding: 10px 12px;\r\n  border-radius: 4px;\r\n  border: 1px solid #00000026;\r\n  box-shadow: 0 1px 3px 0 #e6ebf1;\r\n  -webkit-transition: box-shadow 150ms ease;\r\n  transition: box-shadow 150ms ease;\n}\n.stripe-card--focus {\r\n  box-shadow: 0 1px 3px 0 #cfd7df;\n}\n.stripe-card--invalid {\r\n  border-color: #fa755a;\n}\n.stripe-card--webkit-autofill {\r\n  background-color: #fefde5 !important;\n}\r\n", ""]);
 
 // exports
 
@@ -63013,6 +63152,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_stripe_elements_plus___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_stripe_elements_plus__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -63206,10 +63358,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             app.item.fundraiser_title = this.selectedFundraiser.title;
             app.item.name = this.auth[0] != undefined ? this.auth[0] : '';
             app.item.email = this.auth[1] != undefined ? this.auth[1] : '';
-            app.donationProgress = app.totalDonation / this.selectedFundraiser.target_amount * 100;
+            // app.donationProgress = (app.totalDonation/this.selectedFundraiser.target_amount)*100
+            app.totalDonationValue();
         }
     },
     methods: {
+        totalDonationValue: function totalDonationValue() {
+            var app = this;
+            app.donationProgress = app.totalDonation / app.selectedFundraiser.target_amount * 100;
+        },
         saveItem: function saveItem() {
             var _this = this;
 
@@ -63814,24 +63971,46 @@ var render = function() {
           )
         : _vm._e(),
       _vm._v(" "),
-      _vm.submitCompleted
-        ? _c(
-            "v-container",
-            { attrs: { fluid: "", "grid-list-md": "" } },
-            [
-              _c("v-alert", { attrs: { value: true, type: "success" } }, [
-                _vm._v(
-                  "\n            Thank you for donation. Kindly refer receipt in your mailbox. "
-                ),
-                _c("br"),
-                _vm._v(
-                  "\n            Thanks again for your generosity and support,\n        "
-                )
-              ])
-            ],
-            1
-          )
-        : _vm._e()
+      _c(
+        "v-container",
+        { attrs: { "align-center": "", "justify-center": "" } },
+        [
+          _c("v-card", [
+            _c(
+              "div",
+              { staticClass: "text-xs-center" },
+              [
+                _vm.submitCompleted
+                  ? _c(
+                      "v-card-text",
+                      [
+                        _c(
+                          "v-icon",
+                          { attrs: { size: "168px", color: "grey lighten-1" } },
+                          [_vm._v("check_circle_outline")]
+                        ),
+                        _vm._v(" "),
+                        _c("div", [
+                          _c("h3", [_vm._v("Payment successful")]),
+                          _vm._v(
+                            "\n                        Thank you for donation. Kindly refer receipt in your mailbox. "
+                          ),
+                          _c("br"),
+                          _vm._v(
+                            "\n                        Thanks again for your generosity and support,\n                        "
+                          )
+                        ])
+                      ],
+                      1
+                    )
+                  : _vm._e()
+              ],
+              1
+            )
+          ])
+        ],
+        1
+      )
     ],
     1
   )
@@ -88461,7 +88640,7 @@ exports = module.exports = __webpack_require__(1)(false);
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n", ""]);
 
 // exports
 
@@ -88472,9 +88651,6 @@ exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
 //
 //
 //
@@ -88640,7 +88816,7 @@ var render = function() {
         {
           attrs: {
             clipped: _vm.$vuetify.breakpoint.smAndUp,
-            absolute: "",
+            app: "",
             right: "",
             temporary: ""
           },
@@ -88793,7 +88969,11 @@ var render = function() {
               },
               attrs: { to: "/" }
             },
-            [_c("v-toolbar-title", [_vm._v("Red Crescent Johor")])],
+            [
+              _c("v-toolbar-title", { staticClass: "hidden-sm-and-down" }, [
+                _vm._v("Red Crescent Johor")
+              ])
+            ],
             1
           ),
           _vm._v(" "),
@@ -88973,13 +89153,6 @@ var render = function() {
               attrs: { flat: "", href: "/social/login" }
             },
             [_vm._v("Sign In")]
-          ),
-          _vm._v(" "),
-          _c(
-            "v-btn",
-            { attrs: { icon: "" } },
-            [_c("v-icon", [_vm._v("search")])],
-            1
           ),
           _vm._v(" "),
           _c("v-toolbar-side-icon", {

@@ -103,14 +103,27 @@
                 </v-card-actions>
             </v-card>
         </v-container>
-        <v-container fluid grid-list-md v-if="submitCompleted">
-            <v-alert
-            :value="true"
-            type="success"
-            >
-                Thank you for donation. Kindly refer receipt in your mailbox. <br/>
-                Thanks again for your generosity and support,
-            </v-alert>
+        <v-container align-center justify-center>
+            <v-card>
+                <div class="text-xs-center">
+                    <!-- <v-card-text v-if="sending">
+                        <v-progress-circular
+                        :size="138"
+                        :width="7"
+                        color="grey lighten-1"
+                        indeterminate
+                        ></v-progress-circular>
+                    </v-card-text> -->
+                    <v-card-text v-if="submitCompleted">
+                            <v-icon size="168px" color="grey lighten-1">check_circle_outline</v-icon>
+                            <div>
+                            <h3>Payment successful</h3>
+                            Thank you for donation. Kindly refer receipt in your mailbox. <br/>
+                            Thanks again for your generosity and support,
+                            </div>
+                    </v-card-text>
+                </div>
+            </v-card>
         </v-container>
     </div>
 </template>
@@ -192,10 +205,15 @@ export default {
             app.item.fundraiser_title = this.selectedFundraiser.title
             app.item.name = this.auth[0] != undefined ? this.auth[0] : ''
             app.item.email = this.auth[1] != undefined ? this.auth[1] : ''
-            app.donationProgress = (app.totalDonation/this.selectedFundraiser.target_amount)*100
+            // app.donationProgress = (app.totalDonation/this.selectedFundraiser.target_amount)*100
+            app.totalDonationValue()
         },
     },
     methods:{
+        totalDonationValue(){
+            let app = this
+            app.donationProgress = (app.totalDonation/app.selectedFundraiser.target_amount)*100
+        },
         saveItem(){
             if (this.$refs.form.validate()){
                 this.sending = true

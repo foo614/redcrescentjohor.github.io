@@ -39,7 +39,7 @@
           ></v-checkbox>
         </td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.user['name'] }}</td>
-        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.post ? props.item.post['title'] : '' }}</td>
+        <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.post ? props.item.post['title'] : 'Red Crescent Johor' }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.volume }}</td>
         <td :active="props.selected" @click="props.selected = !props.selected">{{ props.item.donate_date }}</td>
         <td>
