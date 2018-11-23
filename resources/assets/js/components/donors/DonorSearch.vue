@@ -64,7 +64,7 @@
                     </v-list-tile-action>
                     <v-list-tile-title>Name</v-list-tile-title>
                     <v-list-tile-title>Distance</v-list-tile-title>
-                    <v-list-tile-action>Status</v-list-tile-action>
+                    <v-list-tile-action></v-list-tile-action>
                     </v-list-tile>
                 </v-list>
                 <v-list>

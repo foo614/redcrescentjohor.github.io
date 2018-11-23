@@ -242,6 +242,24 @@ import moment from 'moment';
 export default {
     components: {},
     mounted() {
+        this.autocomplete = new google.maps.places.Autocomplete(
+            this.$refs.autocomplete
+        );
+        this.autocomplete.setComponentRestrictions(
+            {'country': ['my', 'sg']})
+        this.autocomplete.addListener('place_changed', () => {
+            let place = this.autocomplete.getPlace()
+            let lat = place.geometry.location.lat()
+            let lng = place.geometry.location.lng()
+            let place_id = place.place_id
+            let formatted_address = place.formatted_address
+
+            this.item.address = place.name
+            this.item.map_lat = lat
+            this.item.map_lng = lng
+            this.item.place_id = place_id
+            this.item.formatted_address = formatted_address
+        });
         this.fetchDonors()
         this.fetchEvents()
         this.fetchBloodTypes()

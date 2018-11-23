@@ -1,5 +1,14 @@
 <template>
     <div>
+        <!-- <v-toolbar color="#ca0000" dense dark>
+            <v-toolbar-items class="hidden-sm-and-down">
+            <v-btn flat>MAIL: contact@ourcharity.com</v-btn>
+            <v-btn flat>PHONE: +24 3772 120 091 / +56452 4567</v-btn>
+            </v-toolbar-items>
+            <v-toolbar-items>
+                <v-btn color="black" dark>Donate Now</v-btn>
+            </v-toolbar-items>       
+        </v-toolbar> -->
         <v-navigation-drawer :clipped="$vuetify.breakpoint.smAndUp" app right v-model="drawer" temporary>
             <v-list dense>
                 <template v-for="item in items">
@@ -35,17 +44,17 @@
                 </template>
             </v-list>
         </v-navigation-drawer>
-        <v-toolbar tabs>
+        <v-toolbar tabs color="white">
             <router-link to="/">
-                <v-img src="/img/64x64.png" height="38px" width="38px"></v-img>
+                <v-img src="/img/64x64.png" height="54px" width="54px"></v-img>
             </router-link>
-            <router-link to="/" style="font-weight: 500; font-size: 18px; text-decoration:none; color:black">
+            <router-link to="/" style="font-weight: 500; font-size: 24px; text-decoration:none; color:black">
                 <v-toolbar-title class="hidden-sm-and-down">Red Crescent Johor</v-toolbar-title>
             </router-link>
             <v-spacer></v-spacer>
             <v-menu offset-y v-model="showMenu" v-if="authCheck==1">
                 <v-avatar size="36" v-if="mutableAuth.avatar" slot="activator">
-                    <img :src="'/img/'+mutableAuth.avatar" alt="mutableAuth.avatar">
+                    <img :src="mutableAuth.avatar" alt="mutableAuth.avatar">
                 </v-avatar>
                 <v-avatar color="#757575" slot="activator" v-else>
                     <span class="white--text headline">{{mutableAuth.name | getFirstLetter}}</span>
@@ -53,7 +62,7 @@
                 <v-list style="min-width: 250px;">
                     <v-list-tile :to="{ name: 'profileHome', params: { id: mutableAuth.id}}">
                         <v-list-tile-avatar color="#757575">
-                            <img :src="/img/+mutableAuth.avatar" :alt="mutableAuth.avatar" v-if="mutableAuth.avatar">
+                            <img :src="mutableAuth.avatar" :alt="mutableAuth.avatar" v-if="mutableAuth.avatar">
                             <span class="white--text headline" v-else>{{mutableAuth.name | getFirstLetter}}</span>
                         </v-list-tile-avatar>
                         <v-list-tile-content>
@@ -78,13 +87,13 @@
             <v-btn flat href="/social/login" v-show="authCheck==0">Sign In</v-btn>
             <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
             <v-toolbar-items slot="extension">
-                <v-tabs color="transparent" show-arrows>
+                <v-tabs color="transparent" show-arrows align-with-title fixed-tabs>
                     <v-tabs-slider color="#ca0000"></v-tabs-slider>
                     <v-tab to="/">
                         Home
                     </v-tab>
                     <v-tab to="/news-stories">
-                        Posts
+                        News & Stories
                     </v-tab>
                     <v-tab to="/course-registration">
                         Get Trained
@@ -92,6 +101,9 @@
                     <v-tab to="/fundraisers-campaign">
                         Fundraisers @ Donation
                     </v-tab>
+                    <!-- <v-tab href="/login" style="color:black;">
+                        @Login
+                    </v-tab> -->
                 </v-tabs>
             </v-toolbar-items>
         </v-toolbar>
@@ -101,7 +113,7 @@
 <script>
     export default {
         props: 
-            ['auth', 'authCheck']
+            ['auth', 'authCheck', 'authRole']
         ,
         data: () => ({
             showMenu: false,
@@ -115,24 +127,26 @@
                 {
                     icon: "events",
                     text: "Posts",
-                    link: "/posts"
+                    link: "/news-stories"
                 },
                 {
                     icon: "accessibility_new",
                     text: "Get Trained",
-                    link: "/courses"
+                    link: "/course-registration"
                 },
                 {
                     icon: "local_library",
                     text: "Fundraise",
-                    link: "#"
+                    link: "/fundraisers-campaign"
                 }
             ],
-            mutableAuth:{}
+            mutableAuth:{},
+            role:null
         }),
         created() {
             this.mutableAuth = this.auth ? JSON.parse(this.auth) : "";
-            window.user = [this.mutableAuth.name, this.mutableAuth.email];
+            this.role = this.authRole ? JSON.parse(this.authRole) : "";
+            window.user = [this.mutableAuth.name, this.mutableAuth.email, this.role, this.mutableAuth.ic, this.mutableAuth.contact, this.mutableAuth.address,];
         },
         methods: {
             logout() {
@@ -148,9 +162,20 @@
                 return item[0];
                 })
                 .join("").slice(0,2);
+            },
+        },
+        watch:{
+            mutableAuth: function(val){
+                (val != "" && val.avatar != null) ? (val.avatar.includes('https') ? val.avatar : '/img/'+ val.avatar) : ""
             }
         }
     };
 </script>
 <style>
+.v-tabs__slider{
+    height: 3px;
+}
+.v-toolbar__content{
+    justify-content: center;
+}
 </style>

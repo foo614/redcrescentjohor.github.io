@@ -50,8 +50,8 @@
                 </v-flex>
                 <v-flex xs6>
                   <v-layout>
-                    <v-flex xs6><v-card-text class="pt-0">Name</v-card-text></v-flex>
-                    <v-flex xs6><v-card-text class="pt-0">{{ props.item.source.name ? props.item.source.name : 'No name provided'}}</v-card-text></v-flex>
+                    <v-flex xs6><v-card-text class="pt-0">Customer</v-card-text></v-flex>
+                    <v-flex xs6><v-card-text class="pt-0">{{ props.item.source.name ? props.item.source.name : 'No name provided'}} ( {{ props.item.receipt_email ? props.item.receipt_email : 'without email'}} )</v-card-text></v-flex>
                   </v-layout>
                 </v-flex>
               </v-layout>
@@ -108,11 +108,11 @@ export default {
       },
       {
         text: "",
-        value: "status"
+        value: "id"
       },
       {
         text: "Description",
-        value: "id"
+        value: "description"
       },
       {
         text: "Date",

@@ -50,8 +50,7 @@
                     <v-hover>
                         <v-card tile slot-scope="{ hover }" :class="`elevation-${hover ? 8 : 2}`">
                             <v-img
-                            contain
-                            aspect-ratio="2"
+                            aspect-ratio="1.7"
                             :src="props.item.cover_img ? '/img/'+props.item.cover_img : '/img/test2.jpg'"
                             height="200px"
                             >
@@ -70,6 +69,9 @@
                                 </div>
                             </v-card-text>
                             <v-card-actions>
+                                <v-flex xs12>
+                                    <span>{{props.item.total_donation}} MYR of {{props.item.target_amount}} MYR raised</span>
+                                </v-flex>
                             <v-spacer></v-spacer>
                             <v-btn flat color="#ca0000" :href="`/fundraisers-campaign/donate/${props.item.id}`">Details</v-btn>
                             </v-card-actions>
@@ -86,7 +88,7 @@ export default {
     data(){
         return{
             fundraisers:[],
-            dialog: false
+            dialog: false,
         }
     },
     mounted(){
@@ -98,7 +100,7 @@ export default {
                 this.fundraisers = res.data
             })
         }
-    },
+    }
 }
 </script>
 

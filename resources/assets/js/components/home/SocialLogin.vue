@@ -3,6 +3,7 @@
         <v-layout align-center justify-center>
             <v-flex xs12 sm8 md4>
                 <v-card class="elevation-12">
+                    <v-progress-linear height=3 :indeterminate="true" v-if="sending"></v-progress-linear>
                     <v-tabs centered grow v-model="tabs">
                         <v-tabs-slider color="#ca0000"></v-tabs-slider>
                         <v-tab href="#tab-1">
@@ -57,8 +58,8 @@
                             <v-card flat>
                                 <v-card-text style="text-align:center" class="px-5 pt-3">
                                     <v-btn round color="#dd4b39" dark href="/redirect/google" class="my-4">
-                                        <v-icon left>fab fa-google-plus-g</v-icon><label>REGISTER WITH GOOGLE</label>
-                                    </v-btn>
+                                        <v-icon left>fab fa-google-plus-g</v-icon><label>LOGIN WITH GOOGLE</label>
+                                    </v-btn><br/>
                                     <v-btn round color="#355a9f" dark href="/redirect/facebook" class="mb-2">
                                         <v-icon left>fab fa-facebook-f</v-icon><label>LOGIN WITH FACEBOOK</label>
                                     </v-btn>
@@ -131,7 +132,7 @@
                         .then(res => {
                             this.sending = false
                             let currentPage = this.$route.name
-                            this.$router.push({ path: '/social-login' }, ()=> {
+                            this.$router.push({ path: '/' }, ()=> {
                                 this.$toasted.success('Register done! Try to login' , {icon:"check"})
                             })
                         })
@@ -141,29 +142,33 @@
             },
             loginUser(){
                 if (this.$refs.form_login.validate()){
-                this.sending = true
-                let vm = this
-                axios.post('/login', vm.login)
-                .then(function (response) {
-                    vm.$router.push({name:'dashboard'}, ()=> {
-                        vm.$toasted.success("Welcome." , {icon:"check"})
-                    })
-                })
-                .catch(function (error) {
-                    var errors = error.response
-                    if(errors.statusText === 'Unprocessable Entity'){
-                        if(errors.data){
-                            if(errors.data.email){
-                            vm.errorsEmail = true
-                            vm.emailError = _.isArray(errors.data.email) ? errors.data.email[0]: errors.data.email
+                    let vm = this
+                    vm.sending = true
+                    setTimeout(()=> {
+                        axios.post('/login', vm.login)
+                        .then(function (response) {
+                            vm.sending = false
+                            vm.$router.push({name:'home'}, ()=> {
+                                vm.$toasted.success("Welcome." , {icon:"check"})
+                            })
+                            window.location.reload(true);
+                        })
+                        .catch(function (error) {
+                            var errors = error.response
+                            if(errors.statusText === 'Unprocessable Entity'){
+                                if(errors.data){
+                                    if(errors.data.email){
+                                    vm.errorsEmail = true
+                                    vm.emailError = _.isArray(errors.data.email) ? errors.data.email[0]: errors.data.email
+                                    }
+                                    if(errors.data.password){
+                                    vm.errorsPassword = true
+                                    vm.passwordError = _.isArray(errors.data.password) ? errors.data.password[0] : errors.data.password
+                                    }
+                                }
                             }
-                            if(errors.data.password){
-                            vm.errorsPassword = true
-                            vm.passwordError = _.isArray(errors.data.password) ? errors.data.password[0] : errors.data.password
-                            }
-                        }
-                    }
-                });
+                        });
+                    }, 1500)
                 }
             }
         }

@@ -9,7 +9,7 @@
                                 <span class="white--text headline" v-if="!show && !item.avatar">{{item.name | getFirstLetter}}</span>
                                 <img
                                     v-show="item.avatar"
-                                    :src= "!preview ? (!show ? (!item.avatar ? null : '/img/'+item.avatar ): item.avatar = null) : preview"
+                                    :src= "!preview ? (!show ? (!item.avatar ? null : item.avatar ): item.avatar = null) : preview"
                                     alt="profile_image"
                                 >
                                 <v-tooltip bottom v-if="show && !preview">
@@ -258,7 +258,7 @@ export default {
             this.items.forEach(function(elm) {
                 return app.sum_volume += elm.volume
             })
-        }
+        },
     }
 }
 </script>

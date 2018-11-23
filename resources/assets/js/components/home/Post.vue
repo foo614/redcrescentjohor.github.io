@@ -5,10 +5,10 @@
                  <v-container grid-list-xl pa-0>
                     <v-flex xs12 class="mb-3">
                         <v-card>
-                            <v-img v-show="item.cover_img" style="border-bottom: 6px solid #B30909;" :src="'/img/'+item.cover_img" aspect-ratio="1.7"  max-height="200"></v-img>
+                            <v-img v-if="item.cover_img" style="border-bottom: 6px solid #B30909;" :src="'/img/'+item.cover_img" aspect-ratio="2.75"  max-height="380"></v-img>
                             <v-card-title primary-title :class="{'pb-0': item.event}">
                                 <div v-if="!item.event">
-                                    <div class="headline">{{item.title}}</div>
+                                    <div>{{item.title}}</div>
                                     <v-icon color="red darken-2" class="mt-2" v-if="!item.event">calendar_today</v-icon> <label class="ml-1" v-if="!item.event">{{item.created_at}}</label>
                                 </div>
                                 <v-list two-line v-if="item.event">
@@ -17,21 +17,21 @@
                                             <div style="display:inline-grid; text-align:center;" class="text-uppercase mr-2 body-2">{{item.event.start | formatDate}}</div>
                                         </v-list-tile-avatar>
                                         <v-list-tile-content>
-                                            <v-list-tile-title class="headline">{{item.title}}</v-list-tile-title>
+                                            <v-list-tile-title>{{item.title}}</v-list-tile-title>
                                             <v-list-tile-sub-title v-if="item.event">{{item.event | formatTime}} <v-tooltip top><a class="ml-2" slot="activator" :href="`https://www.google.com/maps/search/?api=1&query=${item.event.map_lat},${item.event.map_lng}&query_place_id=${item.event.place_id}`" target="_blank">{{item.event.address}}</a><span>Click to view in google map</span></v-tooltip></v-list-tile-sub-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                 </v-list>
                                 <v-spacer></v-spacer>
                                 <v-tooltip top>
-                                    <v-btn slot="activator" icon class="blue--text text--darken-4" @click="share(`http://rcj-dev.com/news-stories/${item.id}`,item.title, item.body)">
+                                    <v-btn slot="activator" icon class="blue--text text--darken-4" @click="share(`https://rcj-dev.com/news-stories/${item.id}`,item.title, item.body, item.cover_img)">
                                         <v-icon medium>fab fa-facebook</v-icon>
                                     </v-btn>
                                     <span>Share on FB</span>
                                 </v-tooltip>
                             </v-card-title>
                             <v-divider></v-divider> 
-                            <v-card-text v-html="item.body"></v-card-text>
+                            <v-card-text v-html="item.body" v-model="item.desc"></v-card-text>
                         </v-card>
                     </v-flex>
                  </v-container>
@@ -58,7 +58,7 @@ export default {
                 end:null,
                 cover_img:null,
                 place_id: null,
-                formatted_address: null
+                formatted_address: null,
             },
         };
     },
@@ -100,7 +100,7 @@ export default {
         });
     },
     methods:{
-        share(overrideLink, overrideTitle, overrideDescription){
+        share(overrideLink, overrideTitle, overrideDescription, cover_img){
             let app = this;
             FB.ui({
             method: 'share_open_graph',
@@ -109,7 +109,7 @@ export default {
                 object: {
                     'og:url': overrideLink,
                     'og:title': overrideTitle,
-                    'og:description': overrideDescription
+                    'og:description': overrideDescription,
                 }
             })
         },
@@ -128,5 +128,4 @@ export default {
 </script>
 
 <style>
-
 </style>

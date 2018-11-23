@@ -105,14 +105,12 @@
                                 v-model="item.start_time"
                                 label="Start time"
                                 prepend-icon="access_time"
-                                hint="24 hrs format"
                                 persistent-hint
                                 readonly
                                 ></v-text-field>
                                 <v-time-picker
                                 v-if="time_menu1"
                                 v-model="item.start_time"
-                                format="24hr"
                                 @change="$refs.menu1.save(item.start_time)"
                                 ></v-time-picker>
                             </v-menu>
@@ -169,14 +167,12 @@
                                 v-model="item.end_time"
                                 label="End time"
                                 prepend-icon="access_time"
-                                hint="24 hrs format"
                                 persistent-hint
                                 readonly
                                 ></v-text-field>
                                 <v-time-picker
                                 v-if="time_menu2"
                                 v-model="item.end_time"
-                                format="24hr"
                                 @change="$refs.menu.save(item.end_time)"
                                 ></v-time-picker>
                             </v-menu>
@@ -198,7 +194,7 @@
                         <v-badge overlap>
                             <span slot="badge" v-if="(preview || item.cover_img)" @click="item.cover_img = null; preview= null">x</span>
                             <v-avatar tile class="elevation-7 v-avatar-custom--size">
-                                <v-img lazy-src aspect-ratio="2" v-if="item.cover_img || preview" 
+                                <v-img lazy-src aspect-ratio="2.75" v-if="item.cover_img || preview" 
                                 :src="item.cover_img && !preview ? '/img/'+item.cover_img : preview ? preview : null"
                                     alt="profile_image"></v-img>
                                 <v-tooltip bottom v-if="!preview && !item.cover_img">
@@ -206,7 +202,7 @@
                                     <v-icon large @click="pickFile" slot="activator">
                                         image
                                     </v-icon>
-                                    <span>Upload Event Cover Photo</span>
+                                    <span>Upload Cover Photo</span>
                                 </v-tooltip>
                             </v-avatar>
                         </v-badge>
@@ -369,7 +365,7 @@ export default {
 
 <style>
 .v-avatar-custom--size {
-    height: 120px !important;
-    width: 500px !important;
+    height: 200px !important;
+    width: 600px !important;
 }
 </style>

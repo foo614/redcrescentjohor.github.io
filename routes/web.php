@@ -10,6 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+
 //home
 Route::get('/', 'HomeController@index');
 
@@ -36,7 +37,11 @@ Route::group(['middleware' => ['auth']], function(){
     Route::get('profile/{id}', 'HomeController@profile');
 });
 
-// Route::group(['middleware' => ['role:administrator']], function(){
+
+Route::group(['middleware' => ['auth', 'role:member,administrator']], function(){
+    //post route
+    Route::get('dashboard', 'PostController@viewCalendar')->name('posts.calendar');
+});
 Route::group(['middleware' => ['auth', 'role:administrator']], function(){
     //donor
     Route::resource('donors', 'DonorController');
@@ -47,8 +52,6 @@ Route::group(['middleware' => ['auth', 'role:administrator']], function(){
     Route::resource('roles', 'RoleController');
     Route::resource('membershipTypes', 'MembershipTypeController');
 
-    //post route
-    Route::get('posts/calendar', 'PostController@viewCalendar')->name('posts.calendar');
     Route::resource('posts', 'PostController');
 
     //fundraise route
@@ -83,6 +86,7 @@ Route::group(['middleware' => ['auth', 'role:administrator']], function(){
 
     //courses route
     Route::resource('courses', 'CourseController');
+    Route::get('coursesEnrollment', 'CourseController@enrol');
 
     //blood donation route
     Route::resource('bloodDonationRecords', 'BloodDonationRecordController');

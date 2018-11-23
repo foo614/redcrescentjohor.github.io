@@ -102,7 +102,7 @@ class User extends Authenticatable
     */
     public function hasAnyRole($roles)
     {
-    return null !== $this->roles()->whereIn('name', $roles)->first();
+        return null !== $this->roles()->whereIn('name', $roles)->first();
     }
 
     /**

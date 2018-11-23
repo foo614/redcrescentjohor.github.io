@@ -390,14 +390,14 @@
                 var startDate = moment(this.item.start_date, "YYYY-MM-DD")
                 var startTime = moment(this.item.start_time, "HH:mm")
                 if(startDate.isValid() && startTime.isValid()){
-                    return this.item.start = moment(startDate._i + ' ' + startTime._i)._i
+                    return this.item.start = moment(startDate._i + ' ' + startTime._i+":00")._i
                 }
             },
             end: function(){
                 var endDate = moment(this.item.end_date, "YYYY-MM-DD")
                 var endTime = moment(this.item.end_time, "HH:mm")
                 if(endDate.isValid() && endTime.isValid()){
-                    return this.item.end = moment(endDate._i + ' ' + endTime._i)._i
+                    return this.item.end = moment(endDate._i + ' ' + endTime._i+":00")._i
                 }
             }
         },
@@ -511,7 +511,7 @@
                                     }
                                 })
                                 .then(res => {
-                                    this.$router.push('/posts/calendar')
+                                    this.$router.push('/dashboard')
                                 })
                                 .then(data => {
                                     this.sending = false
@@ -539,7 +539,7 @@
                                     }
                                 })
                                 .then(res => {
-                                    this.$router.push('/posts/calendar')
+                                    this.$router.push('/dashboard')
                                 })
                                 .then(data => {
                                     this.sending = false
@@ -573,7 +573,7 @@
                 fetch(`/api/post/${event.id}`,{
                     method: "delete"
                 })
-                .then(res => this.$router.push('/posts/calendar'))
+                .then(res => this.$router.push('/dashboard'))
                 .then(data => {
                     this.sending = false
                     this.$toasted.success(this.eventDetail.title +' deleted', {icon:"check"})

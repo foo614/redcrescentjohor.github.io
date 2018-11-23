@@ -22,7 +22,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $collection = collect(Post::with('postCategory','event')->latest('id')->get())->map(function($post, $key){
+        $collection = collect(Post::with('postCategory','event')->where('status', 1)->latest('id')->get())->map(function($post, $key){
             $visitorsData = Analytics::performQuery(Period::years(3), 'ga:pageviews', ['dimensions' => 'ga:pagePathLevel2', 'filters' => 'ga:pagePath=~/news-stories/;ga:pagePath!~fbclid']);
             $visitorsData = collect($visitorsData['rows'] ?? [])->map(function(array $dateRow){
                 return [
@@ -83,14 +83,18 @@ class PostController extends Controller
         $post->status = $request->status;
         if(! \File::exists(public_path('img/'.$request->get('cover_img'))))
             $post->cover_img = $image_name;
+        else if($request->get('cover_img') === null)
+            $post->cover_img = null;
         $post->save();
         if($post->post_type_id === 1){
             $event = $request->post_id != null ? Event::where('post_id', $post->id)->firstOrFail() : new Event;
             $event->address = $request->address;
             $event->map_lat = $request->map_lat;
             $event->map_lng = $request->map_lng;
-            $event->start = !$request->start ? null : $request->start.= ':00';
-            $event->end = !$request->end ? null : $request->end.= ':00';
+            // $event->start = !$request->start ? null : $request->start.= ':00';
+            // $event->end = !$request->end ? null : $request->end.= ':00';
+            $event->start = !$request->start ? null : $request->start;
+            $event->end = !$request->end ? null : $request->end;
             $event->place_id = $request->place_id;
             $event->formatted_address = $request->formatted_address;
             $event->post_id = $post->id;
@@ -127,5 +131,11 @@ class PostController extends Controller
             $query->where('start', '>=', Carbon::now());
         })->get()->sortBy('event.start');;
         return EventResource::collection($posts);
+    }
+
+    public function latestEventDisplayHomePage()
+    {
+        $posts = Post::where('post_type_id', 4)->latest()->take(2)->get();
+        return $posts;
     }
 }

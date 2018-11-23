@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <!-- Google Analytics -->
-{{-- <script>
+<script>
         (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
@@ -9,7 +9,7 @@
         
         ga('create', 'UA-86542784-2', 'auto');
         ga('send', 'pageview');
-</script> --}}
+</script>
 <!-- End Google Analytics -->
 <head>
     <meta charset="utf-8">
@@ -78,17 +78,17 @@
             justify-content: space-between
         }
         .primary-home--text  {
-        color: #ff8040 !important;
+        color: #ca0000 !important;
         }
         .primary-home--line {
-            background-color: #ff8040 !important;
+            background-color: #ca0000 !important;
         }
-        .headline {
+        /* .headline {
             font-size: 24px!important;
             font-weight: 400;
             line-height: 32px!important;
             letter-spacing: normal!important;
-        }
+        } */
         .alpha-testimonial__footer-bar {
             height: 4px;
             margin: 20px 0 20px auto;
@@ -123,6 +123,13 @@
         .alpha-testimonial--dark {
             color: #fff
         }
+        .v-tabs__item:not(.v-tabs__item--active){
+            opacity: 1;
+        }
+        .v-tabs__div{
+            font-weight: 550;
+            font-size: 16px;
+        }
     </style>
     <script src="https://js.stripe.com/v3/"></script>
     {{-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> --}}
@@ -136,7 +143,7 @@
 <body>
     <div id="app">
         <v-app id="inspire">
-            <home-header auth="{{ Auth::user() ? Auth::user()->toJson() : '' }}" auth-check="{{Auth::check()}}"></home-header>
+            <home-header auth="{{ Auth::user() ? Auth::user()->toJson() : '' }}" auth-check="{{Auth::check()}}" auth-role="{{Auth::user() ? Auth::user()->roles : ''}}"></home-header>
             <v-content>
                 @yield('content')
                 <router-view></router-view>

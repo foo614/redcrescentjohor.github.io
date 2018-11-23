@@ -19,7 +19,7 @@ class FundraiserController extends Controller
      */
     public function index()
     {
-        $fundraisers = Fundraiser::all();
+        $fundraisers = Fundraiser::with('payments')->get();
         return FundraiserResource::collection($fundraisers);
     }
 
@@ -31,16 +31,22 @@ class FundraiserController extends Controller
      */
     public function store(Request $request)
     {
+        $fundraiser = $request->isMethod('put') ? Fundraiser::findOrFail($request->fundraiser_id) : new Fundraiser;
         if(User::where('email',  $request->email)->exists()){
             $find_user = User::where('email',  $request->email)->firstOrFail();
+            if ($find_user->id)
+                $fundraiser->user_id = $find_user->id;
+            else
+                $fundraiser->user_id = 1;
         }else{
-            $find_user = new User;
-            $find_user->name = $request->name;
-            $find_user->email = $request->email;
-            $find_user->save();
+            if($request->email){
+                $new_user = new User;
+                $new_user->name = $request->name;
+                $new_user->email = $request->email;
+                $new_user->save();
+            }
         }
-
-        $fundraiser = $request->isMethod('put') ? Fundraiser::findOrFail($request->fundraiser_id) : new Fundraiser;
+        
         if(! \File::exists(public_path('img/'.$request->get('cover_img'))))
         {
             $image = $request->get('cover_img');
@@ -51,10 +57,6 @@ class FundraiserController extends Controller
         $fundraiser->target_amount = $request->target_amount;
         $fundraiser->body = $request->body ? $request->body : '';
         $fundraiser->status = $request->status;
-        if ($find_user->id)
-            $fundraiser->user_id = $find_user->id;
-        else
-            $fundraiser->user_id = 1;
         if(! \File::exists(public_path('img/'.$request->get('cover_img'))))
             $fundraiser->cover_img = $image_name;
         $fundraiser->save();

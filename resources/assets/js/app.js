@@ -67,6 +67,7 @@ Vue.component('ckeditor', {
     toolbar: {
       type: Array,
       default: () => [
+        ['Source'],
         ['Undo', 'Redo'],
         ['Bold', 'Italic', 'Strike'],
         ['NumberedList', 'BulletedList'],
@@ -82,6 +83,10 @@ Vue.component('ckeditor', {
     extraplugins: {
       type: String,
       default: ''
+    },
+    allowedcontent:{
+      type: Boolean,
+      default: true
     }
   },
   beforeUpdate() {
@@ -97,7 +102,8 @@ Vue.component('ckeditor', {
       toolbar: this.toolbar,
       language: this.language,
       height: this.height,
-      extraPlugins: this.extraplugins
+      extraPlugins: this.extraplugins,
+      allowedContent : this.allowedcontent
     }
     CKEDITOR.replace(ckeditorId, ckeditorConfig)
     CKEDITOR.instances[ckeditorId].setData(this.value)

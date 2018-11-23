@@ -30,10 +30,15 @@ class CourseController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Responsey
      */
     public function edit($id)
     {
         return view('courses.edit');
+    }
+
+    public function enrol()
+    {
+        return view('courses.enrol');
     }
 }

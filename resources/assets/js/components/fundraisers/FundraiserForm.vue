@@ -38,7 +38,7 @@
                                 <v-icon slot="activator">description</v-icon>
                                 <span>Content</span>
                             </v-tooltip>
-                            <ckeditor style="width:100%" height="180px" class="ml-2" v-model="item.body" language="zh" extraplugins="divarea"/>
+                            <ckeditor style="width:100%" height="250px" class="ml-2" v-model="item.body" language="en" extraplugins="divarea"/>
                         </div>
                     </v-flex>
                     <v-flex xs12 sm12>
@@ -78,7 +78,7 @@ export default {
             axios.get('/api/fundraiser/' + id)
             .then(function (res) {
                 app.item = res.data;
-                app.item.fundraise_id = res.data.id;
+                app.item.fundraiser_id = res.data.id;
                 if(app.item.status === 2) app.item.status = false
             })
             .catch(function () {
@@ -91,7 +91,7 @@ export default {
             sending: false,
             valid: true,
             item: {
-                fundraise_id:'',
+                fundraiser_id:'',
                 id: "",
                 title: "",
                 status: true,

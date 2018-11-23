@@ -92,10 +92,10 @@
                     <v-container fluid grid-list-lg class="pt-0">
                         <v-divider></v-divider>
                         <v-layout row wrap>
-                            <v-flex xs12 sm6>
-                                <!-- <v-autocomplete
-                                    v-if="verifyMember"
+                            <v-flex xs12 sm6 v-if="auth[2].length > 0 && auth[2][0].name === 'administrator'">
+                                <v-autocomplete
                                     v-model="model"
+                                    v-if="auth[0] != undefined"
                                     :items="items"
                                     :loading="isLoading"
                                     :search-input.sync="search"
@@ -117,8 +117,17 @@
                                             <v-list-tile-sub-title v-html="data.item.email"></v-list-tile-sub-title>
                                         </v-list-tile-content>
                                     </template>
-                                </v-autocomplete> -->
-                                <v-text-field 
+                                </v-autocomplete>
+                            </v-flex>
+                            <v-flex xs12 sm6 v-else>
+                                <v-text-field
+                                    v-if="auth[0] != undefined" 
+                                    v-model="item.name" label="Name"
+                                    prepend-icon="contact_mail"
+                                    :rules="[v => !!v || 'Name is required']"
+                                    required></v-text-field>
+                                <v-text-field
+                                    v-if="auth[0] === undefined" 
                                     v-model="item.name" label="Name"
                                     prepend-icon="contact_mail"
                                     :rules="[v => !!v || 'Name is required']"
@@ -256,6 +265,8 @@ import moment from 'moment'
     export default {
         data() {
             return {
+                auth: window.user,
+                model: null,
                 loading: null,
                 stripeOptions:{
                     style : {
@@ -358,6 +369,43 @@ import moment from 'moment'
                 this.item.course_id = this.selectedCourse.id
                 this.item.amount = this.selectedCourse.course_fee
                 this.item.selectedCourse = this.selectedCourse
+
+                // if(this.auth[2][0].name === 'member'){
+                if(this.auth[1] && this.auth[1] != "ad@ad.com"){
+                this.item.name = this.auth[0] != undefined ? this.auth[0] : ''
+                this.item.email = this.auth[1] != undefined ? this.auth[1] : ''
+                this.item.ic = this.auth[3] != undefined ? this.auth[3] : ''
+                this.item.address = this.auth[5] != undefined ? this.auth[5] : ''
+                this.item.contact = this.auth[4] != undefined ? this.auth[4] : ''
+                }
+                
+            },
+            search (val) {
+            // Items have already been loaded
+            if (this.items.length > 0) return
+
+            // Items have already been requested
+            if (this.isLoading) return
+
+            this.isLoading = true
+
+            // Lazily load input items
+            axios.get('/api/members')
+                .then(res => {
+                    this.items = res.data
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => (this.isLoading = false))
+            },
+            model(val){
+                this.item.email = val.email
+                this.item.ic = val.ic
+                this.item.address = val.address
+                this.item.contact = val.contact
+                this.item.id = val.id
+                this.item.name = val.name
             }
         },
         methods:{
@@ -380,7 +428,7 @@ import moment from 'moment'
                             this.submitCompleted = true
                         })
                         .catch(err => console.log(err))
-                    }, 3000)
+                    }, 1500)
                 }
             },
             checkRegisteredEmail() {

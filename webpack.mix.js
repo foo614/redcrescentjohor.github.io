@@ -13,8 +13,8 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js');
 // .sass('resources/assets/sass/app.scss', 'public/css');
-mix.copy('node_modules/vuetify/dist/vuetify.min.css', 'public/css');
-mix.copy('node_modules/vuetify/dist/vuetify.min.js', 'public/js');
+// mix.copy('node_modules/vuetify/dist/vuetify.min.css', 'public/css');
+// mix.copy('node_modules/vuetify/dist/vuetify.min.js', 'public/js');
    
 var SWPrecacheWebpackPlugin = require('sw-precache-webpack-plugin');
 mix.webpackConfig({

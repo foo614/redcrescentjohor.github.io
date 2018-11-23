@@ -17,7 +17,15 @@
             </v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
-        <template v-for="item in items">
+        <v-list-tile href="/dashboard">
+          <v-icon>event_note</v-icon>
+          <v-list-tile-content>
+            <v-list-tile-title style="margin-left: 35px;">
+              Dashboard
+            </v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+        <template v-for="item in items" v-if="item.accessBy === roles">
           <v-list-group
             v-if="item.children"
             v-model="item.model"
@@ -111,7 +119,7 @@
 <script>
 export default {
   props: 
-    ['auth', 'authCheck']
+    ['auth', 'authCheck', 'roles']
   ,
   data: () => ({
     csrf_token: window.csrf_token,
@@ -121,7 +129,7 @@ export default {
     menu: false,
     items: [
       {
-        accessBy: "master_admin",
+        accessBy: "administrator",
         icon: "people",
         text: "Member",
         children: [
@@ -154,7 +162,8 @@ export default {
         text: "Course",
         children: [
           { text: "Add course", link: "/courses/create" },
-          { text: "Manage course", link: "/courses" }
+          { text: "Manage course", link: "/courses" },
+          { text: "Enrol course", link: "/coursesEnrollment" }
         ]
       },
       {
@@ -164,7 +173,6 @@ export default {
         children: [
           { text: "Add post", link: "/posts/create" },
           { text: "Manage post", link: "/posts" },
-          { text: "View event", link: "/posts/calendar" },
         ]
       },
       {
@@ -203,7 +211,7 @@ export default {
         ]
       },
       {
-        accessBy: "master_admin",
+        accessBy: "administrator",
         icon: "settings",
         text: "Setting",
         model: false,

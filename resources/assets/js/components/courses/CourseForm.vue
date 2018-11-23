@@ -200,7 +200,7 @@
                                     <v-icon slot="activator">description</v-icon>
                                     <span>Description</span>
                                 </v-tooltip>
-                                <ckeditor style="width:100%" height="180px" class="ml-2" v-model="item.description" language="zh" extraplugins="divarea"/>
+                                <ckeditor style="width:100%" height="180px" class="ml-2" v-model="item.description" language="en" extraplugins="divarea"/>
                             </div>
                         </v-flex>
                     </v-layout>

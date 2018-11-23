@@ -16,9 +16,10 @@ class Role
      */
     public function handle($request, Closure $next, $role)
     {
-        if (! $request->user()->hasRole($role)) {
-            abort(401, 'This action is unauthorized.');
-        }
+        // if (! $request->user()->hasAnyRole($role)) {
+        //     abort(401, 'This action is unauthorized.');
+        // }
+        if($request->user()->authorizeRoles(['administrator', 'member']))
         return $next($request);
     }
 }

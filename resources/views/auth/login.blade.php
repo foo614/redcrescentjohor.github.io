@@ -6,7 +6,7 @@
             {!! Form::open(['url' => 'login', 'method' => 'POST', 'class' => '', 'id' => 'login', 'role' => 'form']) !!}
             {{ csrf_field() }}
             <v-card class="elevation-12">
-                <v-toolbar dark color="red">
+                <v-toolbar dark color="#ca0000">
                     <v-toolbar-title>Login</v-toolbar-title>
                 </v-toolbar>
                 <v-card-text>
@@ -32,9 +32,9 @@
                     @endif
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="red" dark href="{{ url('/password/reset') }}">Forgot password?</v-btn>
+                    <v-btn color="#ca0000" dark href="{{ url('/password/reset') }}">Forgot password?</v-btn>
                     <v-spacer></v-spacer>
-                    <v-btn color="red" dark type="submit">Login</v-btn>
+                    <v-btn color="#ca0000" dark type="submit">Login</v-btn>
                 </v-card-actions>
             </v-card>
             {!! Form::close() !!}

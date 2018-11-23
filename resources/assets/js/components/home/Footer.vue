@@ -5,12 +5,14 @@
                 <div class="flex pa-5 blue-grey darken-3 xs12 sm12 md3">
                     <h5 class="title pb-3">Red Crescent Johor</h5>
                     <ul>
-                        <li><a href="#/services" class="layout align-center"><i aria-hidden="true" class="icon mr-3 theme--dark material-icons"></i>
+                        <li><a href="/news-stories" class="layout align-center"><i aria-hidden="true" class="icon mr-3 theme--dark material-icons"></i>
+                                <span class="subheading">Posts</span></a></li>
+                        <li><a href="/course-registration" class="layout align-center"><i aria-hidden="true" class="icon mr-3 theme--dark material-icons"></i>
                                 <span class="subheading">GET TRAINED</span></a></li>
-                        <li><a href="#/projects" class="layout align-center"><i aria-hidden="true" class="icon mr-3 theme--dark material-icons"></i>
-                                <span class="subheading">DONATE</span></a></li>
-                        <li><a href="#/team" class="layout align-center"><i aria-hidden="true" class="icon mr-3 theme--dark material-icons"></i>
-                                <span class="subheading">FUNDRAISE</span></a></li>
+                        <li><a href="/fundraisers-campaign" class="layout align-center"><i aria-hidden="true" class="icon mr-3 theme--dark material-icons"></i>
+                                <span class="subheading">Fundraisers @ Donation</span></a></li>
+                        <li><a href="/login" class="layout align-center"><i aria-hidden="true" class="icon mr-3 theme--dark material-icons"></i>
+                            <span class="subheading">@Login</span></a></li>
                     </ul>
                 </div>
                 <div class="flex pa-5 xs12 sm12 md4">

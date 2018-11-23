@@ -47,7 +47,7 @@
                                         <v-icon slot="activator">description</v-icon>
                                         <span>Content</span>
                                     </v-tooltip>
-                                    <ckeditor style="width:100%" height="180px" class="ml-2" v-model="item.body" language="zh" extraplugins="divarea"/>
+                                    <ckeditor style="width:100%" height="180px" class="ml-2" v-model="item.body" language="en" extraplugins="divarea"/>
                                 </div>
                             </v-flex>
                             <v-flex xs12 sm12>

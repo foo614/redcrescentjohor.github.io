@@ -31,8 +31,9 @@ import HospitalForm from './components/hospitals/HospitalForm.vue';
 
 import CoursesIndex from './components/courses/CoursesTable.vue'
 import CourseForm from './components/courses/CourseForm.vue'
+import CourseEnrol from './components/courses/CourseEnrol.vue'
 
-import Dashboard from './components/includes/Dashboard.vue';
+// import Dashboard from './components/includes/Dashboard.vue';
 import Login from './components/includes/LoginPage.vue';
 
 import MembershipTypeSetting from './components/settings/MembershipType.vue';
@@ -50,7 +51,6 @@ import ProfileHome from './components/home/ProfileHome.vue';
 import FundraisersList from './components/home/Fundraisers.vue';
 import FundraiserCreate from './components/home/FundraiserCreate.vue';
 import Donate from './components/home/Donate.vue';
-
 
 const empty = {
     template: `
@@ -85,7 +85,7 @@ const routes = [
           path: ':id/register',
           component: RegisterCourse,
           name: 'registerCourse'
-        }
+        },
       ]
     },
     {path:'/fundraisers-campaign', component: empty,
@@ -112,6 +112,8 @@ const routes = [
     //admin Panel
     //login
     {path: '/login',components: {login: Login}},
+    //dashboard
+    {path: '/dashboard', component: PostCalendar, name: 'viewPost'},
     //settings
     {path: '/settings/roles', component: MemberRoleTypeSetting, name: 'roles'},
     {path: '/settings/membershipTypes', component: MembershipTypeSetting, name: 'membershipTypes'},
@@ -125,7 +127,6 @@ const routes = [
     {path: '/posts',component: PostsIndex, name:'listPosts'},
     {path: '/posts/create', component: PostForm, name: 'createPost'},
     {path: '/posts/:id/edit', component: PostForm, name: 'editPost'},
-    {path: '/posts/calendar', component: PostCalendar, name: 'viewPost'},
     //fundraisers
     {path: '/fundraisers',component: FundraisersIndex, name:'listFundraisers'},
     {path: '/fundraisers/create', component: FundraiserForm, name: 'createFundraiser'},
@@ -154,6 +155,7 @@ const routes = [
     {path: '/courses', component: CoursesIndex, name:'listCourses'},
     {path: '/courses/:id/edit', component: CourseForm, name: 'editCourse'},
     {path: '/courses/create', component: CourseForm, name: 'createCourse'},
+    {path: '/coursesEnrollment', component: CourseEnrol, name: 'enrolCourse'}
 ];
 
 const router = new VueRouter({mode: 'history', routes })

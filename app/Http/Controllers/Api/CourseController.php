@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Course;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -69,5 +70,10 @@ class CourseController extends Controller
         if($course->delete()){
             return new CourseResource($course);
         }
+    }
+
+    public function enrol(){
+        $courses = Course::with('users')->whereHas('users')->orderBy('created_at','DESC')->get();
+        return $courses;
     }
 }

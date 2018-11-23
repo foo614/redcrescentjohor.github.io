@@ -24,6 +24,7 @@ class FundraiserResource extends JsonResource
             'user_id' => $this->user_id,
             'user' => $this->user->name,
             'created_at' => $this->created_at->format('F d, Y h:ia'),
+            'total_donation' => $this->payments->sum('amount')
         ];
     }
 }

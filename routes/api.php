@@ -33,6 +33,7 @@ Route::get('post/{id}', 'Api\PostController@show');
 Route::post('post', 'Api\PostController@store');
 Route::put('post', 'Api\PostController@store');
 Route::delete('post/{id}', 'Api\PostController@destroy');
+Route::get('latestEventDisplayHomePage', 'Api\PostController@latestEventDisplayHomePage');
 
 // post categories api route
 Route::get('postCategories', 'Api\PostCategoryController@index');
@@ -87,6 +88,9 @@ Route::get('course/{id}', 'Api\CourseController@show');
 Route::post('course', 'Api\CourseController@store');
 Route::delete('course/{id}', 'Api\CourseController@destroy');
 Route::put('course', 'Api\CourseController@store');
+
+Route::get('coursesEnrollment', 'Api\CourseController@enrol');
+
 
 //blood donation api route
 Route::get('bloodDonationRecords', 'Api\BloodDonationRecordController@index');
